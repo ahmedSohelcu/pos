@@ -21,17 +21,33 @@ const routes = [
         component: () => import('./admin/pages/Dashboard3.vue')
     },
     {
-        path: '/test',
-        name: 'test',
-        meta: { breadcrumb: 'Test' },
-        component: () => import('./admin/pages/Test.vue')
-    },
-    {
         path: '/sample-tables',
         name: 'sample-tables',
         meta: { breadcrumb: 'Sample Tables' },
         component: () => import('./admin/pages/SampleTables.vue')
     },
+    //Widget
+
+    {
+        path: '/cards',
+        name: 'cards',
+        meta: { breadcrumb: 'Cards' },
+        component: () => import('./admin/pages/lib/widget/Cards.vue')
+    },
+    {
+        path: '/info-box',
+        name: 'info-box',
+        meta: { breadcrumb: 'Info Box' },
+        component: () => import('./admin/pages/lib/widget/InfoBox.vue')
+    },
+    {
+        path: '/small-box',
+        name: 'small-box',
+        meta: { breadcrumb: 'Small Box' },
+        component: () => import('./admin/pages/lib/widget/SmallBox.vue')
+    },
+
+
     {
         path: '/:pathMatch(.*)*',
         component: () => import('./admin/pages/PageNotFound.vue')

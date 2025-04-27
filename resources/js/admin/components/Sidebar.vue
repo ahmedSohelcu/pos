@@ -80,44 +80,42 @@
                         </li>     
                     </ul>
                 </li>
-                
-                <li class="nav-item">
-                    <a href="./generate/theme.html" class="nav-link">
-                        <i class="nav-icon bi bi-palette"></i>
-                        <p>Theme Generate</p>
-                    </a>
-                </li>
 
-                    <!-- <li class="nav-item has-treeview" :class="{ 'menu-open': isOpen }"> -->
-                    <li class="nav-item has-treeview">
-                        <a  href="#" class="nav-link">                    
-                            <i class="nav-icon bi bi-box-seam-fill"></i>
+
+                <li class="nav-item has-treeview" :class="{ 'menu-open': isActiveMenuItem(['cards', 'info-box', 'small-box']) || isOpen  }">
+                    <a @click="toggleSidebar" href="#" class="nav-link" :class="{ 'bg-primary': isActiveMenuItem(['cards', 'info-box', 'small-box']) }">
+                        <i class="nav-icon bi bi-box-seam-fill"></i>
                         <p>
                         Widgets
-                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        <i class="nav-arrow bi bi-chevron-right"></i>
                         </p>
                     </a>
-                    <ul class="nav nav-treeview">
+
+                    <ul class="nav nav-treeview">                       
                         <li class="nav-item">
-                            <a href="./widgets/small-box.html" class="nav-link">
+                            <router-link :to="{ name: 'small-box' }" class="nav-link">
                                 <i class="nav-icon bi bi-circle"></i>
                                 <p>Small Box</p>
-                            </a>
-                            </li>
-                            <li class="nav-item">
-                            <a href="./widgets/info-box.html" class="nav-link">
+                            </router-link>
+                        </li>                
+
+                        <li class="nav-item">
+                            <router-link :to="{ name: 'info-box' }" class="nav-link">
                                 <i class="nav-icon bi bi-circle"></i>
-                                <p>info Box</p>
-                            </a>
-                            </li>
-                            <li class="nav-item">
-                            <a href="./widgets/cards.html" class="nav-link">
+                                <p>Info Box</p>
+                            </router-link>
+                        </li>               
+
+                        <li class="nav-item">
+                            <router-link :to="{ name: 'cards' }" class="nav-link">
                                 <i class="nav-icon bi bi-circle"></i>
                                 <p>Cards</p>
-                            </a>
-                        </li>
+                            </router-link>
+                        </li>     
                     </ul>
                 </li>
+
+                 
                 <li class="nav-item">
                 <a href="#" class="nav-link">
                     <i class="nav-icon bi bi-clipboard-fill"></i>
