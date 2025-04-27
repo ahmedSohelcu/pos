@@ -1,3 +1,4 @@
+
 <template>
     <aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
         <!--begin::Sidebar Brand-->
@@ -28,12 +29,12 @@
                 role="menu"
                 data-accordion="false">
 
-                <li class="nav-item has-treeview menu-open">
-                    <a href="#" class="nav-link">
+                <li class="nav-item has-treeview" :class="{ 'menu-open': isActiveMenuItem(['dashboard', 'dashboard-2', 'dashboard-3']) || isOpen  }">
+                    <a @click="toggleSidebar" href="#" class="nav-link" :class="{ 'bg-primary': isActiveMenuItem(['dashboard', 'dashboard-2', 'dashboard-3']) }">
                         <!-- <i class="nav-icon bi bi-speedometer"></i> -->
                         <i class="nav-icon fas fa-th"></i>
                         <p>                            
-                        Dashboard
+                            Dashboard 
                         <i class="nav-arrow bi bi-chevron-right"></i>
                         </p>
                     </a>
@@ -43,28 +44,40 @@
                                 <i class="nav-icon bi bi-circle"></i>
                                 <p>Dashboard</p>
                             </router-link>
-                        </li>        
-
+                        </li>      
 
                         <li class="nav-item">
-                            <router-link :to="{ name: 'test' }" class="nav-link">
+                            <router-link :to="{ name: 'dashboard-2' }" class="nav-link">
                                 <i class="nav-icon bi bi-circle"></i>
-                                <p>Test</p>
+                                <p>Dashboard 2</p>
                             </router-link>
-                        </li>
-                        
+                        </li>  
+
                         <li class="nav-item">
-                            <a href="./index2.html" class="nav-link">
+                            <router-link :to="{ name: 'dashboard-3' }" class="nav-link">
                                 <i class="nav-icon bi bi-circle"></i>
-                                <p>Dashboard v2</p>
-                            </a>
-                        </li>
+                                <p>Dashboard 3</p>
+                            </router-link>
+                        </li>                         
+                    </ul>
+                </li>
+
+                <li class="nav-item has-treeview" :class="{ 'menu-open': isActiveMenuItem(['sample-tables']) || isOpen  }">
+                    <a @click="toggleSidebar" href="#" class="nav-link" :class="{ 'bg-primary': isActiveMenuItem(['sample-tables']) }">
+                        <i class="nav-icon bi bi-table"></i>
+                        <p>
+                        Tables
+                        <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
+
+                    <ul class="nav nav-treeview">                       
                         <li class="nav-item">
-                        <a href="./index3.html" class="nav-link">
-                            <i class="nav-icon bi bi-circle"></i>
-                            <p>Dashboard v3</p>
-                        </a>
-                        </li>
+                            <router-link :to="{ name: 'sample-tables' }" class="nav-link">
+                                <i class="nav-icon bi bi-circle"></i>
+                                <p>Sample Tables</p>
+                            </router-link>
+                        </li>     
                     </ul>
                 </li>
                 
@@ -74,34 +87,36 @@
                         <p>Theme Generate</p>
                     </a>
                 </li>
-                <li class="nav-item has-treeview menu-open">
-                <a href="#" class="nav-link">
-                    <i class="nav-icon bi bi-box-seam-fill"></i>
-                    <p>
-                    Widgets
-                    <i class="nav-arrow bi bi-chevron-right"></i>
-                    </p>
-                </a>
-                <ul class="nav nav-treeview">
-                    <li class="nav-item">
-                        <a href="./widgets/small-box.html" class="nav-link">
-                            <i class="nav-icon bi bi-circle"></i>
-                            <p>Small Box</p>
-                        </a>
-                        </li>
+
+                    <!-- <li class="nav-item has-treeview" :class="{ 'menu-open': isOpen }"> -->
+                    <li class="nav-item has-treeview">
+                        <a  href="#" class="nav-link">                    
+                            <i class="nav-icon bi bi-box-seam-fill"></i>
+                        <p>
+                        Widgets
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
                         <li class="nav-item">
-                        <a href="./widgets/info-box.html" class="nav-link">
-                            <i class="nav-icon bi bi-circle"></i>
-                            <p>info Box</p>
-                        </a>
+                            <a href="./widgets/small-box.html" class="nav-link">
+                                <i class="nav-icon bi bi-circle"></i>
+                                <p>Small Box</p>
+                            </a>
+                            </li>
+                            <li class="nav-item">
+                            <a href="./widgets/info-box.html" class="nav-link">
+                                <i class="nav-icon bi bi-circle"></i>
+                                <p>info Box</p>
+                            </a>
+                            </li>
+                            <li class="nav-item">
+                            <a href="./widgets/cards.html" class="nav-link">
+                                <i class="nav-icon bi bi-circle"></i>
+                                <p>Cards</p>
+                            </a>
                         </li>
-                        <li class="nav-item">
-                        <a href="./widgets/cards.html" class="nav-link">
-                            <i class="nav-icon bi bi-circle"></i>
-                            <p>Cards</p>
-                        </a>
-                    </li>
-                </ul>
+                    </ul>
                 </li>
                 <li class="nav-item">
                 <a href="#" class="nav-link">
@@ -186,40 +201,27 @@
                     </li>
                 </ul>
                 </li>
+
                 <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="nav-icon bi bi-pencil-square"></i>
-                    <p>
-                    Forms
-                    <i class="nav-arrow bi bi-chevron-right"></i>
-                    </p>
-                </a>
-                <ul class="nav nav-treeview">
-                    <li class="nav-item">
-                    <a href="./forms/general.html" class="nav-link">
-                        <i class="nav-icon bi bi-circle"></i>
-                        <p>General Elements</p>
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon bi bi-pencil-square"></i>
+                        <p>
+                        Forms
+                        <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
                     </a>
-                    </li>
-                </ul>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                        <a href="./forms/general.html" class="nav-link">
+                            <i class="nav-icon bi bi-circle"></i>
+                            <p>General Elements</p>
+                        </a>
+                        </li>
+                    </ul>
                 </li>
-                <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="nav-icon bi bi-table"></i>
-                    <p>
-                    Tables
-                    <i class="nav-arrow bi bi-chevron-right"></i>
-                    </p>
-                </a>
-                <ul class="nav nav-treeview">
-                    <li class="nav-item">
-                    <a href="./tables/simple.html" class="nav-link">
-                        <i class="nav-icon bi bi-circle"></i>
-                        <p>Simple Tables</p>
-                    </a>
-                    </li>
-                </ul>
-                </li>
+
+               
+
                 <li class="nav-header">EXAMPLES</li>
                 <li class="nav-item">
                 <a href="#" class="nav-link">
@@ -461,25 +463,68 @@
 
 <script>
 
+import { ref, computed } from 'vue';
+import { useRoute } from 'vue-router';
 
 export default {
-    setup() {
-        // import { ref } from 'vue';
+      setup() {
+        const isOpen = ref(false);
 
-        // const isActive = ref(false)
+        const route = useRoute();
 
-        // const toggleActive = (event) => {
-        //     isActive.value = !isActive.value
-        //     event.target.classList.toggle('active', isActive.value)
-        // }
+        const isActiveMenu = computed(() => (menuName) => {            
+            return route.name?.startsWith(menuName);
+        });
 
-        // return {
-        //     isActive,
-        //     toggleActive
-        // }
+        const isActiveMenuItem = computed(() => (itemName) => {                     
+            return itemName.includes(route.name);
+            // return route.name === itemName;
+        });
+        
+        const toggleSidebar = () => {
 
-    }
-}
+        isOpen.value = !isOpen.value;
+         
+          // Close all other menus when opening a new one
+          const treeviews = document.querySelectorAll('.has-treeview');
+          treeviews.forEach(treeview => {
+            if (!treeview.contains(event.target)) {
+              treeview.classList.remove('menu-open');
+            }
+          });
+        };
+    
+        return {
+            isOpen,
+            toggleSidebar,
+            isActiveMenu,
+            isActiveMenuItem
+        };
+      },
+    };
 </script>
 
+<style scoped>
+    .sidebar-wrapper {
+        transition: all 0.3s ease;
+    }
+    /* .router-link-active, */
+    .router-link-active{
+        background-color:  rgba(255,255,255,.9);
+        color: #000000!important;
+    }
+
+    /* .menu-open{
+        background-color: #007bff!important;
+        color: #fff!important;
+    } */
+
+    .sidebar-wrapper.menu-open {
+    /* Add your expanded styles here */
+    }
+
+    .sidebar-wrapper:not(.menu-open) {
+    /* Add your collapsed styles here */
+    }
+</style>
 <!-- https://adminlte.io/docs/3.0/components/main-sidebar.html -->

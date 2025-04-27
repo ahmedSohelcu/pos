@@ -39,5 +39,4 @@
   import Sidebar from '../components/Sidebar.vue'
   import Footer from '../components/Footer.vue'
   import Breadcumbs from '../components/Breadcumbs.vue'
-  import Dashboard from '../pages/Dashboard.vue'
 </script>

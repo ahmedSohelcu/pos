@@ -174,3 +174,118 @@ Add error handling for failed navigation attempts
 Consider implementing route guards for protected routes
 Use route parameters when needed for dynamic content
 
+
+
+
+<template>
+    <aside class="app-sidebar bg-body-secondary shadow" :class="{ 'menu-open': isOpen }" data-bs-theme="dark">
+      <!--begin::Sidebar Brand-->
+      <div class="sidebar-brand">
+        <!--begin::Brand Link-->
+        <a href="./index.html" class="brand-link">
+          <!--begin::Brand Image-->
+          <img src="admin/v1/assets/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image opacity-75 shadow"/>
+          <!--end::Brand Image-->
+          <!--begin::Brand Text-->
+          <span class="brand-text fw-light">AdminLTE 4</span>
+          <!--end::Brand Text-->
+        </a>
+        <!--end::Brand Link-->
+      </div>
+      <!--end::Sidebar Brand-->
+    
+      <!--begin::Sidebar Wrapper-->
+      <div class="sidebar-wrapper">
+        <nav class="mt-2">
+          <!--begin::Sidebar Menu-->
+          <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu" data-accordion="false">
+            <!-- Dashboard Menu -->
+            <li class="nav-item has-treeview" :class="{ 'menu-open': isOpen }">
+              <a @click="toggleSidebar" href="#" class="nav-link">
+                <i class="nav-icon fas fa-th"></i>
+                <p>
+                  Dashboard
+                  <i class="nav-arrow bi bi-chevron-right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <router-link :to="{ name: 'dashboard' }" class="nav-link">
+                    <i class="nav-icon bi bi-circle"></i>
+                    <p>Dashboard</p>
+                  </router-link>
+                </li>
+                <!-- Other menu items... -->
+              </ul>
+            </li>
+            <!-- Other menu items remain the same... -->
+          </ul>
+          <!--end::Sidebar Menu-->
+        </nav>
+      </div>
+      <!--end::Sidebar Wrapper-->
+    </aside>
+</template>
+
+<script>
+    import { ref } from 'vue';
+    export default {
+      setup() {
+        const isOpen = ref(false);
+        
+        const toggleSidebar = () => {
+          isOpen.value = !isOpen.value;
+          
+          // Close all other menus when opening a new one
+          const treeviews = document.querySelectorAll('.has-treeview');
+          treeviews.forEach(treeview => {
+            if (!treeview.contains(event.target)) {
+              treeview.classList.remove('menu-open');
+            }
+          });
+        };
+    
+        return {
+          isOpen,
+          toggleSidebar,
+        };
+      },
+    };
+    </script>
+    
+    <style scoped>
+    .sidebar-wrapper {
+      transition: all 0.3s ease;
+    }
+    
+    /* Active link styling */
+    .router-link-active,
+    .router-link-active:hover {
+      background-color: rgba(255,255,255,.9);
+      color: #343a40!important;
+    }
+    
+    /* Open menu styling */
+    .menu-open > .nav-link {
+      background-color: #007bff;
+      color: white;
+    }
+    
+    /* Hover states */
+    .nav-link:hover {
+      background-color: rgba(0,123,255,0.1);
+    }
+    
+    /* Submenu styling */
+    .nav-treeview {
+      padding-left: 2rem;
+    }
+    
+    .nav-treeview .nav-link {
+      padding-left: 1rem;
+    }
+    
+    .nav-treeview .nav-link:hover {
+      background-color: rgba(0,123,255,0.05);
+    }
+    </style>
