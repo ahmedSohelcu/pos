@@ -55,6 +55,26 @@ const routes = [
         component: () => import('./admin/pages/lib/form/Form.vue')
     },
 
+    // Ui Elements
+    {
+        path: '/general-ui',
+        name: 'general-ui',
+        meta: { breadcrumb: 'General UI' },
+        component: () => import('./admin/pages/lib/ui/General.vue')
+    },
+    {
+        path: '/icon',
+        name: 'icon',
+        meta: { breadcrumb: 'Icon' },
+        component: () => import('./admin/pages/lib/ui/Icon.vue')
+    },
+    {
+        path: '/timeline',
+        name: 'timeline',
+        meta: { breadcrumb: 'Timeline' },
+        component: () => import('./admin/pages/lib/ui/Timeline.vue')
+    },
+
 
     {
         path: '/:pathMatch(.*)*',

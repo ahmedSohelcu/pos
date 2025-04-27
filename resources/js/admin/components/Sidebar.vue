@@ -135,6 +135,43 @@
                     </ul>
                 </li>
 
+
+                <li class="nav-item has-treeview" :class="{ 'menu-open': isActiveMenuItem(['general-ui', 'icon', 'timeline']) || isOpen  }">
+                    <a @click="toggleSidebar" href="#" class="nav-link" :class="{ 'bg-primary': isActiveMenuItem(['general-ui', 'icon', 'timeline']) }">
+                        <i class="nav-icon bi bi-tree-fill"></i>
+                        <p>
+                            UI Elements
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
+
+                    <ul class="nav nav-treeview">                       
+                        <li class="nav-item">
+                            <router-link :to="{ name: 'general-ui' }" class="nav-link">
+                                <i class="nav-icon bi bi-circle"></i>
+                                <p>General</p>
+                            </router-link>
+                        </li>                         
+
+                        <li class="nav-item">
+                            <router-link :to="{ name: 'icon' }" class="nav-link">
+                                <i class="nav-icon bi bi-circle"></i>
+                                <p>Icon</p>
+                            </router-link>
+                        </li>                          
+
+                        <li class="nav-item">
+                            <router-link :to="{ name: 'timeline' }" class="nav-link">
+                                <i class="nav-icon bi bi-circle"></i>
+                                <p>Timeline</p>
+                            </router-link>
+                        </li>             
+                    </ul>
+                </li>
+
+
+              
+
                  
                 <li class="nav-item">
                 <a href="#" class="nav-link">
@@ -190,35 +227,7 @@
                     </li>
                 </ul>
                 </li>
-                <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="nav-icon bi bi-tree-fill"></i>
-                    <p>
-                    UI Elements
-                    <i class="nav-arrow bi bi-chevron-right"></i>
-                    </p>
-                </a>
-                <ul class="nav nav-treeview">
-                    <li class="nav-item">
-                    <a href="./UI/general.html" class="nav-link">
-                        <i class="nav-icon bi bi-circle"></i>
-                        <p>General</p>
-                    </a>
-                    </li>
-                    <li class="nav-item">
-                    <a href="./UI/icons.html" class="nav-link">
-                        <i class="nav-icon bi bi-circle"></i>
-                        <p>Icons</p>
-                    </a>
-                    </li>
-                    <li class="nav-item">
-                    <a href="./UI/timeline.html" class="nav-link">
-                        <i class="nav-icon bi bi-circle"></i>
-                        <p>Timeline</p>
-                    </a>
-                    </li>
-                </ul>
-                </li>
+             
               
 
                 
