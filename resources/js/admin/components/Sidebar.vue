@@ -115,6 +115,26 @@
                     </ul>
                 </li>
 
+
+                <li class="nav-item has-treeview" :class="{ 'menu-open': isActiveMenuItem(['form']) || isOpen  }">
+                    <a @click="toggleSidebar" href="#" class="nav-link" :class="{ 'bg-primary': isActiveMenuItem(['form']) }">
+                        <i class="nav-icon bi bi-pencil-square"></i>
+                        <p>
+                            Forms
+                        <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
+
+                    <ul class="nav nav-treeview">                       
+                        <li class="nav-item">
+                            <router-link :to="{ name: 'form' }" class="nav-link">
+                                <i class="nav-icon bi bi-circle"></i>
+                                <p>General Elements</p>
+                            </router-link>
+                        </li>             
+                    </ul>
+                </li>
+
                  
                 <li class="nav-item">
                 <a href="#" class="nav-link">
@@ -199,24 +219,9 @@
                     </li>
                 </ul>
                 </li>
+              
 
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon bi bi-pencil-square"></i>
-                        <p>
-                        Forms
-                        <i class="nav-arrow bi bi-chevron-right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                        <a href="./forms/general.html" class="nav-link">
-                            <i class="nav-icon bi bi-circle"></i>
-                            <p>General Elements</p>
-                        </a>
-                        </li>
-                    </ul>
-                </li>
+                
 
                
 

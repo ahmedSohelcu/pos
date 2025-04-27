@@ -47,6 +47,14 @@ const routes = [
         component: () => import('./admin/pages/lib/widget/SmallBox.vue')
     },
 
+    // Form
+    {
+        path: '/form',
+        name: 'form',
+        meta: { breadcrumb: 'Form' },
+        component: () => import('./admin/pages/lib/form/Form.vue')
+    },
+
 
     {
         path: '/:pathMatch(.*)*',
