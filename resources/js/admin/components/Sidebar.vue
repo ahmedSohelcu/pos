@@ -73,6 +73,13 @@
 
                     <ul class="nav nav-treeview">                       
                         <li class="nav-item">
+                            <router-link :to="{ name: 'table-component' }" class="nav-link">
+                                <i class="nav-icon bi bi-circle"></i>
+                                <p>Table Component Example</p>
+                            </router-link>
+                        </li>           
+
+                        <li class="nav-item">
                             <router-link :to="{ name: 'sample-tables' }" class="nav-link">
                                 <i class="nav-icon bi bi-circle"></i>
                                 <p>Sample Tables</p>
@@ -173,60 +180,60 @@
               
 
                  
-                <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="nav-icon bi bi-clipboard-fill"></i>
-                    <p>
-                    Layout Options
-                    <span class="nav-badge badge text-bg-secondary me-3">6</span>
-                    <i class="nav-arrow bi bi-chevron-right"></i>
-                    </p>
-                </a>
-                <ul class="nav nav-treeview">
-                    <li class="nav-item">
-                    <a href="./layout/unfixed-sidebar.html" class="nav-link">
-                        <i class="nav-icon bi bi-circle"></i>
-                        <p>Default Sidebar</p>
+                <!-- <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon bi bi-clipboard-fill"></i>
+                        <p>
+                        Layout Options
+                        <span class="nav-badge badge text-bg-secondary me-3">6</span>
+                        <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
                     </a>
-                    </li>
-                    <li class="nav-item">
-                    <a href="./layout/fixed-sidebar.html" class="nav-link">
-                        <i class="nav-icon bi bi-circle"></i>
-                        <p>Fixed Sidebar</p>
-                    </a>
-                    </li>
-                    <li class="nav-item">
-                    <a href="./layout/layout-custom-area.html" class="nav-link">
-                        <i class="nav-icon bi bi-circle"></i>
-                        <p>Layout <small>+ Custom Area </small></p>
-                    </a>
-                    </li>
-                    <li class="nav-item">
-                    <a href="./layout/sidebar-mini.html" class="nav-link">
-                        <i class="nav-icon bi bi-circle"></i>
-                        <p>Sidebar Mini</p>
-                    </a>
-                    </li>
-                    <li class="nav-item">
-                    <a href="./layout/collapsed-sidebar.html" class="nav-link">
-                        <i class="nav-icon bi bi-circle"></i>
-                        <p>Sidebar Mini <small>+ Collapsed</small></p>
-                    </a>
-                    </li>
-                    <li class="nav-item">
-                    <a href="./layout/logo-switch.html" class="nav-link">
-                        <i class="nav-icon bi bi-circle"></i>
-                        <p>Sidebar Mini <small>+ Logo Switch</small></p>
-                    </a>
-                    </li>
-                    <li class="nav-item">
-                    <a href="./layout/layout-rtl.html" class="nav-link">
-                        <i class="nav-icon bi bi-circle"></i>
-                        <p>Layout RTL</p>
-                    </a>
-                    </li>
-                </ul>
-                </li>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                        <a href="./layout/unfixed-sidebar.html" class="nav-link">
+                            <i class="nav-icon bi bi-circle"></i>
+                            <p>Default Sidebar</p>
+                        </a>
+                        </li>
+                        <li class="nav-item">
+                        <a href="./layout/fixed-sidebar.html" class="nav-link">
+                            <i class="nav-icon bi bi-circle"></i>
+                            <p>Fixed Sidebar</p>
+                        </a>
+                        </li>
+                        <li class="nav-item">
+                        <a href="./layout/layout-custom-area.html" class="nav-link">
+                            <i class="nav-icon bi bi-circle"></i>
+                            <p>Layout <small>+ Custom Area </small></p>
+                        </a>
+                        </li>
+                        <li class="nav-item">
+                        <a href="./layout/sidebar-mini.html" class="nav-link">
+                            <i class="nav-icon bi bi-circle"></i>
+                            <p>Sidebar Mini</p>
+                        </a>
+                        </li>
+                        <li class="nav-item">
+                        <a href="./layout/collapsed-sidebar.html" class="nav-link">
+                            <i class="nav-icon bi bi-circle"></i>
+                            <p>Sidebar Mini <small>+ Collapsed</small></p>
+                        </a>
+                        </li>
+                        <li class="nav-item">
+                        <a href="./layout/logo-switch.html" class="nav-link">
+                            <i class="nav-icon bi bi-circle"></i>
+                            <p>Sidebar Mini <small>+ Logo Switch</small></p>
+                        </a>
+                        </li>
+                        <li class="nav-item">
+                        <a href="./layout/layout-rtl.html" class="nav-link">
+                            <i class="nav-icon bi bi-circle"></i>
+                            <p>Layout RTL</p>
+                        </a>
+                        </li>
+                    </ul>
+                </li> -->
              
               
 
@@ -234,7 +241,7 @@
 
                
 
-                <li class="nav-header">EXAMPLES</li>
+                <!-- <li class="nav-header">EXAMPLES</li>
                 <li class="nav-item">
                 <a href="#" class="nav-link">
                     <i class="nav-icon bi bi-box-arrow-in-right"></i>
@@ -387,84 +394,88 @@
                     <i class="nav-icon bi bi-circle-fill"></i>
                     <p>Level 1</p>
                 </a>
-                </li>
+                </li> -->
+<!--                 
                 <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="nav-icon bi bi-circle-fill"></i>
-                    <p>
-                    Level 1
-                    <i class="nav-arrow bi bi-chevron-right"></i>
-                    </p>
-                </a>
-                <ul class="nav nav-treeview">
-                    <li class="nav-item">
                     <a href="#" class="nav-link">
-                        <i class="nav-icon bi bi-circle"></i>
-                        <p>Level 2</p>
-                    </a>
-                    </li>
-                    <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon bi bi-circle"></i>
+                        <i class="nav-icon bi bi-circle-fill"></i>
                         <p>
-                        Level 2
+                        Level 1
                         <i class="nav-arrow bi bi-chevron-right"></i>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
                         <a href="#" class="nav-link">
-                            <i class="nav-icon bi bi-record-circle-fill"></i>
-                            <p>Level 3</p>
+                            <i class="nav-icon bi bi-circle"></i>
+                            <p>Level 2</p>
                         </a>
                         </li>
                         <li class="nav-item">
                         <a href="#" class="nav-link">
-                            <i class="nav-icon bi bi-record-circle-fill"></i>
-                            <p>Level 3</p>
+                            <i class="nav-icon bi bi-circle"></i>
+                            <p>
+                            Level 2
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                            </p>
                         </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon bi bi-record-circle-fill"></i>
+                                <p>Level 3</p>
+                            </a>
+                            </li>
+                            <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon bi bi-record-circle-fill"></i>
+                                <p>Level 3</p>
+                            </a>
+                            </li>
+                            <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon bi bi-record-circle-fill"></i>
+                                <p>Level 3</p>
+                            </a>
+                            </li>
+                        </ul>
                         </li>
                         <li class="nav-item">
                         <a href="#" class="nav-link">
-                            <i class="nav-icon bi bi-record-circle-fill"></i>
-                            <p>Level 3</p>
+                            <i class="nav-icon bi bi-circle"></i>
+                            <p>Level 2</p>
                         </a>
                         </li>
                     </ul>
-                    </li>
-                    <li class="nav-item">
+                </li> -->
+                <!-- <li class="nav-item">
                     <a href="#" class="nav-link">
-                        <i class="nav-icon bi bi-circle"></i>
-                        <p>Level 2</p>
+                        <i class="nav-icon bi bi-circle-fill"></i>
+                        <p>Level 1</p>
                     </a>
-                    </li>
-                </ul>
-                </li>
+                </li> -->
+
+                <!-- <li class="nav-header">LABELS</li>
                 <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="nav-icon bi bi-circle-fill"></i>
-                    <p>Level 1</p>
-                </a>
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon bi bi-circle text-danger"></i>
+                        <p class="text">Important</p>
+                    </a>
                 </li>
-                <li class="nav-header">LABELS</li>
+
                 <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="nav-icon bi bi-circle text-danger"></i>
-                    <p class="text">Important</p>
-                </a>
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon bi bi-circle text-warning"></i>
+                        <p>Warning</p>
+                    </a>
                 </li>
+
                 <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="nav-icon bi bi-circle text-warning"></i>
-                    <p>Warning</p>
-                </a>
-                </li>
-                <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="nav-icon bi bi-circle text-info"></i>
-                    <p>Informational</p>
-                </a>
-                </li>
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon bi bi-circle text-info"></i>
+                        <p>Informational</p>
+                    </a>
+                </li> -->
             </ul>
             <!--end::Sidebar Menu-->
             </nav>

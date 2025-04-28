@@ -1,0 +1,9 @@
+01. create dynamic dropdown component with select 2
+02.create dynamic table component with search and filter
+03.filter componet with search ...
+
+
+          <!-- 
+                    example
+                    https://github.com/yazan-alnugnugh/laravel-datatable
+                    -->

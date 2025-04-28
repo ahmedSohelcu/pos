@@ -6,19 +6,25 @@ const routes = [
         path: '/',
         name: 'dashboard',
         meta: { breadcrumb: 'Dashboard', layout: 'master' },
-        component: () => import('./admin/pages/Dashboard.vue')
+        component: () => import('./admin/pages/lib/dashboard/Dashboard.vue')
     },
     {
         path: '/',
         name: 'dashboard-2',
         meta: { breadcrumb: 'Dashboard 2', layout: 'master' },
-        component: () => import('./admin/pages/Dashboard2.vue')
+        component: () => import('./admin/pages/lib/dashboard/Dashboard2.vue')
     },
     {
         path: '/',
         name: 'dashboard-3',
         meta: { breadcrumb: 'Dashboard 3', layout: 'master' },
-        component: () => import('./admin/pages/Dashboard3.vue')
+        component: () => import('./admin/pages/lib/dashboard/Dashboard3.vue')
+    },
+    {
+        path: '/table-component',
+        name: 'table-component',
+        meta: { breadcrumb: 'Table Example' },
+        component: () => import('./admin/pages/TableComponent.vue')
     },
     {
         path: '/sample-tables',
