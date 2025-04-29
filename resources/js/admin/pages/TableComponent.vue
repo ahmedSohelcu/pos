@@ -86,13 +86,14 @@
                         </div>                         -->
                         <!-- /.card-header -->                      
                         <div class="card-body p-0">
-                            <table class="table table-striped">
+                            <table class="table table-bordered stable-striped">
                                 <thead>
                                 <tr>
                                     <th style="width: 10px">#</th>
                                     <th>Task</th>
                                     <th>Progress</th>
-                                    <th style="width: 40px">Label</th>
+                                    <th style="width: 10px">Label</th>
+                                    <th style="width: 30px">Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -105,16 +106,42 @@
                                         </div>
                                         </td>
                                         <td><span class="badge text-bg-danger">55%</span></td>
+                                        <td>
+                                            <div class="d-inline-flex">
+                                                <button type="button" class="btn btn-outline-primary btn-sm me-2">
+                                                    <i class="fa-solid fa-pen"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-outline-danger btn-sm me-2">
+                                                    <i class="fa-solid fa-trash-can"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-outline-info btn-sm">
+                                                    <i class="fa-solid fa-eye"></i>
+                                                </button>
+                                            </div>
+                                        </td>
                                     </tr>
                                     <tr class="align-middle">
                                         <td>2.</td>
-                                        <td><span class="badge text-bg-warning">70% amazing-unit-data</span></td>
+                                        <td>Amazing-unit-data</td>
                                         <td>
                                         <div class="progress progress-xs">
                                             <div class="progress-bar text-bg-warning" style="width: 70%"></div>
                                         </div>
                                         </td>
                                         <td><span class="badge text-bg-warning">70%</span></td>
+                                        <td>
+                                            <div class="d-inline-flex">
+                                                <button type="button" class="btn btn-outline-primary btn-sm me-2">
+                                                    <i class="fa-solid fa-pen"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-outline-danger btn-sm me-2">
+                                                    <i class="fa-solid fa-trash-can"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-outline-info btn-sm">
+                                                    <i class="fa-solid fa-eye"></i>
+                                                </button>
+                                            </div>
+                                        </td>
                                     </tr>
                                     <tr class="align-middle">
                                         <td>3.</td>
@@ -125,6 +152,19 @@
                                         </div>
                                         </td>
                                         <td><span class="badge text-bg-primary">30%</span></td>
+                                        <td>
+                                            <div class="d-inline-flex">
+                                                <button type="button" class="btn btn-outline-primary btn-sm me-2">
+                                                    <i class="fa-solid fa-pen"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-outline-danger btn-sm me-2">
+                                                    <i class="fa-solid fa-trash-can"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-outline-info btn-sm">
+                                                    <i class="fa-solid fa-eye"></i>
+                                                </button>
+                                            </div>
+                                        </td>
                                     </tr>
                                     <tr class="align-middle">
                                         <td>4.</td>
@@ -135,6 +175,19 @@
                                         </div>
                                         </td>
                                         <td><span class="badge text-bg-success">90%</span></td>
+                                        <td>
+                                            <div class="d-inline-flex">
+                                                <button type="button" class="btn btn-outline-primary btn-sm me-2">
+                                                    <i class="fa-solid fa-pen"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-outline-danger btn-sm me-2">
+                                                    <i class="fa-solid fa-trash-can"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-outline-info btn-sm">
+                                                    <i class="fa-solid fa-eye"></i>
+                                                </button>
+                                            </div>
+                                        </td>
                                     </tr>
                                     <tr class="align-middle">
                                         <td>5.</td>
@@ -145,6 +198,19 @@
                                         </div>
                                         </td>
                                         <td><span class="badge text-bg-danger">55%</span></td>
+                                        <td>
+                                            <div class="d-inline-flex">
+                                                <button type="button" class="btn btn-outline-primary btn-sm me-2">
+                                                    <i class="fa-solid fa-pen"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-outline-danger btn-sm me-2">
+                                                    <i class="fa-solid fa-trash-can"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-outline-info btn-sm">
+                                                    <i class="fa-solid fa-eye"></i>
+                                                </button>
+                                            </div>
+                                        </td>
                                     </tr>
                                     <tr class="align-middle">
                                         <td>6.</td>
@@ -155,6 +221,19 @@
                                         </div>
                                         </td>
                                         <td><span class="badge text-bg-warning">70%</span></td>
+                                        <td>
+                                            <div class="d-inline-flex">
+                                                <button type="button" class="btn btn-outline-primary btn-sm me-2">
+                                                    <i class="fa-solid fa-pen"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-outline-danger btn-sm me-2">
+                                                    <i class="fa-solid fa-trash-can"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-outline-info btn-sm">
+                                                    <i class="fa-solid fa-eye"></i>
+                                                </button>
+                                            </div>
+                                        </td>
                                     </tr>
                                     <tr class="align-middle">
                                         <td>7.</td>
@@ -165,6 +244,19 @@
                                         </div>
                                         </td>
                                         <td><span class="badge text-bg-primary">30%</span></td>
+                                        <td>
+                                            <div class="d-inline-flex">
+                                                <button type="button" class="btn btn-outline-primary btn-sm me-2">
+                                                    <i class="fa-solid fa-pen"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-outline-danger btn-sm me-2">
+                                                    <i class="fa-solid fa-trash-can"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-outline-info btn-sm">
+                                                    <i class="fa-solid fa-eye"></i>
+                                                </button>
+                                            </div>
+                                        </td>
                                     </tr>
                                     <tr class="align-middle">
                                         <td>8.</td>
@@ -175,6 +267,19 @@
                                         </div>
                                         </td>
                                         <td><span class="badge text-bg-success">90%</span></td>
+                                        <td>
+                                            <div class="d-inline-flex">
+                                                <button type="button" class="btn btn-outline-primary btn-sm me-2">
+                                                    <i class="fa-solid fa-pen"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-outline-danger btn-sm me-2">
+                                                    <i class="fa-solid fa-trash-can"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-outline-info btn-sm">
+                                                    <i class="fa-solid fa-eye"></i>
+                                                </button>
+                                            </div>
+                                        </td>
                                     </tr>
                                     <tr class="align-middle">
                                         <td>9.</td>
@@ -185,6 +290,19 @@
                                         </div>
                                         </td>
                                         <td><span class="badge text-bg-primary">30%</span></td>
+                                        <td>
+                                            <div class="d-inline-flex">
+                                                <button type="button" class="btn btn-outline-primary btn-sm me-2">
+                                                    <i class="fa-solid fa-pen"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-outline-danger btn-sm me-2">
+                                                    <i class="fa-solid fa-trash-can"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-outline-info btn-sm">
+                                                    <i class="fa-solid fa-eye"></i>
+                                                </button>
+                                            </div>
+                                        </td>
                                     </tr>
                                     <tr class="align-middle">
                                         <td>10.</td>
@@ -195,6 +313,19 @@
                                         </div>
                                         </td>
                                         <td><span class="badge text-bg-success">90%</span></td>
+                                        <td>
+                                            <div class="d-inline-flex">
+                                                <button type="button" class="btn btn-outline-primary btn-sm me-2">
+                                                    <i class="fa-solid fa-pen"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-outline-danger btn-sm me-2">
+                                                    <i class="fa-solid fa-trash-can"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-outline-info btn-sm">
+                                                    <i class="fa-solid fa-eye"></i>
+                                                </button>
+                                            </div>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
