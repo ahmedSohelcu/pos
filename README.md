@@ -1,93 +1,68 @@
-🚀 Laravel Vue Reusable UI Components
+# 🚀 Laravel + Vue Reusable UI Components
 
-A custom reusable Vue 3 component library built for Laravel projects to speed up development and maintain consistency across applications.
+A modern **Vue 3 component library** built specifically for **Laravel projects** to create reusable, scalable, and maintainable UI faster.
 
-This package provides ready-to-use UI components like:
+This project helps you avoid rewriting the same inputs, tables, modals, and forms in every project.
 
-✅ Inputs
-✅ Select / Dropdown
-✅ Checkbox / Radio
-✅ File Upload
-✅ Table (search, filter, pagination)
-✅ Modal
-✅ Form validation
-✅ Toast/Alert
-✅ Layout utilities
+---
 
-Built using:
+## ✨ Tech Stack
 
-Laravel 10+
+- Laravel 10+
+- Vue 3 (Composition API)
+- Pinia (State Management)
+- Bootstrap 5
+- Axios
+- Vite
 
-Vue 3 (Composition API)
+---
 
-Pinia (state management)
+## 🎯 Goals
 
-Bootstrap 5
+✅ Reusable components  
+✅ Clean architecture  
+✅ DRY codebase  
+✅ Faster development  
+✅ Consistent UI  
+✅ Easy customization  
 
-Axios
+---
 
-📦 Features
-✨ Form Components
+## 📦 Included Components
 
-Text Input
+### 🧩 Form Components
+- Input (text, number, email, password)
+- Textarea
+- Select / Multi-select
+- Checkbox
+- Radio
+- File Upload
+- Date / Datetime picker
+- Validation helpers
 
-Number Input
+### 🎨 UI Components
+- Button
+- Card
+- Badge
+- Alert
+- Toast
+- Loader / Spinner
+- Modal / Dialog
+- Tabs
 
-Password Input
+### 📊 Data Components
+- Table
+- Search
+- Filter
+- Pagination
+- Sorting
+- Server-side support
 
-Email Input
+---
 
-Textarea
+## 📁 Project Structure
 
-Select / Multi-select
-
-Checkbox
-
-Radio
-
-Date & Datetime picker
-
-File uploader
-
-Validation ready
-
-✨ UI Components
-
-Modal
-
-Confirm Dialog
-
-Table (search + filter + pagination + sorting)
-
-Loader / Spinner
-
-Toast Notifications
-
-Buttons
-
-Badge
-
-Card
-
-Tabs
-
-✨ Advanced
-
-Reusable props
-
-v-model support
-
-Server-side pagination
-
-API ready
-
-Fully customizable
-
-DRY architecture
-
-Clean folder structure
-
-📁 Project Structure
+```bash
 resources/
  ├── js/
  │   ├── components/
@@ -99,24 +74,43 @@ resources/
  │   │   ├── layouts/
  │   │   ├── pages/
  │   │   └── store/
+ │   ├── composables/
  │   ├── app.js
  │   └── bootstrap.js
+```
 
-⚙️ Installation
-1️⃣ Clone project
+---
+
+## ⚙️ Installation
+
+### 1. Clone project
+
+```bash
 git clone https://github.com/yourname/laravel-vue-components.git
 cd laravel-vue-components
+```
 
-2️⃣ Install dependencies
+### 2. Install dependencies
+
+```bash
 composer install
 npm install
+```
 
-3️⃣ Run project
+### 3. Run project
+
+```bash
 php artisan serve
 npm run dev
+```
 
-🔌 Setup Vue + Pinia
-app.js
+---
+
+## 🔌 Vue Setup
+
+### resources/js/app.js
+
+```javascript
 import { createApp } from "vue";
 import { createPinia } from "pinia";
 import App from "./App.vue";
@@ -126,143 +120,168 @@ const app = createApp(App);
 app.use(createPinia());
 
 app.mount("#app");
+```
 
-🧩 Usage Examples
-✅ Input Component
-UiInput.vue
+---
+
+## 🧩 Usage Examples
+
+---
+
+### ✅ Input Component
+
+```vue
 <UiInput
-    label="Name"
-    v-model="form.name"
-    placeholder="Enter name"
+  label="Name"
+  v-model="form.name"
+  placeholder="Enter your name"
 />
+```
 
-Props
-Prop	Type	Description
-modelValue	String	v-model value
-label	String	Label text
-type	String	input type
-placeholder	String	placeholder
-✅ Select Component
+---
+
+### ✅ Select Component
+
+```vue
 <UiSelect
-    v-model="form.role"
-    :options="roles"
+  v-model="form.role"
+  :options="roles"
 />
+```
 
-roles = [
-  { label: 'Admin', value: 1 },
-  { label: 'User', value: 2 }
-]
+```javascript
+const roles = [
+  { label: "Admin", value: 1 },
+  { label: "User", value: 2 }
+];
+```
 
-✅ Modal Component
+---
+
+### ✅ Modal Component
+
+```vue
 <UiModal v-model="showModal" title="Create User">
-    <p>Modal content here</p>
+  <p>Modal content here</p>
 </UiModal>
+```
 
-✅ Table Component
+---
+
+### ✅ Table Component
+
+```vue
 <UiTable
-    :columns="columns"
-    :rows="users"
-    searchable
-    pagination
+  :columns="columns"
+  :rows="users"
+  searchable
+  pagination
 />
+```
 
-columns = [
+```javascript
+const columns = [
   { label: "Name", key: "name" },
   { label: "Email", key: "email" }
-]
+];
+```
 
-🎯 Global Registration (Optional)
+---
 
-Register all components globally:
+## 🌍 Global Registration (Optional)
 
+```javascript
 import * as components from "./components/ui";
 
 Object.entries(components).forEach(([name, component]) => {
-    app.component(name, component);
+  app.component(name, component);
 });
+```
 
+Now use anywhere:
 
-Now you can use:
-
+```vue
 <UiInput />
+<UiSelect />
 <UiModal />
 <UiTable />
+```
 
+---
 
-without importing.
+## 🎨 Customization
 
-🎨 Customization
-Change Bootstrap theme
+### Bootstrap theme override
+
+Edit:
+
+```
 resources/scss/app.scss
+```
 
-
-Override variables:
-
+```scss
 $primary: #4f46e5;
-$border-radius: 8px;
+$border-radius: 10px;
+```
 
-🧠 State Management (Pinia)
+---
 
-Example:
+## 🧠 Pinia Store Example
 
+```javascript
 import { defineStore } from "pinia";
 
 export const useUserStore = defineStore("user", {
   state: () => ({
     users: []
   }),
+
   actions: {
     setUsers(data) {
       this.users = data;
     }
   }
 });
+```
 
-📦 Build for Production
+---
+
+## 🏗 Build For Production
+
+```bash
 npm run build
-
+```
 
 Upload:
 
+```
 public/build
+```
 
+to your server.
 
-to server.
+---
 
-✅ Best Practices
+## ✅ Best Practices
 
-✔ Use props + emits
-✔ Keep components small
-✔ Reusable logic with composables
-✔ Avoid duplicate UI
-✔ Use slots
-✔ Follow atomic design
+- Use props & emits
+- Keep components small
+- Use slots for flexibility
+- Avoid duplicate UI
+- Use composables
+- Keep state inside Pinia
 
-🤝 Contributing
+---
 
-Fork repo
+## 🚀 Roadmap
 
-Create branch
+- [ ] Dark mode
+- [ ] Typescript support
+- [ ] Form builder
+- [ ] Datatable server-side API
+- [ ] Package as npm library
+- [ ] Storybook documentation
 
-Commit changes
+---
 
-Submit PR
-
-📌 Roadmap
-
- Dark mode
-
- Form builder
-
- Drag & drop upload
-
- Datatable server side
-
- Package as npm module
-
- Typescript support
-
-🧑‍💻 Author
-
-Ahmed Ullah
-Laravel + Vue Fullstack Developer
+## 🤝
