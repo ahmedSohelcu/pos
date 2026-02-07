@@ -4,17 +4,25 @@ import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import router from './router';
 
+import * as ahmedVueKit from  './ahmed-vue-kit';
 import Master from './admin/layouts/Mastere.vue';
 
+const app = createApp(Master);
 
-const app = createApp({
-    components: {
-        Master
-    },
+// 1️⃣ Register all components globally
+Object.entries(ahmedVueKit).forEach(([name, component]) => {
+    app.component(name, component);
 });
+
+//02️⃣ Register all components locally
+// const app = createApp({
+//     components: {
+//         Master,        
+//     },
+// });
+
 app.use(createPinia());
 app.use(router);
-// app.use(moment);//example
 app.mount('#app');
 
 

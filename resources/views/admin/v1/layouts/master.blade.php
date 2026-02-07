@@ -72,7 +72,7 @@
   <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">        
     <div class="main" id="app">
         <div>
-            <master></master>
+            <master></master>                                        
         </div>
 
         <!--begin::Script-->
