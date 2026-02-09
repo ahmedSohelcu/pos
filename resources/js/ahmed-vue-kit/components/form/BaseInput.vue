@@ -1,4 +1,7 @@
 <script setup>
+    
+    import { computed } from 'vue'
+
     /**
      * Props for the BaseInput component
      * @typedef {Object} BaseInputProps
@@ -53,8 +56,6 @@
      * @param {String|Number} value - The new value of the input
      */
     const emit = defineEmits(['update:modelValue'])
-    
-    import { computed } from 'vue'
 
     const sizeClass = computed(() => {
         return props.size === 'md' ? '' : `form-control-${props.size}`

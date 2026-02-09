@@ -63,7 +63,7 @@
     />
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
-
+    @routes
     @vite(['resources/css/app.css', 'resources/js/app.js'])
   </head>
   <!--end::Head-->
@@ -71,9 +71,11 @@
   <!--begin::Body-->
   <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">        
     <div class="main" id="app">
-        <div>
-            <master></master>                                        
+        <div>          
+            <master></master>              
         </div>
+
+        
 
         <!--begin::Script-->
         <!--begin::Third Party Plugin(OverlayScrollbars)-->
@@ -328,9 +330,9 @@
         sparkline3.render();
 
         // In your Javascript (external .js resource or <script> tag)
-        {{--  $(document).ready(function() {
-          $('.js-example-basic-single').select2();
-        });  --}}
+        $(document).ready(function() {
+          $('.activate-select2').select2();
+        });     
       </script>
       <!--end::Script-->
     </body>

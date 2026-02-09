@@ -289,3 +289,32 @@ Use route parameters when needed for dynamic content
       background-color: rgba(0,123,255,0.05);
     }
     </style>
+
+
+
+//---------------------------------
+Laravel 12
+//---------------------------------
+php artisan install:api
+
+php artisan lang:publish
+
+
+
+-----------------------------
+route to use in js file 
+-----------------------------
+// Ziggy is a package that lets you use Laravel route names in JavaScript:
+01. install both package 
+composer require tightenco/ziggy
+npm install ziggy-js
+
+
+//------------------------
+02.master.blade.php
+//------------------------
+@routes
+@vite(['resources/css/app.css', 'resources/js/app.js'])
+</head>
+
+now allow to use easily 
