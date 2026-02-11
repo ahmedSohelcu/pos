@@ -26,6 +26,8 @@
 
                         <div class="col-md-12">                          
                             <div class="mb-3 d-flex justify-content-between mb-2">                     
+                                
+                                <!-- select dropdown -->
                                 <div class="col me-3">
                                     <BaseSelect
                                         class="me-2"
@@ -37,6 +39,7 @@
                                     />
                                 </div>  
                                 
+                                <!-- select dropdown -->                                
                                 <div class="col me-3">
                                     <BaseSelect
                                         class="me-2"
@@ -49,6 +52,7 @@
                                     />
                                 </div>  
                                 
+                                <!-- select dropdown -->
                                 <div class="col me-3">
                                     <BaseSelect
                                         class="me-2"
@@ -60,6 +64,7 @@
                                     />
                                 </div>  
 
+                                <!-- date picker -->
                                 <div class="col me-3">
                                     <BaseDatePicker 
                                         name="datetime_range"
@@ -117,8 +122,15 @@
 
                             <tbody>
                                 <tr v-for="(row, rowIndex) in data" :key="rowIndex" class="align-middle">
-                                    <td v-for="(col, colIndex) in columns" :key="colIndex">{{ row[col.name] }}</td>
-                                    
+                                    <!-- <td v-for="(col, colIndex) in columns" :key="colIndex">
+                                        {{ row[col.name] }}                                        
+                                    </td>           -->
+
+                                   <td v-for="(col, colIndex) in columns" :key="colIndex">
+                                        <span v-if="typeof row[col.name] === 'function'" v-html="row[col.name](row)"></span>
+                                        <span v-else v-html="row[col.name]"></span>
+                                    </td>                          
+                                                                        
                                     <td v-if="actions.length">
                                         <a href="" class="ddropdown-toggle badge text-light bg-info" data-bs-toggle="dropdown" aria-expanded="true"> 
                                             <i class="fa-solid fa-ellipsis-vertical"></i>     
@@ -218,6 +230,26 @@
         
     });
 
+    //---------------
+    //for render rows
+    //---------------
+    // const renderCell = (row, key, index) => {
+    //     const value = row[key]
+
+    //     // ✅ if function → call it
+    //     if (typeof value === 'function') {
+    //         return value(row, index)
+    //     }
+
+    //     // ✅ if already vnode
+    //     if (typeof value === 'object') {
+    //         return value
+    //     }
+
+    //     // ✅ normal text
+    //     return h('span', value ?? '')
+    // }
+
     const form = reactive({
         name: 'Ahmed Ullah',
         email: 'ahmed@example.com',
@@ -275,9 +307,18 @@
 
         //-------------------------------------
         //02. data without actions
+        //supports function to render html
         //-------------------------------------
         const users = [
-            { id: 1, name: 'Ahmed Sohel', email: 'ahmed@test.com', phone: '01545454545', address: 'Hathazari, Chittagong' },
+            { 
+                id: 1,
+                name: (row) => {
+                return "<button class='btn btn-sm btn-primary'>Ahmed Sohel</button>";
+                },
+                email: 'ahmed@test.com', 
+                phone: '01545454545', 
+                address: 'Hathazari, Chittagong'
+            },
             { id: 2, name: 'Rayan Khan', email: 'rayan@test.com', phone: '01712345678', address: 'Dhaka' },
         ];
 

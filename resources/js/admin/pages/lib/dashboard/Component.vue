@@ -26,6 +26,7 @@
 import { ref, reactive } from 'vue'
 import { route } from 'ziggy-js'
 import router from '../../../../router';
+import { h } from 'vue'
 
 
 
@@ -53,7 +54,15 @@ const columns = [
 ];
 
 const users = [
-  { id: 1, name: 'Ahmed Sohel', email: 'ahmed@test.com', phone: '01545454545', address: 'Hathazari, Chittagong', message: 5 },
+  { 
+    id: 1,
+    name: (row) => {
+      return "<button class='btn btn-sm btn-primary'>Ahmed Sohel</button>";
+    },
+    email: 'ahmed@test.com', 
+    phone: '01545454545', 
+    address: 'Hathazari, Chittagong'
+  },
   { id: 2, name: 'Rayan Khan', email: 'rayan@test.com', phone: '01712345678', address: 'Dhaka'},
 ];
 
