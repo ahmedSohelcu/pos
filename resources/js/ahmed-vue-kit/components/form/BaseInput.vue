@@ -96,6 +96,17 @@ const form = reactive({
     @update:modelValue="val => name = val"
 />
 
+ <div class="col">
+            <BaseInput
+              class="me-2"
+              label="Name"      
+              error=""
+              placeholder="Enter your name"
+              @update:modelValue="val => form.name = val"
+            />
+            <div class="me-2">{{ form.name }}</div>
+          </div>
+          
 OR
 
 <BaseInput

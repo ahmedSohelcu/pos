@@ -1,7 +1,17 @@
 import BaseInput from "./components/form/BaseInput.vue";
+import BaseLoader from "./components/ui/BaseLoader.vue";
 import BaseSelect from "./components/form/BaseSelect.vue";
+import BaseDatePicker from "./components/form/BaseDatePicker.vue";
 // import BaseCheckbox from "./components/form/BaseCheckbox.vue";
 // import BaseRadio from "./components/form/BaseRadio.vue";
 
-export { BaseInput, BaseSelect};
+import BaseTable from "./components/table/BaseTable.vue";
+
+export {
+     BaseDatePicker,
+     BaseInput,
+     BaseLoader,
+     BaseSelect,
+     BaseTable,
+};
 // export { BaseInput, BaseSelect, BaseCheckbox, BaseRadio };

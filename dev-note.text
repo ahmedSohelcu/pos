@@ -1,3 +1,5 @@
+https://readypos.razinsoft.com/purchase/list
+
 01. Install laravel 
 02.Install and integrete vue and pinia
 03.Vue router
@@ -296,7 +298,6 @@ Use route parameters when needed for dynamic content
 Laravel 12
 //---------------------------------
 php artisan install:api
-
 php artisan lang:publish
 
 

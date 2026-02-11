@@ -3,19 +3,25 @@ import { createWebHistory, createRouter } from 'vue-router'
 
 const routes = [
     {
-        path: '/',
-        name: 'dashboard',
-        meta: { breadcrumb: 'Dashboard', layout: 'master' },
-        component: () => import('./admin/pages/lib/dashboard/Dashboard.vue')
+        path: '/component',
+        name: 'component',
+         meta: { breadcrumb: 'Component', layout: 'master', requiresAuth: false },
+        component: () => import('./admin/pages/lib/dashboard/Component.vue')
     },
     {
         path: '/',
+        name: 'dashboard',
+        meta: { breadcrumb: 'Dashboard', layout: 'master', requiresAuth: false  },
+        component: () => import('./admin/pages/lib/dashboard/Dashboard.vue')
+    },
+    {
+        path: '/dashboard-2',
         name: 'dashboard-2',
         meta: { breadcrumb: 'Dashboard 2', layout: 'master' },
         component: () => import('./admin/pages/lib/dashboard/Dashboard2.vue')
     },
     {
-        path: '/',
+        path: '/dashboard-3',
         name: 'dashboard-3',
         meta: { breadcrumb: 'Dashboard 3', layout: 'master' },
         component: () => import('./admin/pages/lib/dashboard/Dashboard3.vue')
@@ -33,7 +39,6 @@ const routes = [
         component: () => import('./admin/pages/SampleTables.vue')
     },
     //Widget
-
     {
         path: '/cards',
         name: 'cards',
@@ -81,16 +86,82 @@ const routes = [
         component: () => import('./admin/pages/lib/ui/Timeline.vue')
     },
 
-
     {
         path: '/:pathMatch(.*)*',
         component: () => import('./admin/pages/PageNotFound.vue')
     }
 ];
 
+
+
 const router = createRouter({
     history: createWebHistory(),
     routes,
 });
 
+router.beforeEach((to, from, next) => {
+    // Example: check token in localStorage
+    // const isLoggedIn = localStorage.getItem('token')
+
+    if (to.meta.requiresAuth && !isLoggedIn) {
+        // user not logged in, redirect to login page
+        return next('/timeline') 
+    }
+    next() // allow navigation
+})
+
+
+// role based
+// const user = JSON.parse(localStorage.getItem('user'))
+// router.beforeEach((to, from, next) => {
+//     if (to.meta.requiresAuth && !user) return next('/login')
+
+//     if (to.meta.role && user.role !== to.meta.role) return next('/403') // Forbidden page
+
+//     next()
+// })
+
+
+
 export default router;
+
+
+
+
+// with penia
+// 01.
+// stores/auth.js
+// import { defineStore } from 'pinia'
+
+// export const useAuthStore = defineStore('auth', {
+//     state: () => ({
+//         token: localStorage.getItem('token') || null,
+//         user: JSON.parse(localStorage.getItem('user')) || null
+//     }),
+//     getters: {
+//         isLoggedIn: state => !!state.token
+//     }
+// })
+
+// 02.
+// import { useAuthStore } from './stores/auth'
+
+// router.beforeEach((to, from, next) => {
+//     const auth = useAuthStore()
+
+//     if (to.meta.requiresAuth && !auth.isLoggedIn) {
+//         return next('/login')
+//     }
+//     next()
+// })
+
+// 03.
+// router.beforeEach((to, from, next) => {
+//     const auth = useAuthStore()
+
+//     if (to.name === 'login' && auth.isLoggedIn) {
+//         return next('/') // redirect to dashboard
+//     }
+
+//     next()
+// })
