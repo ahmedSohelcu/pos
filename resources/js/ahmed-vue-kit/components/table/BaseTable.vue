@@ -129,8 +129,10 @@
                                    <td v-for="(col, colIndex) in columns" :key="colIndex">
                                         <span v-if="typeof row[col.name] === 'function'" v-html="row[col.name](row)"></span>
                                         <span v-else v-html="row[col.name]"></span>
-                                    </td>                          
-                                                                        
+                                    </td>
+                           
+                                    
+                                    
                                     <td v-if="actions.length">
                                         <a href="" class="ddropdown-toggle badge text-light bg-info" data-bs-toggle="dropdown" aria-expanded="true"> 
                                             <i class="fa-solid fa-ellipsis-vertical"></i>     
@@ -307,13 +309,13 @@
 
         //-------------------------------------
         //02. data without actions
-        //supports function to render html
+        //supports function to render rows
         //-------------------------------------
         const users = [
             { 
                 id: 1,
                 name: (row) => {
-                return "<button class='btn btn-sm btn-primary'>Ahmed Sohel</button>";
+                    return "<button class='btn btn-sm btn-primary'>Ahmed Sohel</button>";
                 },
                 email: 'ahmed@test.com', 
                 phone: '01545454545', 

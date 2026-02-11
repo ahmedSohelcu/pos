@@ -57,7 +57,7 @@ const users = [
   { 
     id: 1,
     name: (row) => {
-      return "<button class='btn btn-sm btn-primary'>Ahmed Sohel</button>";
+      return "<button class='btn btn-sm btn-primary'>Ahmed Sohel</button>"
     },
     email: 'ahmed@test.com', 
     phone: '01545454545', 
