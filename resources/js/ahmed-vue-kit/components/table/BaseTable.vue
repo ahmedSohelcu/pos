@@ -1,94 +1,12 @@
 <template>
     <!-- filter start -->
-    <div class="container-fluid">
-        <div class="card card-outline card-success mb-4">
-            <div class="card-body">
-                <div class="container-fluid">
-                    <div class="row">              
-                        <div class="col-md-12">
-                            <h4 class="float-start mb-3">Filters Data</h4> 
-                            <div class="float-end m-3">
-                                <button type="button" class="btn btn-sm btn-warning text-dark btn-icon float-end me-2">
-                                    <span class="btn-inner--icon">
-                                        <i class="fas fa-download"></i>
-                                    </span>
-                                    <span class="btn-inner--text">&nbsp; Export Data</span>
-                                </button>
-                                
-                                <button type="button" class="btn btn-sm btn-primary btn-icon float-end me-2">
-                                    <span class="btn-inner--icon">
-                                        <i class="fas fa-print"></i>
-                                    </span>
-                                    <span class="btn-inner--text">&nbsp; Print</span>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="col-md-12">                          
-                            <div class="mb-3 d-flex justify-content-between mb-2">                     
-                                
-                                <!-- select dropdown -->
-                                <div class="col me-3">
-                                    <BaseSelect
-                                        class="me-2"
-                                        v-model="form.category"
-                                        name="category_id"
-                                        :getApiRoute="route('selectable_statuses')"
-                                        label="Test"
-                                        placeholder="Choose category"                          
-                                    />
-                                </div>  
-                                
-                                <!-- select dropdown -->                                
-                                <div class="col me-3">
-                                    <BaseSelect
-                                        class="me-2"
-                                        :modelValue="form.category"
-                                        v-model="form.category"
-                                        name="category_id"
-                                        :getApiRoute="route('selectable_statuses')"
-                                        label="Test"
-                                        placeholder="Choose category"                          
-                                    />
-                                </div>  
-                                
-                                <!-- select dropdown -->
-                                <div class="col me-3">
-                                    <BaseSelect
-                                        class="me-2"
-                                        v-model="form.category"
-                                        name="category_id"
-                                        :getApiRoute="route('selectable_statuses')"
-                                        label="Test"
-                                        placeholder="Choose category"                          
-                                    />
-                                </div>  
-
-                                <!-- date picker -->
-                                <div class="col me-3">
-                                    <BaseDatePicker 
-                                        name="datetime_range"
-                                        type="datetimerange" 
-                                    />
-                                </div>
-                                
-
-                                <div class="col me-3 mt-4">
-                                    <button class="btn btn-primary w-100">
-                                        Filter
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <BaseFilter 
+        v-if="filters.length" 
+        :filters="filters"
+        @filter-change="handleFilterChange"
+    />
     <!-- filters end -->   
-
-                                
-<hr>
+                               
     <!--begin::Container-->        
     <div class="container-fluid">
         <!--begin::Row-->
@@ -100,13 +18,37 @@
                         <h3 class="card-title p-2 ms-2 me-2">
                             {{ label || 'Table Heading' }}
                         </h3>
-                            <div class="offset-md-2 col-md-3 ms-auto me-md-2">
-                            <div class="input-group">
-                                <input class="form-control customize-select" id="myInputDiv" 
-                                    type="text" placeholder="Search..">                                                                                               
+
+                        <div class="offset-md-2 col-md-4 ms-auto me-md-2">
+                            <div class="row mb-2">
+                                <div class="col">
+                                    <button v-if="showPrintBtn !== false" type="button" class="btn btn-sm btn-primary btn-icon float-end me-2">
+                                        <span class="btn-inner--icon">
+                                            <i class="fas fa-print"></i>
+                                        </span>
+                                        <span class="btn-inner--text">&nbsp; Print</span>
+                                    </button>
+
+                                    <button v-if="showExportBtn !== false" type="button" class="btn btn-sm btn-warning text-dark btn-icon float-end me-2">
+                                        <span class="btn-inner--icon">
+                                            <i class="fas fa-download"></i>
+                                        </span>
+                                        <span class="btn-inner--text">&nbsp; Export Data</span>
+                                    </button>                                    
+                                </div>                                    
                             </div>
+
+                            <div v-if="showSearch !== false" class="input-group">                                 
+                                    <input
+                                        v-model="search"
+                                        class="form-control customize-select"
+                                        type="text"
+                                        placeholder="Search.."
+                                    />                                                                                           
+                            </div>      
                         </div>
-                    </div>              
+                    </div>  
+
 
                     <!-- /.card-header -->                      
                     <div class="card-body p-0">          
@@ -119,13 +61,9 @@
                                     <th v-if="actions.length">{{actionLabel}}</th>
                                 </tr>
                             </thead>                           
-
+                            <!-- table body data -->
                             <tbody>
-                                <tr v-for="(row, rowIndex) in data" :key="rowIndex" class="align-middle">
-                                    <!-- <td v-for="(col, colIndex) in columns" :key="colIndex">
-                                        {{ row[col.name] }}                                        
-                                    </td>           -->
-
+                                <tr v-for="(row, rowIndex) in rows" :key="rowIndex" class="align-middle">                                 
                                    <td v-for="(col, colIndex) in columns" :key="colIndex">
                                         <span v-if="typeof row[col.name] === 'function'" v-html="row[col.name](row)"></span>
                                         <span v-else v-html="row[col.name]"></span>
@@ -148,7 +86,7 @@
                                             </ul>                                             
                                     </td>
                                 </tr>
-                                <tr v-if="data.length === 0">
+                                <tr v-if="rows.length === 0">
                                     <td :colspan="columns.length + (actions.length ? 1 : 0)" class="text-center">No records found</td>
                                 </tr>
                             </tbody>
@@ -158,24 +96,19 @@
 
                     <div class="card-footer clearfix">
                         <div class="d-flex justify-content-between">
-                            <div>
-                                <label>Show</label>
-                                <select class="form-select" style="width: 100px; display: inline-block; margin-left: 5px;">
-                                    <option>10</option>
-                                    <option>25</option>
-                                    <option>50</option>
-                                    <option>100</option>
-                                </select>
-                                <label class="mr-2">entries</label>
-                            </div>
 
-                            <ul class="pagination pagination-sm m-0">
-                                <li class="page-item"><a class="page-link" href="#">«</a></li>
-                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item"><a class="page-link" href="#">»</a></li>
-                            </ul>
+                            <!--Show number of entities for each table -->
+                            <div>                            
+                                <BaseTableEntities
+                                    v-model="query.perPage"
+                                />
+                            </div>
+                            
+                            <!--table pagination  -->
+                            <BaseTablePagination
+                                v-model="query.page"
+                                :last-page="lastPage"
+                            />                        
                         </div>
                     </div>
                 </div>
@@ -189,107 +122,141 @@
 </template>
 
 <script setup>
-    import { ref, reactive } from 'vue'
-    import { route } from 'ziggy-js'
-    // import 'bootstrap/dist/css/bootstrap.min.css'
+import { ref, reactive, watch } from 'vue'
+import BaseTableEntities from './BaseTableEntities.vue'
+import BaseTablePagination from './BaseTablePagination.vue'
 
-    const props = defineProps({
-        label: {
-            type: String,
-            default: ''
-        },
-        rows: {
-            type: Array,
-            default: []
-        },
-        columns: {
-            default: [],
-            type: Array,
-            required: true,
-            // Example: [{ name: 'name', label: 'Name', width: '150px' }, ...]
-        },
-        data: {
-            type: Array,
-            required: true,
-        },
-        actions: {
-            type: Array,
-            default: () => [],
-            // Example: [{ label: 'Edit', handler: (row) => console.log(row) }, ...]
-        },
-        actionLabel: {
-            type: String,
-            default: 'Action'
-        },
-        perPage: {
-            type: Number,
-            default: 3
-        },
-        loading: {
-            type: Boolean,
-            default: false
-        }
-        
-    });
+/*
+|--------------------------------------------------------------------------
+| Props
+|--------------------------------------------------------------------------
+*/
+const props = defineProps({
+    label: String,
+    rows: {
+        type: Array,
+        required: true
+    },
+    columns: {
+        type: Array,
+        required: true
+    },
+    filters: {
+        type: Array,
+        default: () => []
+    },
+    actions: {
+        type: Array,
+        default: () => []
+    },
+    actionLabel: {
+        type: String,
+        default: 'Action'
+    },
+    showSearch: {
+        type: Boolean,
+        default: true
+    },
+    showPrintBtn: {
+        type: Boolean,
+        default: true
+    },
+    showExportBtn: {
+        type: Boolean,
+        default: true
+    },
+    perPage: {
+        type: Number,
+        default: 10
+    },
+    page: {
+        type: Number,
+        default: 1
+    },
+    lastPage: {
+        type: Number,
+        default: 1
+    }
 
-    //---------------
-    //for render rows
-    //---------------
-    // const renderCell = (row, key, index) => {
-    //     const value = row[key]
+})
 
-    //     // ✅ if function → call it
-    //     if (typeof value === 'function') {
-    //         return value(row, index)
-    //     }
+/*
+|--------------------------------------------------------------------------
+| Emit
+|--------------------------------------------------------------------------
+*/
+const emit = defineEmits(['query-change'])
 
-    //     // ✅ if already vnode
-    //     if (typeof value === 'object') {
-    //         return value
-    //     }
+/*
+|--------------------------------------------------------------------------
+| Single Query State
+|--------------------------------------------------------------------------
+*/
+const query = reactive({
+    search: '',
+    filters: {},
+    perPage: props.perPage,
+    page: props.page
+})
 
-    //     // ✅ normal text
-    //     return h('span', value ?? '')
-    // }
+/*
+|--------------------------------------------------------------------------
+| Emit Automatically on Any Change
+|--------------------------------------------------------------------------
+*/
+watch(
+    query,
+    () => {
+        emit('query-change', { ...query })
+    },
+    { deep: true }
+)
 
-    const form = reactive({
-        name: 'Ahmed Ullah',
-        email: 'ahmed@example.com',
-        category: null,
-        description: 'Some text here...',
-        agree: true,
-        gender: 'male'
-    });
+/*
+|--------------------------------------------------------------------------
+| Search (Debounce)
+|--------------------------------------------------------------------------
+*/
+const search = ref('')
+let debounceTimer = null
 
-    // onMounted(() => {
-    //     picker = flatpickr(dateRangeRef.value, {
-    //         mode: 'range',          // select start + end
-    //         dateFormat: 'Y-m-d H:i', 
-    //         enableTime: true,       // include time
-    //         allowInput: true,       // allow typing if needed
-    //         onChange: (selectedDates, dateStr) => {
-    //         console.log('Selected range:', dateStr)
-    //         // selectedDates = [startDate, endDate] as JS Date objects
-    //         }
-    //     })
-    // })
+watch(search, (value) => {
+    clearTimeout(debounceTimer)
 
+    debounceTimer = setTimeout(() => {
+        query.search = value
+        query.page = 1
+    }, 500)
+})
 
-
-
-
-
+/*
+|--------------------------------------------------------------------------
+| Handlers
+|--------------------------------------------------------------------------
+*/
+const handleFilterChange = (filters) => {
+    query.filters = filters
+    query.page = 1
+}
 </script>
 
 <!--
+    1.table heading
+    2.data 
+    3.actions
+    4.filers
+
+
 // How to use
         <BaseTable
-            :rows="rows"
             :columns="columns"
-            :data="users"
-            :actions="actions"
-            :actionLabel="Action"
+            :rows="users"
             :perPage="3"
+            :actions="actions"
+            :loading="form.loading"
+            label="User Table"
+            :filters="filters"
+            @query-change="handleQuery"
         />
 
         // Data
@@ -359,9 +326,58 @@
             }
         ];
 
+        //04.Rename Action label 
+
+
         //-------------------------------------
-        //04. Support action label
+        //05. Table filters
         //-------------------------------------
+        
+        const filters = [
+            {
+                name: 'status_id',
+                label: 'Select Status',
+                type: 'select',
+                options: [
+                    { id: 1, type: 'active'},
+                    { id: 2, type: 'inactive'},
+                ],
+                optionKeyName: 'type', //like name, type etc
+            },
+            {
+                name: 'created_at',
+                label: 'Created Date',
+                type: 'date'
+            },
+        ];
+
+        //06. Support types for filtes are: date, time, datetime, datetimerange
+
+        //define data for filter and serarch
+          const query = ref({
+            search: '',
+            filters: {},
+            perPage: 10,
+            page: 1
+        })
+        /*
+                //07. To hide search option (By default will show)
+        ** :showSearch="false"
+
+        //08. To hide print button
+        ** :showPrintBtn="false"
+
+        //09. To hide export button
+        ** :showExportBtn="false"   
+
+
+        // this will handle the query change for search, perPage and page, filters
+        const handleQuery = (value) => {
+            // 🔥 IMPORTANT: replace full query
+            query.value = value
+            console.log('Updated Query:', query.value)
+            fetchUsers()
+        }
 
 -->
                             

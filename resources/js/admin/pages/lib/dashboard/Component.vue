@@ -8,29 +8,89 @@
           <BaseLoader v-if="form.loading" color="warning" />
         </div>
 
-        <BaseTable
-            :data="users"
+         <BaseTable
             :columns="columns"
-            :perPage="3"
+            :rows="users"
+            :last-page="meta.last_page"
             :actions="actions"
             :loading="form.loading"
             label="User Table"
+            :filters="filters"
+            @query-change="handleQuery"
         />
+
       </div>
-    </div><!--end::Container-->
+    </div>
+    
 </template>
 
 
 <script setup>
 
-import { ref, reactive } from 'vue'
-import { route } from 'ziggy-js'
-import router from '../../../../router';
-import { h } from 'vue'
+  import axios from 'axios';
+  import { ref, reactive, onMounted } from 'vue'
+  import { route } from 'ziggy-js'
+  import router from '../../../../router';
 
+  const selectedCategory = ref(2) // pre-selected by id 
 
+  /*
+  |--------------------------------------------------------------------------
+  | Query State (Single Source of Truth)
+  |--------------------------------------------------------------------------
+  */
+  const query = ref({
+      search: '',
+      filters: {},
+      perPage: 10,
+      page: 1
+  })
 
-const selectedCategory = ref(2) // pre-selected by id
+  const meta = ref({
+      last_page: 30
+  })
+
+  const loading = ref(false)
+
+  /*
+  |--------------------------------------------------------------------------
+  | Handle Query From BaseTable
+  |--------------------------------------------------------------------------
+  */
+  const handleQuery = (value) => {
+      // 🔥 IMPORTANT: replace full query
+      query.value = value
+      console.log('Updated Query:', query.value)
+      // fetchUsers()
+  }
+  /*
+  |--------------------------------------------------------------------------
+  | API Call
+  |--------------------------------------------------------------------------
+  */
+  // const fetchUsers = async () => {
+
+  //     loading.value = true
+
+  //     try {
+  //         const res = await axios.get('/api/users', {
+  //             params: {
+  //                 search: query.value.search,
+  //                 page: query.value.page,
+  //                 perPage: query.value.perPage,
+  //                 ...query.value.filters
+  //             }
+  //         })
+
+            // users.value = res.data.data
+            // meta.value.last_page = res.data.last_page
+
+  //     } catch (error) {
+  //         console.error(error)
+  //     }
+
+  //     loading.value = false
+  // }
 
   const form = reactive({
     name: 'Ahmed Ullah',
@@ -39,10 +99,55 @@ const selectedCategory = ref(2) // pre-selected by id
     description: 'Some text here...',
     agree: true,
     gender: 'male',
-    loading: false
+    loading: false,
   })
 
+const filters = [
+  {
+      name: 'status_id',
+      label: 'Status',
+      type: 'select',
+      options: [
+          { id: 1, type: 'active'},
+          { id: 2, type: 'inactive'},
+      ],
+      optionKeyName: 'type',
+      // optionValueName: 'label'
+  },
+  {
+      name: 'company_id',
+      label: 'Company',
+      type: 'select',
+      options: [
+          { id: 1, name: 'Abc'},
+          { id: 2, name: 'EFG'},
+      ],
+  },
+  {
+      name: 'created_at',
+      label: 'Created At',
+      type: 'date'
+  },
+  // {
+  //     name: 'time',
+  //     label: 'Time',
+  //     type: 'time'
+  // },
+  // {
+  //     name: 'Date',
+  //     label: 'created At',
+  //     type: 'datetime'
+  // },
+  // {
+  //     name: 'date_range',
+  //     label: 'Date Range',
+  //     type: 'datetimerange'
+  // },
 
+
+    // Support types: date, time, datetime, datetimerange
+
+];
 
 //  for table
 const columns = [
@@ -61,9 +166,15 @@ const users = [
     },
     email: 'ahmed@test.com', 
     phone: '01545454545', 
-    address: 'Hathazari, Chittagong'
-  },
-  { id: 2, name: 'Rayan Khan', email: 'rayan@test.com', phone: '01712345678', address: 'Dhaka'},
+    address: 'Hathazari, Chittagong',
+  },      
+  { 
+    id: 2,
+    name: 'Rayan Khan',
+    email: 'rayan@test.com',
+      phone: '01712345678',
+      address: 'Dhaka'
+    },
 ];
 
 const actions = [

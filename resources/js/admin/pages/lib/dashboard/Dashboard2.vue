@@ -1,4 +1,73 @@
+<script setup>
+
+import { ref, reactive } from 'vue'
+import { route } from 'ziggy-js'
+import router from '../../../../router';
+import { h } from 'vue'
+
+
+
+const selectedCategory = ref(2) // pre-selected by id
+
+  const form = reactive({
+    name: 'Ahmed Ullah',
+    email: 'ahmed@example.com',
+    category: 2,
+    description: 'Some text here...',
+    agree: true,
+    gender: 'male',
+    loading: false
+  })
+
+//  for table
+const columns = [
+  { name: 'id', label: '#', width: '10px' },
+  { name: 'name', label: 'Name' },
+  { name: 'email', label: 'Email' },
+];
+
+const users = [
+  { 
+    id: 1,
+    name: (row) => {
+      return "<button class='btn btn-sm btn-primary'>Ahmed Sohel</button>"
+    },
+    email: 'ahmed@test.com', 
+  },
+  { 
+    id: 2, name: 'Rayan Khan', 
+    email: 'rayan@test.com', 
+  },
+];
+
+const actions = [
+    { label: 'View', handler: (row) => alert(`View: ${row.name}`) },
+    { 
+      label: 'Edit', handler: (row) => {
+        form.loading = false;
+      } 
+    },
+    { 
+      label: 'Delete', handler: (row) => alert(`Delete: ${row.name}`) 
+    },
+    
+];
+</script>
+
 <template>
+    <BaseTable
+        :columns="columns"
+        :rows="users"
+        :perPage="3"
+        :actions="actions"
+        :loading="form.loading"
+        label="User Table"
+        :showSearch="false"
+    />
+
+    <br>        
+    <br>        
+
     <!--begin::Container-->
     <div class="container-fluid">
     <!-- Info boxes -->

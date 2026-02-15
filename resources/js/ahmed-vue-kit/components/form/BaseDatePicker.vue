@@ -7,9 +7,6 @@
     // optional: import CSS
     import 'flatpickr/dist/flatpickr.css'
 
-    const dateRangeRef = ref(null)
-    let picker = null
-
     const props = defineProps({
         modelValue: {
             type: String,
@@ -19,86 +16,105 @@
             type: String,
             default: 'datetime_range'
         },
-        label: {
-            type: String,
-            default: 'Select date & time range'
-        },
-        placeholder: {
-            type: String,
-            default: 'Select date'
-        },
+        label: String,
+        placeholder: String,
         type: {
             type: String,
             default: 'datetimerange' //others date, datetime, time, daterange, datetimerange,
         }
     })
 
+    const emit = defineEmits(['update:modelValue'])
+
+    const inputRef = ref(null)
+    let picker = null
+
+
+    // onMounted(() => {
+    //     if (props.type !== 'datetimerange') return
+    //     picker = flatpickr(dateRangeRef.value, {
+    //         mode: 'range',          // date range mode
+    //         dateFormat: 'Y-m-d H:i', 
+    //         defaultDate: props.modelValue || null,
+    //         enableTime: true,       // include time
+    //         allowInput: true,
+    //         onChange: (selectedDates, dateStr) => {
+    //             console.log('Selected Range:', dateStr)
+    //         }
+    //     })
+    // })
+
     onMounted(() => {
-        if (props.type !== 'datetimerange') return
-        picker = flatpickr(dateRangeRef.value, {
-            mode: 'range',          // date range mode
-            dateFormat: 'Y-m-d H:i', 
-            defaultDate: props.modelValue || null,
-            enableTime: true,       // include time
-            allowInput: true,
-            onChange: (selectedDates, dateStr) => {
-                console.log('Selected Range:', dateStr)
-            }
-        })
+        if (props.type === 'datetimerange') {
+            picker = flatpickr(inputRef.value, {
+                mode: 'range',
+                dateFormat: 'Y-m-d H:i',
+                enableTime: true,
+                defaultDate: props.modelValue || null,
+                allowInput: true,
+                onChange: (selectedDates, dateStr) => {
+                    emit('update:modelValue', dateStr)  // <--- important
+                }
+            })
+        }
     })
 
+    // clean up flatpickr instance
     onBeforeUnmount(() => {
-        if (picker) picker.destroy()  // clean up
+        if (picker) picker.destroy()
     })
 </script>
 
-<template>   
-    <div v-if="props.type  === 'date'">
-        <label class="form-label">{{props.label ?? ''}}</label>
 
-        <input type="date" class="form-control" 
-            :name="props.name ?? 'date'"
-            :placeholder="props.placeholder ?? 'Select date'"/>
-    </div>
+<template>
+  <div class="mb-2 me-2">
+      <label class="form-label">{{ label }}</label>
 
-    <div v-if="props.type === 'time'">
-        <label class="form-label">{{props.label ?? ''}}</label>
-        <input 
-            type="time" 
-            class="form-control" 
-            :name="props.name ?? 'time'"
-            :placeholder="props.placeholder ?? 'Select time'"
-        />
-    </div>
+      <!-- date -->
+      <input
+          v-if="type === 'date'"
+          type="date"
+          class="form-control"
+          :name="name"
+          :placeholder="placeholder"
+          :value="modelValue"
+          @input="$emit('update:modelValue', $event.target.value)"
+      />
 
-    <div v-if="props.type === 'datetime'">
-        <label class="form-label">{{props.label ?? ''}}</label>
-        <input
-            type="datetime-local"
-            class="form-control"
-            :name="props.name ?? 'date_time'"
-            :placeholder="props.placeholder ?? 'Select date & time'"
-        >
-    </div>
+      <!-- time -->
+      <input
+          v-else-if="type === 'time'"
+          type="time"
+          class="form-control"
+          :name="name"
+          :placeholder="placeholder"
+          :value="modelValue"
+          @input="$emit('update:modelValue', $event.target.value)"
+      />
 
-    <div class="mb-3" v-if="props.type === 'datetimerange'">
-        <label class="form-label">{{props.label ?? ''}}</label>
-        <div class="input-group">
-            <span class="input-group-text">
-                <i class="fa fa-calendar"></i>
-            </span>
-            <input
-                type="text"
-                :name="props.name ?? 'datetime_range'"
-                ref="dateRangeRef"
-                class="form-control"
-                :placeholder="props.placeholder ?? 'Select date & time Range'"
-                readonly
-            />
-        </div>     
-    </div>
+      <!-- datetime -->
+      <input
+          v-else-if="type === 'datetime'"
+          type="datetime-local"
+          class="form-control"
+          :name="name"
+          :placeholder="placeholder"
+          :value="modelValue"
+          @input="$emit('update:modelValue', $event.target.value)"
+      />
+
+      <!-- datetime range -->
+      <input
+          v-else-if="type === 'datetimerange'"
+          type="text"
+          class="form-control"
+          ref="inputRef"
+          :name="name"
+          :placeholder="placeholder"
+          readonly
+      />
+  </div>
 </template>
-
 
 
 
@@ -111,6 +127,6 @@
     label="Select date & time range" 
     placeholder="Select date & time range" 
     />
-    // Support types: date, time, datetime, daterange, datetimerange
+    // Support types: date, time, datetime, datetimerange
 
 -->
