@@ -43,7 +43,8 @@
       search: '',
       filters: {},
       perPage: 10,
-      page: 1
+      page: 1,
+      category_id: null,
   })
 
   const meta = ref({
@@ -126,7 +127,7 @@ const filters = [
   {
       name: 'created_at',
       label: 'Created At',
-      type: 'date'
+      type: 'time'
   },
   // {
   //     name: 'time',
@@ -156,6 +157,7 @@ const columns = [
   { name: 'email', label: 'Email' },
   { name: 'phone', label: 'Phone' },
   { name: 'address', label: 'Address' },
+
 ];
 
 const users = [
@@ -203,17 +205,6 @@ const actions = [
     }
 ];
 
-const actions2 = [
-     { 
-    label: 'Message (5)',
-    handler: (row) => alert(`Message for ${row.name}`),
-    show: (row) => row.hasMessages && row.hasMessages > 0, // only show if row.hasMessages > 0
-  },
-  { 
-    label: 'Edit',
-    handler: (row) => alert(`Edit ${row.name}`),
-    show: true, // always show
-  }, 
-];
+
 
 </script>

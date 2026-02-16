@@ -1,4 +1,46 @@
+<script setup>  
+    //  for table
+    const columns = [
+        { name: 'id', label: '#', width: '10px' },
+        { name: 'name', label: 'Name' },
+        { name: 'email', label: 'Email' },
+        { name: 'phone', label: 'Phone' },
+        { name: 'address', label: 'Address' },
+    ];
+    const users = [
+    { 
+        id: 1,
+        name: (row) => {
+        return "<button class='btn btn-sm btn-primary'>Ahmed Sohel</button>"
+        },
+        email: 'ahmed@test.com', 
+        phone: '01545454545', 
+        address: 'Hathazari, Chittagong',
+    },      
+    { 
+        id: 2,
+        name: 'Rayan Khan',
+        email: 'rayan@test.com',
+        phone: '01712345678',
+        address: 'Dhaka'
+        },
+    ];
+    const filters = [    
+        
+
+    ];
+
+</script>
 <template>
+ <div class="container-fluid">
+    <BaseTable
+        :columns="columns"
+        :rows="users"
+        :filters="filters"
+
+    />
+
+    
     <!--begin::Container-->
     <div class="container-fluid">
     <!--begin::Row-->
@@ -414,4 +456,5 @@
     <!-- /.row (main row) -->
     </div>
     <!--end::Container-->
+    </div>
 </template>

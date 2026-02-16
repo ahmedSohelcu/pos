@@ -55,15 +55,17 @@ const actions = [
 </script>
 
 <template>
-    <BaseTable
-        :columns="columns"
-        :rows="users"
-        :perPage="3"
-        :actions="actions"
-        :loading="form.loading"
-        label="User Table"
-        :showSearch="false"
-    />
+     <div class="container-fluid">
+ 
+        <BaseTable
+            :columns="columns"
+            :rows="users"
+            :perPage="3"
+            :actions="actions"
+            :loading="form.loading"
+            label="User Table"
+            :showSearch="false"
+        />
 
     <br>        
     <br>        
@@ -835,6 +837,7 @@ const actions = [
         <!-- /.col -->
     </div>
     <!--end::Row-->
-    </div>
     <!--end::Container-->
+    </div>
+    </div>
 </template>
