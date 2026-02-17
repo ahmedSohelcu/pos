@@ -338,6 +338,8 @@ const handleFilterChange = (filters) => {
                 name: 'status_id',
                 label: 'Select Status',
                 type: 'select',
+                select2: true,
+                multiple: false,        // single select
                 options: [
                     { id: 1, type: 'active'},
                     { id: 2, type: 'inactive'},
@@ -350,7 +352,13 @@ const handleFilterChange = (filters) => {
                 type: 'date'
             },
         ];
+        --------------------------
+        ** select2: true,
+            multiple: false
+            only for type: select
+        --------------------------
 
+        
         //06. Support types for filtes are: date, time, datetime, datetimerange
 
         //define data for filter and serarch

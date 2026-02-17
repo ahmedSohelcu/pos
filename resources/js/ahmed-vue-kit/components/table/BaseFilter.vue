@@ -22,6 +22,8 @@
                                         :optionKeyName="filter.optionKeyName"
                                         :label="filter.label"
                                         :placeholder="`Choose ${filter.label}`"
+                                        :select2="filter.select2 || false"      
+                                        :multiple="filter.multiple || false"                                        
                                     />
 
                                     <!--02.  if not select option (date picker) -->
@@ -72,7 +74,11 @@
         () => props.filters,
         (newFilters) => {
             newFilters.forEach(f => {
-                form[f.name] = f.default || ''
+                if (f.multiple) {
+                    form[f.name] = f.default || []
+                } else {
+                    form[f.name] = f.default || ''
+                }
             })
         },
         { immediate: true }
@@ -80,9 +86,12 @@
 
 
     // watch for changes and emit
-    watch(form, () => {
-        emit('filter-change', { ...form })  // send all current filter values
-    }, { deep: true })
+    watch(
+        () => JSON.stringify(form),
+        () => {
+            emit('filter-change', { ...form })
+        }
+    )
 
     console.log('form', form);
 </script>

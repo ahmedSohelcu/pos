@@ -9,6 +9,18 @@ const routes = [
         component: () => import('./admin/pages/lib/dashboard/Component.vue')
     },
     {
+        path: '/select2',
+        name: 'select2',
+        meta: { breadcrumb: 'Create & Update', layout: 'master', requiresAuth: false },
+        component: () => import('./admin/pages/lib/dashboard/select2Test.vue')
+    },
+    {
+        path: '/create-edit',
+        name: 'create-edit',
+        meta: { breadcrumb: 'Create & Update', layout: 'master', requiresAuth: false },
+        component: () => import('./admin/pages/lib/dashboard/CreateEdit.vue')
+    },
+    {
         path: '/',
         name: 'dashboard',
         meta: { breadcrumb: 'Dashboard', layout: 'master', requiresAuth: false  },

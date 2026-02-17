@@ -92,7 +92,7 @@ const form = reactive({
     name="name"
     :modelValue="form.name"
     placeholder="Enter your name"
-    error="Please enter your name"
+    :error="errors.username"
     @update:modelValue="val => name = val"
 />
 
@@ -100,7 +100,7 @@ const form = reactive({
             <BaseInput
               class="me-2"
               label="Name"      
-              error=""
+              :error="errors.username"
               placeholder="Enter your name"
               @update:modelValue="val => form.name = val"
             />

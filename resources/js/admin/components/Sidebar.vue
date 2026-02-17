@@ -86,7 +86,9 @@
             label: 'Dashboard',
             icon: 'fas fa-th',
             items: [
-            { name: 'component', label: 'Component' },
+            { name: 'component', label: 'Manage Data' },
+            { name: 'create-edit', label: 'Create / Update' },
+            { name: 'select2', label: 'Select2' },
             { name: 'dashboard', label: 'Dashboard' },
             { name: 'dashboard-2', label: 'Dashboard 2' },
             { name: 'dashboard-3', label: 'Dashboard 3' }

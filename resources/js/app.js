@@ -1,15 +1,28 @@
 import './bootstrap';
-
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import router from './router';
-
-import * as ahmedVueKit from  './ahmed-vue-kit';
+import * as ahmedVueKit from './ahmed-vue-kit';
 import Master from './admin/layouts/Mastere.vue';
+
+// ===============================
+// jQuery + Select2 (CORRECT ORDER)
+// ===============================
+import $ from 'jquery'
+window.$ = window.jQuery = $
+
+import select2 from 'select2/dist/js/select2.full.min.js'
+import 'select2/dist/css/select2.min.css'
+
+// 🔥 FORCE ATTACH select2 to global jQuery
+select2(window.$)
+//----------------------------------------
+
+
 
 const app = createApp(Master);
 
-// 1️⃣ Register all components globally
+// Register all components globally
 Object.entries(ahmedVueKit).forEach(([name, component]) => {
     app.component(name, component);
 });

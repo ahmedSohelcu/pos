@@ -18,7 +18,14 @@
 
       <!--begin::App Content-->
       <div class="app-content page-wrapper">
-        
+                
+        <!-- <div class="col-md-4">
+          <select class="select2 form-control activate-select2" name="state">
+            <option value="AL">Alabama</option>
+            <option value="WY">Wyoming</option>
+          </select>
+        </div>
+        <br> -->
         <!-- 🔥 ROUTE WITH TRANSITION -->
         <router-view v-slot="{ Component, route }">
           <!-- Fade-in only transition -->

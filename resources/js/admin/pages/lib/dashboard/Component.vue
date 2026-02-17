@@ -31,7 +31,6 @@
   import { ref, reactive, onMounted } from 'vue'
   import { route } from 'ziggy-js'
   import router from '../../../../router';
-
   const selectedCategory = ref(2) // pre-selected by id 
 
   /*
@@ -103,107 +102,111 @@
     loading: false,
   })
 
-const filters = [
-  {
-      name: 'status_id',
-      label: 'Status',
-      type: 'select',
-      options: [
-          { id: 1, type: 'active'},
-          { id: 2, type: 'inactive'},
-      ],
-      optionKeyName: 'type',
-      // optionValueName: 'label'
-  },
-  {
-      name: 'company_id',
-      label: 'Company',
-      type: 'select',
-      options: [
-          { id: 1, name: 'Abc'},
-          { id: 2, name: 'EFG'},
-      ],
-  },
-  {
-      name: 'created_at',
-      label: 'Created At',
-      type: 'time'
-  },
-  // {
-  //     name: 'time',
-  //     label: 'Time',
-  //     type: 'time'
-  // },
-  // {
-  //     name: 'Date',
-  //     label: 'created At',
-  //     type: 'datetime'
-  // },
-  // {
-  //     name: 'date_range',
-  //     label: 'Date Range',
-  //     type: 'datetimerange'
-  // },
-
-
-    // Support types: date, time, datetime, datetimerange
-
-];
-
-//  for table
-const columns = [
-  { name: 'id', label: '#', width: '10px' },
-  { name: 'name', label: 'Name' },
-  { name: 'email', label: 'Email' },
-  { name: 'phone', label: 'Phone' },
-  { name: 'address', label: 'Address' },
-
-];
-
-const users = [
-  { 
-    id: 1,
-    name: (row) => {
-      return "<button class='btn btn-sm btn-primary'>Ahmed Sohel</button>"
+  const filters = [
+    {
+        name: 'status_id',
+        label: 'Status',
+        type: 'select',
+        select2: true,          // 🔥 enable select2
+        multiple: false,        // single select
+        options: [
+            { id: 1, type: 'active'},
+            { id: 2, type: 'inactive'},
+        ],
+        optionKeyName: 'type',
+        // optionValueName: 'label'
     },
-    email: 'ahmed@test.com', 
-    phone: '01545454545', 
-    address: 'Hathazari, Chittagong',
-  },      
-  { 
-    id: 2,
-    name: 'Rayan Khan',
-    email: 'rayan@test.com',
-      phone: '01712345678',
-      address: 'Dhaka'
+    {
+        name: 'company_id',
+        label: 'Company',
+        type: 'select',
+        select2: true,          // 🔥 enable select2
+        multiple: true,         // 🔥 multiple select
+        options: [
+            { id: 1, name: 'Abc'},
+            { id: 2, name: 'EFG'},
+        ],
     },
-];
+    {
+        name: 'created_at',
+        label: 'Created At',
+        type: 'time'
+    },
+    // {
+    //     name: 'time',
+    //     label: 'Time',
+    //     type: 'time'
+    // },
+    // {
+    //     name: 'Date',
+    //     label: 'created At',
+    //     type: 'datetime'
+    // },
+    // {
+    //     name: 'date_range',
+    //     label: 'Date Range',
+    //     type: 'datetimerange'
+    // },
 
-const actions = [
-    { label: 'View', handler: (row) => alert(`View: ${row.name}`) },
+
+      // Support types: date, time, datetime, datetimerange
+
+  ];
+
+  //  for table
+  const columns = [
+    { name: 'id', label: '#', width: '10px' },
+    { name: 'name', label: 'Name' },
+    { name: 'email', label: 'Email' },
+    { name: 'phone', label: 'Phone' },
+    { name: 'address', label: 'Address' },
+
+  ];
+
+  const users = [
     { 
-      label: 'Edit', handler: (row) => {
-        form.loading = false;
-      } 
-    },
-    { 
-      label: 'Delete', handler: (row) => alert(`Delete: ${row.name}`) 
-    },
-    {       
-      label: (row) => {
-          return   `Message <button class="btn btn-sm btn-warning">(${row.id})</button>`
+      id: 1,
+      name: (row) => {
+        return "<button class='btn btn-sm btn-primary'>Ahmed Sohel</button>"
       },
-      handler: (row) => {
-        form.loading = true;
-      } 
-    },
+      email: 'ahmed@test.com', 
+      phone: '01545454545', 
+      address: 'Hathazari, Chittagong',
+    },      
     { 
-      label: 'Go To Home',
-      handler: (row) => {
-        router.push('/')
-      } 
-    }
-];
+      id: 2,
+      name: 'Rayan Khan',
+      email: 'rayan@test.com',
+        phone: '01712345678',
+        address: 'Dhaka'
+      },
+  ];
+
+  const actions = [
+      { label: 'View', handler: (row) => alert(`View: ${row.name}`) },
+      { 
+        label: 'Edit', handler: (row) => {
+          form.loading = false;
+        } 
+      },
+      { 
+        label: 'Delete', handler: (row) => alert(`Delete: ${row.name}`) 
+      },
+      {       
+        label: (row) => {
+            return   `Message <button class="btn btn-sm btn-warning">(${row.id})</button>`
+        },
+        handler: (row) => {
+          form.loading = true;
+        } 
+      },
+      { 
+        label: 'Go To Home',
+        handler: (row) => {
+          router.push('/')
+        } 
+      }
+  ];
 
 
 
