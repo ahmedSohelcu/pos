@@ -10,6 +10,7 @@ import BaseRadio from "./components/form/BaseRadio.vue";
 import BaseTable from "./components/table/BaseTable.vue";
 import BaseTextarea from "./components/form/BaseTextarea.vue";
 import BaseRichTextEditor from "./components/form/BaseRichTextEditor.vue";
+// import BaseModal from "./components/ui/BaseModal.vue"; //use locally
 
 export {
      BaseCard, //for manage card with title, body, footer left right or default submit button and footer text
@@ -25,6 +26,7 @@ export {
      BaseSelect,
      BaseDatePicker, //for date, datetime, time, daterange, datetimerange,
      BaseRichTextEditor, // for rich text editor should import locally to use
+     // BaseModal, //import locally
      
 };
 
@@ -33,7 +35,6 @@ export {
 // To do  
 //--------------
 //   file upload (single and multiple),
-//   Modal
 //   Tabs
 // table action button for print, export etc
 // sidebar menu make more flexible
@@ -43,5 +44,5 @@ export {
 //--------------
 // Note
 //--------------
-//** Toastr is in componsables/useNotify.js
-// ** Sweetalert2 is in componsables/useSweetAlert2.js
+//** Toastr is in componsables/useNotify.js // vue-toastification
+// ** Sweetalert2 is in componsables/useSweetAlert2.js //sweetalert2

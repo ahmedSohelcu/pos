@@ -3,7 +3,21 @@
     <div class="container-fluid">        
       <div class="col-md-12">
       
-        
+      <!-- modal start -->
+        <button class="btn btn-danger" @click="showModal = true">
+          Show Modal
+        </button>
+
+        <BaseModal
+          v-model="showModal"
+          title="Delete User"
+          size="md"
+          @confirm="deleteUser"
+        >
+          Are you sure you want to delete this user?
+      </BaseModal>
+      <!-- modal end -->  
+
         <div class="col-md-12 d-flex justify-content-center align-items-center">
           <BaseLoader v-if="form.loading" color="warning" />
         </div>
@@ -31,19 +45,25 @@
   import { ref, reactive, onMounted } from 'vue'
   import { route } from 'ziggy-js'
   import router from '../../../../router';
-  const selectedCategory = ref(2) // pre-selected by id 
   import { swalpopup, deleteWarning } from '../../../../ahmed-vue-kit/composables/useSweetAlert2';
+  
+  import BaseModal from '../../../../ahmed-vue-kit/components/ui/BaseModal.vue';
+  const showModal = ref(false)
+
+
+
+  const selectedCategory = ref(2) // pre-selected by id 
+  
   // const popup = swalpopup();  
   // popup.warning('Try again later');
   deleteWarning()
-
-      // const confirmed = deleteWarning()
-      // if (confirmed) {
-      //     console.log(confirmed)
-      //     // এখানে API call করো
-      // } else {
-      //     console.log(confirmed)
-      // }
+// const confirmed = deleteWarning()
+// if (confirmed) {
+//     console.log(confirmed)
+//     // এখানে API call করো
+// } else {
+//     console.log(confirmed)
+// }
 
 
   /*
