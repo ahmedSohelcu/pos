@@ -2,7 +2,48 @@
   <BaseForm @submit="saveUser">
         <BaseCard title="User Form" cardClass="col-md-6 card-outline card-info">                  
 
-          <!-- select2 not working -->
+
+
+<br>
+
+    <BaseRichTextEditor
+      v-model="form.description"
+      label="Quill Editor Description"
+      :read-only="readOnly"
+      :error="errors.description"
+      :placeholder="'hello placeholder'"
+    /> 
+    <br><br>
+
+
+        <BaseTextarea
+          v-model="form.description"
+          name="description"
+          label="Description"
+          placeholder="Enter a description here..."
+          :rows="5"
+          :error="errors.description"
+        />         
+
+        <BaseCheckbox
+          v-model="form.fruits"
+          name="fruits"
+          label="Fruit List"
+          :options="fruits"
+          :error="errors.fruits"
+          inline
+        />
+
+        <BaseRadio
+          v-model="form.gender"
+          name="gender"
+          label="Gender"
+          :options="genders"
+          :error="male"
+          :inline="true"
+          labelKey="gender"
+        />
+
           <BaseSelect
             name="category_id"
             :options="categories"
@@ -40,7 +81,6 @@
             label="Email"
             placeholder="username here"
           />
-
         
       </BaseCard>
   </BaseForm>
@@ -50,6 +90,7 @@
 
   import { route } from 'ziggy-js';
   import { useForm } from '../../../../ahmed-vue-kit/composables/useForm';  
+import BaseRichTextEditor from '../../../../ahmed-vue-kit/components/form/BaseRichTextEditor.vue';
 
   const { form, errors, submit, loading } = useForm({
     username: '',
@@ -59,7 +100,23 @@
     status_id: 1,
     states: [],
     category: [],
+    gender: 1,
+    fruits: [1, 2,3],
+    description: "<b>Hello </b>description here",
+    
   })
+
+  const genders = [
+      { id: 1, gender: 'Male'},
+      { id: 2, gender: 'Female'},
+      { id: 3, gender: 'Others'},
+  ]
+
+  const fruits = [
+    { id: 1, name: 'Banana'},
+    { id: 2, name: 'Jack Fruits'},
+    { id: 3, name: 'Pine Apple'},
+  ]
 
   const categories = [
     { id: 1, name: 'Abc'},
