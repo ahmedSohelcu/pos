@@ -32,6 +32,19 @@
   import { route } from 'ziggy-js'
   import router from '../../../../router';
   const selectedCategory = ref(2) // pre-selected by id 
+  import { swalpopup, deleteWarning } from '../../../../ahmed-vue-kit/composables/useSweetAlert2';
+  // const popup = swalpopup();  
+  // popup.warning('Try again later');
+  deleteWarning()
+
+      // const confirmed = deleteWarning()
+      // if (confirmed) {
+      //     console.log(confirmed)
+      //     // এখানে API call করো
+      // } else {
+      //     console.log(confirmed)
+      // }
+
 
   /*
   |--------------------------------------------------------------------------
@@ -51,6 +64,7 @@
   })
 
   const loading = ref(false)
+
 
   /*
   |--------------------------------------------------------------------------
@@ -109,11 +123,12 @@
         type: 'select',
         select2: true,          // 🔥 enable select2
         multiple: false,        // single select
-        options: [
-            { id: 1, type: 'active'},
-            { id: 2, type: 'inactive'},
-        ],
-        optionKeyName: 'type',
+        // options: [
+        //     { id: 1, type: 'active'},
+        //     { id: 2, type: 'inactive'},
+        // ],
+        getApiRoute: route('selectable_statuses'),
+        // optionKeyName: 'type',
         // optionValueName: 'label'
     },
     {

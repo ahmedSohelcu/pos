@@ -5,8 +5,8 @@
 
 <script setup>
     import { ref, watch } from 'vue'
-    import { QuillEditor } from '@vueup/vue-quill'
-    import '@vueup/vue-quill/dist/vue-quill.snow.css'
+    import { QuillEditor } from '@vueup/vue-quill';
+    import '@vueup/vue-quill/dist/vue-quill.snow.css';
 
     const props = defineProps({
         modelValue: {
@@ -57,9 +57,8 @@
     @update:content="$emit('update:modelValue', $event)"
     :readOnly="readOnly"
     :theme="theme"
-    :toolbar="toolbar ? toolbar : 'full'" 
+    :toolbar="toolbar ? toolbar : ''" 
     :placeholder="placeholder"
-    :modules="modules"
   />
 </template>
 

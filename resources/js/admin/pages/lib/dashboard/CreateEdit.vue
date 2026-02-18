@@ -87,10 +87,13 @@
 </template>
 
 <script setup>
+  import { useForm } from "../../../../ahmed-vue-kit/composables/useForm";  
+  import BaseRichTextEditor from "../../../../ahmed-vue-kit/components/form/BaseRichTextEditor.vue";
 
-  import { route } from 'ziggy-js';
-  import { useForm } from '../../../../ahmed-vue-kit/composables/useForm';  
-import BaseRichTextEditor from '../../../../ahmed-vue-kit/components/form/BaseRichTextEditor.vue';
+  import  { useNotify }  from "@/ahmed-vue-kit/composables/useNotify";
+  const toast = useNotify();
+  toast.success("Success Message");
+
 
   const { form, errors, submit, loading } = useForm({
     username: '',
@@ -102,9 +105,9 @@ import BaseRichTextEditor from '../../../../ahmed-vue-kit/components/form/BaseRi
     category: [],
     gender: 1,
     fruits: [1, 2,3],
-    description: "<b>Hello </b>description here",
+    description: "Hello Description here",
     
-  })
+  });
 
   const genders = [
       { id: 1, gender: 'Male'},
@@ -130,4 +133,5 @@ import BaseRichTextEditor from '../../../../ahmed-vue-kit/components/form/BaseRi
     // await submit(route('selectable_statuses'), 'GET')
     alert('Saved successfully')
   }
+
 </script>

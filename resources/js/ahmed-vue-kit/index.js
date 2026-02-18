@@ -16,32 +16,32 @@ export {
      BaseFilter,
      BaseForm,
      BaseLoader,
-     BaseTable,
+     BaseTable,     
      
-     // For Form
      BaseRadio,
      BaseCheckbox,
-     BaseTextarea,
-     // <BaseRichTextEditor /> -- for rich text editor import this locally and use it
+     BaseTextarea,     
      BaseInput, //for input type text, email, password, number, date, time,
      BaseSelect,
      BaseDatePicker, //for date, datetime, time, daterange, datetimerange,
-     BaseRichTextEditor,
-
+     BaseRichTextEditor, // for rich text editor should import locally to use
+     
 };
+
 
 //--------------
 // To do  
 //--------------
-// //textarea,
 //   file upload (single and multiple),
 //   Modal
-//   Alert
-//   Toast
-//   Breadcrumb
 //   Tabs
 // table action button for print, export etc
 // sidebar menu make more flexible
-//
 // finally create package for ui components
 
+
+//--------------
+// Note
+//--------------
+//** Toastr is in componsables/useNotify.js
+// ** Sweetalert2 is in componsables/useSweetAlert2.js

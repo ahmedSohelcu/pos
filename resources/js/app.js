@@ -5,10 +5,17 @@ import router from './router';
 import * as ahmedVueKit from './ahmed-vue-kit';
 import Master from './admin/layouts/Mastere.vue';
 
+//----------------------------------
+// import vue toastification
+//----------------------------------
+import Toast from "vue-toastification"
+import "vue-toastification/dist/index.css"
+
+
 // ===============================
 // jQuery + Select2 (CORRECT ORDER)
 // ===============================
-import $ from 'jquery'
+import $ from 'jquery';
 window.$ = window.jQuery = $
 
 import select2 from 'select2/dist/js/select2.full.min.js'
@@ -33,6 +40,14 @@ Object.entries(ahmedVueKit).forEach(([name, component]) => {
 //         Master,        
 //     },
 // });
+
+// use vue-toastification
+app.use(Toast, {
+    position: "top-right",
+    timeout: 3000,
+    closeOnClick: true,
+    pauseOnHover: true,
+})
 
 app.use(createPinia());
 app.use(router);
