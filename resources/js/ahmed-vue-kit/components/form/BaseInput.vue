@@ -80,8 +80,9 @@
 </template>
 
     
-// Example how to use the component
 <!-- 
+    Example how to use the component
+    
 const form = reactive({
   name: '',
   email: ''
@@ -90,30 +91,9 @@ const form = reactive({
 <BaseInput
     label="Name"
     name="name"
-    :modelValue="form.name"
+    v-model="form.name"
     placeholder="Enter your name"
     :error="errors.username"
     @update:modelValue="val => name = val"
-/>
-
- <div class="col">
-            <BaseInput
-              class="me-2"
-              label="Name"      
-              :error="errors.username"
-              placeholder="Enter your name"
-              @update:modelValue="val => form.name = val"
-            />
-            <div class="me-2">{{ form.name }}</div>
-          </div>
-          
-OR
-
-<BaseInput
-    label="Name"
-    v-model="form.name"
-    :modelValue="form.name"
-    placeholder="Enter your name"
-            error="Please enter your name"
 />
 -->

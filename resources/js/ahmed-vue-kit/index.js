@@ -32,17 +32,26 @@ export {
 
 
 //--------------
-// To do  
-//--------------
-//   file upload (single and multiple),
-//   Tabs
-// table action button for print, export etc
-// sidebar menu make more flexible
-// finally create package for ui components
-
-
-//--------------
-// Note
+// Other component
 //--------------
 //** Toastr is in componsables/useNotify.js // vue-toastification
 // ** Sweetalert2 is in componsables/useSweetAlert2.js //sweetalert2
+
+
+
+
+
+//--------------
+// To do  
+//--------------
+// file upload (single and multiple),
+//BaseButton
+//placeholder for preloader
+
+
+// table action button for print, export etc
+//   Tabs
+// sidebar menu make more flexible
+// finally create package for ui components
+
+//CartDrawer //OrderTimeline
