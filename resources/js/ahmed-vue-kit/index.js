@@ -1,4 +1,5 @@
 import BaseInput from "./components/form/BaseInput.vue";
+import BaseButton from "./components/ui/BaseButton.vue";
 import BaseLoader from "./components/ui/BaseLoader.vue";
 import BaseSelect from "./components/form/BaseSelect.vue";
 import BaseDatePicker from "./components/form/BaseDatePicker.vue";
@@ -10,6 +11,7 @@ import BaseRadio from "./components/form/BaseRadio.vue";
 import BaseTable from "./components/table/BaseTable.vue";
 import BaseTextarea from "./components/form/BaseTextarea.vue";
 import BaseRichTextEditor from "./components/form/BaseRichTextEditor.vue";
+import BaseShimmer from "./components/ui/BaseShimmer.vue";
 // import BaseModal from "./components/ui/BaseModal.vue"; //use locally
 
 export {
@@ -19,6 +21,7 @@ export {
      BaseLoader,
      BaseTable,     
      
+     BaseButton,
      BaseRadio,
      BaseCheckbox,
      BaseTextarea,     
@@ -26,28 +29,35 @@ export {
      BaseSelect,
      BaseDatePicker, //for date, datetime, time, daterange, datetimerange,
      BaseRichTextEditor, // for rich text editor should import locally to use
-     // BaseModal, //import locally
-     
+     // BaseModal, //import locally     
+     BaseShimmer
 };
 
 
-//--------------
+//---------------------------------------------
+// Components which need to be imported locally
+//-------------------------------------------- 
+/*
+ ** BaseFileUPload is in components/form/BaseFileUpload.vue
+ ** BaseModal is in components/ui/BaseModal.vue
+ ** BaseRichTextEditor is in components/form/BaseRichTextEditor.vue
+
+
+//-----------------
 // Other component
-//--------------
-//** Toastr is in componsables/useNotify.js // vue-toastification
-// ** Sweetalert2 is in componsables/useSweetAlert2.js //sweetalert2
+//-----------------
+** Toastr is in componsables/useNotify.js // vue-toastification
+** Sweetalert2 is in componsables/useSweetAlert2.js //sweetalert2
+** buildFormData is in componsables/buildFormData.js to convert object to formdata
 
 
-
-
+*/
 
 //--------------
 // To do  
 //--------------
-// file upload (single and multiple),
-//BaseButton
 //placeholder for preloader
-
+//badge
 
 // table action button for print, export etc
 //   Tabs

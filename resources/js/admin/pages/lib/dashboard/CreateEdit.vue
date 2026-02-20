@@ -1,19 +1,95 @@
 <template>      
+
   <BaseForm @submit="saveUser">
-        <BaseCard title="User Form" cardClass="col-md-6 card-outline card-info">                  
+    <BaseCard title="User Form" cardClass="col-md-6 card-outline card-info">   
 
 
 
-<br>
+      <h2>Example BaseShimmer</h2>
+    <div v-if="loading">
+      <BaseShimmer width="100%" height="200px" rounded />
+      <BaseShimmer width="60%" height="20px" className="mt-3" />
+      <BaseShimmer width="80%" height="14px" className="mt-2" />
+      <BaseShimmer width="90%" height="14px" className="mt-2" />
+    </div>
 
-    <BaseRichTextEditor
-      v-model="form.description"
-      label="Quill Editor Description"
-      :read-only="readOnly"
-      :error="errors.description"
-      :placeholder="'hello placeholder'"
-    /> 
-    <br><br>
+    <div v-else>
+      <div class="real-content">
+        <img :src="post.image" class="w-full h-52 object-cover rounded" />
+        <h3 class="font-bold text-lg mt-3">{{ post.title }}</h3>
+        <p class="text-gray-700 mt-2">{{ post.body }}</p>
+      </div>
+    </div>
+
+
+    <br>
+
+
+
+    <br>
+
+      <BaseRichTextEditor
+        v-model="form.description"
+        label="Quill Editor Description"
+        :read-only="readOnly"
+        :error="errors.description"
+        :placeholder="'hello placeholder'"
+      /> 
+      <br><br>
+
+        <!-- Button -->
+        <h2>Base Button</h2> <hr>
+        <BaseButton 
+          label="Submitting..."
+          :loading="true"
+        />
+
+        <BaseButton
+          type="submit"
+          :loading="false"
+          iconLeft="fas fa-save"
+        >
+          Save User
+        </BaseButton>
+
+        <BaseButton
+            variant="danger"
+            block
+        >
+            Delete Account
+        </BaseButton>
+
+        <BaseButton
+          label="Upload"
+          iconLeft="fas fa-upload"
+          variant="success"
+        />
+
+        <BaseButton
+          as="a"
+          href="/users"
+          label="Go to Users"
+          variant="outline"
+        />
+
+        <BaseButton
+          label="Create Account"
+          size="lg"
+          full
+        />
+
+        <!-- Button -->
+        <br><br>
+        <h2>BaseFileUpload</h2>
+        <BaseFileUpload
+            v-model="form.images"
+            label="Product Images"
+            :required="true"
+            :multiple="false"
+            :existing-files="existingImages"
+            delete-url="/product/image/delete"
+            :max-size="5000"
+        />
 
 
         <BaseTextarea
@@ -84,6 +160,18 @@
         
       </BaseCard>
   </BaseForm>
+
+
+      <BaseShimmer width="100%" height="200px" rounded />
+      <BaseShimmer width="60%" height="20px" className="mt-3" />
+      <BaseShimmer width="90%" height="14px" className="mt-2" />
+      <BaseShimmer width="80%" height="14px" className="mt-2" />
+  
+    <br>
+
+
+
+
 </template>
 
 <script setup>
@@ -91,11 +179,15 @@
   import BaseRichTextEditor from "../../../../ahmed-vue-kit/components/form/BaseRichTextEditor.vue";
 
   import  { useNotify }  from "@/ahmed-vue-kit/composables/useNotify";
+  import BaseFileUpload from "../../../../ahmed-vue-kit/components/form/BaseFileUpload.vue";
+  import BaseShimmer from "../../../../ahmed-vue-kit/components/ui/BaseShimmer.vue";
+  import { onMounted, reactive } from "vue";
+  
   const toast = useNotify();
   toast.success("Success Message");
 
 
-  const { form, errors, submit, loading } = useForm({
+  const { ref, form, errors, submit, loading } = useForm({
     username: '',
     email: '',
     phone: '',
@@ -106,8 +198,22 @@
     gender: 1,
     fruits: [1, 2,3],
     description: "Hello Description here",
-    
+    images: []    
   });
+
+  loading.value = true;
+const post = reactive({ title: '', body: '', image: '' })
+
+onMounted(() => {
+  setTimeout(() => {
+    post.title = 'Hello World'
+    post.body = 'This is the content loaded from backend'
+    post.image = 'https://picsum.photos/600/300'
+    loading.value = false
+  }, 2000)
+})
+
+const onClick = () => alert('Badge clicked!')
 
   const genders = [
       { id: 1, gender: 'Male'},
@@ -127,11 +233,40 @@
     { id: 3, name: 'tes'},
   ]
 
+  const existingImages = [
+    {id: 1, url: 'https://placehold.co/600x400/png'},
+    {id: 2, url: 'https://placehold.co/600x400/png'}
+  ]
+
   // Submit Form
   const saveUser = async () => {
     console.log(form)
     // await submit(route('selectable_statuses'), 'GET')
     alert('Saved successfully')
+    
+
+    /*
+      const formData = new FormData()
+
+      // normal fields
+      formData.append('username', form.username)
+      formData.append('email', form.email)
+      formData.append('description', form.description)
+
+      // array field
+      form.fruits.forEach((fruit, index) => {
+          formData.append(`fruits[${index}]`, fruit)
+      })
+
+      // file array
+      form.images.forEach((file, index) => {
+          formData.append(`images[${index}]`, file)
+      })
+
+      await axios.post('/api/users', formData, {
+          headers: { 'Content-Type': 'multipart/form-data' }
+      })
+    */
   }
 
 </script>
