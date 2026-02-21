@@ -1,11 +1,8 @@
 <template>      
-
-  <BaseForm @submit="saveUser">
-    <BaseCard title="User Form" cardClass="col-md-6 card-outline card-info">   
-
-
-
-      <h2>Example BaseShimmer</h2>
+    <div class="col-md-6 offset-md-1">
+  <BaseCard>
+        <BaseForm @submit="saveUser">
+    <h2>Example BaseShimmer</h2>
     <div v-if="loading">
       <BaseShimmer width="100%" height="200px" rounded />
       <BaseShimmer width="60%" height="20px" className="mt-3" />
@@ -158,8 +155,7 @@
             placeholder="username here"
           />
         
-      </BaseCard>
-  </BaseForm>
+  
 
 
       <BaseShimmer width="100%" height="200px" rounded />
@@ -169,9 +165,9 @@
   
     <br>
 
-
-
-
+    </BaseForm>
+  </BaseCard>
+    </div>
 </template>
 
 <script setup>
@@ -243,30 +239,7 @@ const onClick = () => alert('Badge clicked!')
     console.log(form)
     // await submit(route('selectable_statuses'), 'GET')
     alert('Saved successfully')
-    
-
-    /*
-      const formData = new FormData()
-
-      // normal fields
-      formData.append('username', form.username)
-      formData.append('email', form.email)
-      formData.append('description', form.description)
-
-      // array field
-      form.fruits.forEach((fruit, index) => {
-          formData.append(`fruits[${index}]`, fruit)
-      })
-
-      // file array
-      form.images.forEach((file, index) => {
-          formData.append(`images[${index}]`, file)
-      })
-
-      await axios.post('/api/users', formData, {
-          headers: { 'Content-Type': 'multipart/form-data' }
-      })
-    */
+  
   }
 
 </script>

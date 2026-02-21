@@ -4,18 +4,18 @@
       <div class="col-md-12">
       
       <!-- modal start -->
-        <button class="btn btn-danger" @click="showModal = true">
+        <!-- <button class="btn btn-danger" @click="showModal = true">
           Show Modal
-        </button>
+        </button> -->
 
-        <BaseModal
+        <!-- <BaseModal
           v-model="showModal"
           title="Delete User"
           size="md"
           @confirm="deleteUser"
         >
           Are you sure you want to delete this user?
-      </BaseModal>
+      </BaseModal> -->
       <!-- modal end -->  
 
         <div class="col-md-12 d-flex justify-content-center align-items-center">
@@ -23,14 +23,18 @@
         </div>
 
          <BaseTable
+            :last-page="meta.last_page"
+            :loading="form.loading"
+            @query-change="handleQuery"
+            label="User Management"
             :columns="columns"
             :rows="users"
-            :last-page="meta.last_page"
             :actions="actions"
-            :loading="form.loading"
-            label="User Table"
             :filters="filters"
-            @query-change="handleQuery"
+            :show-search="true"
+            @create="alert('Create new user')"
+            @refresh="alert('Refresh table')"
+            @bulk-delete="(selected)=>alert('Delete bulk: ' + selected.map(r=>r.name).join(', '))"
         />
 
       </div>
@@ -47,8 +51,8 @@
   import router from '../../../../router';
   import { swalpopup, deleteWarning } from '../../../../ahmed-vue-kit/composables/useSweetAlert2';
   
-  import BaseModal from '../../../../ahmed-vue-kit/components/ui/BaseModal.vue';
-  const showModal = ref(false)
+  // import BaseModal from '../../../../ahmed-vue-kit/components/ui/BaseModal.vue';
+  // const showModal = ref(false)
 
 
 
@@ -189,14 +193,13 @@
   ];
 
   //  for table
-  const columns = [
-    { name: 'id', label: '#', width: '10px' },
-    { name: 'name', label: 'Name' },
-    { name: 'email', label: 'Email' },
-    { name: 'phone', label: 'Phone' },
-    { name: 'address', label: 'Address' },
-
-  ];
+const columns = [
+  { name: 'id', label: 'ID', sortable: true },
+  { name: 'name', label: 'Name', sortable: true },
+  { name: 'email', label: 'Email', sortable: true },
+  { name: 'role', label: 'Role', sortable: true },
+  { name: 'status', label: 'Status', sortable: true },
+]
 
   const users = [
     { 
@@ -204,18 +207,13 @@
       name: (row) => {
         return "<button class='btn btn-sm btn-primary'>Ahmed Sohel</button>"
       },
-      email: 'ahmed@test.com', 
-      phone: '01545454545', 
-      address: 'Hathazari, Chittagong',
-    },      
-    { 
-      id: 2,
-      name: 'Rayan Khan',
-      email: 'rayan@test.com',
-        phone: '01712345678',
-        address: 'Dhaka'
-      },
-  ];
+       email: 'ahmed@example.com', role: 'Admin', status: 'Active' 
+    },
+    { id: 2, name: 'Rayan Khan', email: 'rayan@example.com', role: 'User', status: 'Inactive' },
+    { id: 3, name: 'Sara Ali', email: 'sara@example.com', role: 'Moderator', status: 'Active' },
+    { id: 4, name: 'John Doe', email: 'john@example.com', role: 'User', status: 'Active' },
+    { id: 5, name: 'Jane Smith', email: 'jane@example.com', role: 'User', status: 'Inactive' }
+];
 
   const actions = [
       { label: 'View', handler: (row) => alert(`View: ${row.name}`) },

@@ -10,7 +10,7 @@
                 <i class="bi bi-list"></i>
                 </a>
             </li>
-            <li class="nav-item d-none d-md-block"><a href="#" class="nav-link">Home</a></li>
+            <li class="nav-item d-none d-md-block"><a href="#" class="nav-link">POS</a></li>
             <li class="nav-item d-none d-md-block"><a href="#" class="nav-link">Contact</a></li>
             </ul>
             <!--end::Start Navbar Links-->
@@ -151,12 +151,12 @@
             <!--begin::User Menu Dropdown-->
             <li class="nav-item dropdown user-menu">
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                <img
-                    src="admin/v1/assets/img/user2-160x160.jpg"
-                    class="user-image rounded-circle shadow"
-                    alt="User Image"
-                />
-                <span class="d-none d-md-inline">Alexander Pierce</span>
+                    <img
+                        src="admin/v1/assets/img/user2-160x160.jpg"
+                        class="user-image rounded-circle shadow"
+                        alt="User Image"
+                    />
+                    <!-- <span class="d-none d-md-inline">Alexander </span> -->
                 </a>
                 <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
                 <!--begin::User Image-->
@@ -167,7 +167,7 @@
                     alt="User Image"
                     />
                     <p>
-                    Alexander Pierce - Web Developer
+                    Alexander Pierce
                     <small>Member since Nov. 2023</small>
                     </p>
                 </li>
