@@ -4,11 +4,31 @@
 ----------------------------------
 💡  👉  📊  🧱  🛠  🎨  😎 
 
+# Index
+  * Todo
+  * Frontend Technologies
+  * Backend Technologies
+  * Grocery Demo Link
+  * Table Schema
+  * Frontend Packages
+  * Backend Packages
+  * Create Service For main app and modules
+  * Create Vue File
+  * Command List
+  * 
+    
+  
 
-### Core Technologies
+# Todo
+  * vue template auto create
+  * service auto create
+  * Multi language support
+  * 
+
+
 
 ---
-#### ✅ Frontend Vue Js
+#### ✅ Frontend Technologies
 ---
 * Vue 3 (Composition API)
 * Pinia
@@ -24,7 +44,7 @@
 * ziggy-js ( to use route from vue file)
 * 
 ---
-#### ✅ Backend Laravel
+#### ✅ Backend Technologies
 ---  
 
 * Laravel 12 [Documentation](https://laravel.com/)
@@ -36,7 +56,28 @@
     [modulecommand]: https://nwidart.com/laravel-modules/v6/advanced-tools/artisan-commands
 
 
-    * composer require nwidart/laravel-modules
+
+    * 
+     
+* Sanctum
+* 01.DB transaction
+* 02.row locking
+* 03.stock validation at checkout
+* 04.overselling prevention
+
+## Command List
+  * Create Service For main app and modules
+      * php artisan make:service TestService
+      * php artisan make:service Product --module=Product
+      * 
+       
+  * Create Vue File
+    *  php artisan make:vue admin/pages/Ahmed
+        * will create file in js/admin/pages/Ahmed. vue      
+     
+
+  * Laravel Module Command   
+    * Module package [nwidart/laravel-modules](https://nwidart.com/laravel-modules/v6/introduction)
     * php artisan module:make <module-name>
     * php artisan module:make Blog User Auth
     * php artisan module:make Blog --plain (only module)
@@ -50,18 +91,15 @@
     * php artisan module:disable Blog
     * php artisan module:update Blog
     * php artisan module:make-command CreatePostCommand Blog
-    * 
-     
-* Sanctum
-* 01.DB transaction
-* 02.row locking
-* 03.stock validation at checkout
-* 04.overselling prevention
 
 
 ### Grocery Demo Link
 
+```php
     https://grocery.acnoo.xyz/business/sales/create
+
+    https://readypos.razinsoft.com/purchase/list
+
     
     <br/>
 
@@ -91,10 +129,19 @@ Piece	    pc	    1.0000
 
 💡 👉 📊 🧱 🛠 🎨 😎
 
+# Frontend Packages
 
-# Get Started
+
+# Backend Packages
+ *  view-toastification
+     * https://vue-toastification.maronato.dev/
+     * composer require nwidart/laravel-modules
+ * 
+
 
 This is a normal page, which contains VuePress basics.
+
+
 
 ## Pages
 

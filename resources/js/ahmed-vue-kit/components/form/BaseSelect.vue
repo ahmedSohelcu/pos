@@ -1,6 +1,6 @@
 <script setup>
-import { ref, computed, onMounted, onBeforeUnmount, nextTick, watch } from 'vue'
-import api from '../../api/api'
+    import { ref, computed, onMounted, onBeforeUnmount, nextTick, watch } from 'vue'
+    import api from '../../api/api'
 
 const props = defineProps({
     modelValue: {
@@ -157,51 +157,50 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-<div class="mb-2 me-2 justify-content-between">
+    <div class="mb-2 me-2 justify-content-between">
+        <label v-if="label" class="form-label">
+            {{ label }}
+        </label>
 
-    <label v-if="label" class="form-label">
-        {{ label }}
-    </label>
-
-    <select
-        ref="selectRef"
-        :name="name"
-        :multiple="multiple"
-        :disabled="disabled"
-        :class="[
-            'form-selects',
-            customClass,
-            { 'is-invalid': error }
-        ]"
-        @change="!select2 && emit(
-            'update:modelValue',
-            multiple
-                ? Array.from($event.target.selectedOptions).map(o => o.value)
-                : $event.target.value
-        )"
-    >
-        <option
-            v-if="!multiple"
-            value=""
-            disabled
+        <select
+            ref="selectRef"
+            :name="name"
+            :multiple="multiple"
+            :disabled="disabled"
+            :class="[
+                'form-selects',
+                customClass,
+                { 'is-invalid': error }
+            ]"
+            @change="!select2 && emit(
+                'update:modelValue',
+                multiple
+                    ? Array.from($event.target.selectedOptions).map(o => o.value)
+                    : $event.target.value
+            )"
         >
-            {{ loadingRef ? 'Loading...' : placeholder }}
-        </option>
+            <option
+                v-if="!multiple"
+                value=""
+                disabled
+            >
+                {{ loadingRef ? 'Loading...' : placeholder }}
+            </option>
 
-        <option
-            v-for="option in finalOptions ?? []"
-            :key="option.id"
-            :value="option.id"
-        >
-            {{ option[optionKeyName] }}
-        </option>
-    </select>
+            <option
+                v-for="option in finalOptions ?? []"
+                :key="option.id"
+                :value="option.id"
+            >
+                {{ option[optionKeyName] }}
+            </option>
+        </select>
 
-    <small v-if="error" class="text-danger">
-        {{ error }}
-    </small>
+        <small v-if="error" class="text-danger">
+            {{ error }}
+        </small>
 
-</div>
+    </div>
 </template>
 
 <style>

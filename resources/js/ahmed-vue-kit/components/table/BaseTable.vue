@@ -262,6 +262,22 @@ const toggleColumn = (col) => {
 </script>
 
 <style scoped>
+/* 🔥 FIX: allow dropdown to overflow table */
+.table-wrapper {
+  overflow: visible !important;
+}
+
+/* 🔥 FIX: dropdown above modal backdrop */
+.dropdown-menu {
+  z-index: 2000 !important;
+}
+
+/* 🔥 FIX: table card stacking context */
+.table-card {
+  position: relative;
+  z-index: 1;
+}
+
 /* CARD */
 .table-card{ border-radius:10px; box-shadow:0 4px 12px rgba(0,0,0,.04); }
 
@@ -291,6 +307,7 @@ const toggleColumn = (col) => {
   display:flex; align-items:center; justify-content:center; z-index:10;
 }
 .cursor-pointer{ cursor:pointer; }
+
 </style>
 <!--
     1.table heading

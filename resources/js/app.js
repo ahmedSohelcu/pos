@@ -5,6 +5,11 @@ import router from './router';
 import * as ahmedVueKit from './ahmed-vue-kit';
 import Master from './admin/layouts/Mastere.vue';
 
+
+// important
+import 'bootstrap'
+import 'bootstrap/dist/js/bootstrap.bundle.min.js'
+
 //----------------------------------
 // import vue toastification
 //----------------------------------

@@ -1,23 +1,31 @@
 <template>
     <!--begin::Container-->
     <div class="container-fluid">        
-      <div class="col-md-12">
-      
-      <!-- modal start -->
-        <!-- <button class="btn btn-danger" @click="showModal = true">
+      <div class="col-md-12">      
+        
+        <button class="btn btn-danger" @click="showModal = true">
           Show Modal
-        </button> -->
+        </button>
+ <br>
+ <br>
+       <BaseModal v-model="showModal" title="Create User" size="lg">  
+          <form @submit.prevent="saveUser">
+            <input class="form-control mb-2" v-model="form.name" placeholder="Name">
+            <input class="form-control" v-model="form.email" placeholder="Email">
+          </form>
 
-        <!-- <BaseModal
-          v-model="showModal"
-          title="Delete User"
-          size="md"
-          @confirm="deleteUser"
-        >
-          Are you sure you want to delete this user?
-      </BaseModal> -->
-      <!-- modal end -->  
+          <template #footer>
+            <button class="btn btn-secondary" @click="showModal = false">
+              Cancel
+            </button>
 
+            <button class="btn btn-success" @click="saveUser">
+              Save
+            </button>
+          </template>
+      </BaseModal>
+
+    
         <div class="col-md-12 d-flex justify-content-center align-items-center">
           <BaseLoader v-if="form.loading" color="warning" />
         </div>
@@ -51,8 +59,8 @@
   import router from '../../../../router';
   import { swalpopup, deleteWarning } from '../../../../ahmed-vue-kit/composables/useSweetAlert2';
   
-  // import BaseModal from '../../../../ahmed-vue-kit/components/ui/BaseModal.vue';
-  // const showModal = ref(false)
+  import BaseModal from '../../../../ahmed-vue-kit/components/ui/BaseModal.vue';
+  const showModal = ref(false)
 
 
 
@@ -241,6 +249,11 @@ const columns = [
       }
   ];
 
+
+  // 
+      const saveUser= ()=>{
+        alert('Deleted!')
+      }
 
 
 </script>
