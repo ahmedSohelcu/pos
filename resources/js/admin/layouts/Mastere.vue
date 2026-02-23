@@ -1,7 +1,6 @@
 <template>
   <!--begin::App Wrapper-->
   <div class="app-wrapper">        
-    
     <!-- header Navbar -->
     <Nav />
     <!--end header Navbar -->
@@ -26,6 +25,7 @@
           </select>
         </div>
         <br> -->
+        
         <!-- 🔥 ROUTE WITH TRANSITION -->
         <router-view v-slot="{ Component, route }">
           <!-- Fade-in only transition -->
@@ -33,6 +33,7 @@
             <component :is="Component" :key="route.fullPath" />
           </transition>
         </router-view>
+
 
         <!-- 🔥 ROUTE WITHOUT TRANSITION -->
          <!-- <div class="app-content">             

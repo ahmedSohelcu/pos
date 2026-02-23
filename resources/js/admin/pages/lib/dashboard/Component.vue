@@ -2,7 +2,11 @@
     <!--begin::Container-->
     <div class="container-fluid">        
       <div class="col-md-12">      
-        
+  
+        <h1>{{ $t('welcome') }}</h1>
+
+            {{ $t('items', 5) }}
+
         <button class="btn btn-danger" @click="showModal = true">
           Show Modal
         </button>

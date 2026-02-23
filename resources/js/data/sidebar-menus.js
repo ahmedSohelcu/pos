@@ -1,5 +1,5 @@
 // sidebar-menus.js
-export const menus = [
+export const AdminMenus = [
   {
     key: 'dashboard',
     label: 'Dashboard',

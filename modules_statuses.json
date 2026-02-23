@@ -1,4 +1,8 @@
 {
     "Category": true,
-    "Brand": true
+    "Brand": true,
+    "Plan": true,
+    "Feature": true,
+    "Tenant": true,
+    "Subscription": true
 }

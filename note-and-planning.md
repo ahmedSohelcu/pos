@@ -1,31 +1,41 @@
 
 ----------------------------------
-# 🚀 Grocery app need to concern about 🚀
+# 🚀 Grocery SaaS app need to concern about 🚀
 ----------------------------------
 💡  👉  📊  🧱  🛠  🎨  😎 
 
+* php artisan module:make Feature
+* php artisan module:make-migration create_features_table Feature
+* pa module:make-model Feature Feature
+* php artisan module:make-migration create_plan_features_table Feature
+* php artisan module:make-migration add_tenant_id_to_user_table Tenant
+
+
 # Index
-  * Todo
+  * Todo  * 
   * Frontend Technologies
   * Backend Technologies
   * Grocery Demo Link
-  * Table Schema
+  * Application Features and Table Schema
   * Frontend Packages
   * Backend Packages
   * Create Service For main app and modules
   * Create Vue File
   * Command List
-  * 
+  * Controller return response Example
+  * Table list
     
   
 
 # Todo
-  * vue template auto create
-  * service auto create
-  * Multi language support
-  * 
+  * laravel response handler
+  * Everything Tenant Based 
+  * Role Permission
+  * Subscription
 
-
+# Table List
+  * User
+  * Plan
 
 ---
 #### ✅ Frontend Technologies
@@ -65,19 +75,25 @@
 * 03.stock validation at checkout
 * 04.overselling prevention
 
-## Command List
-  * Create Service For main app and modules
-      * php artisan make:service TestService
-      * php artisan make:service Product --module=Product
-      * 
+<br>
+
+# Command List
+
+  ### 01. Create Service For main app and modules
+      01. php artisan make:service TestService
+    
+      02. php artisan make:service Product --module=Product
+      
        
-  * Create Vue File
-    *  php artisan make:vue admin/pages/Ahmed
-        * will create file in js/admin/pages/Ahmed. vue      
+  ### 02. Create Vue File
+    01. php artisan make:vue admin/pages/Ahmed
+          
+        will create file in js/admin/pages/Ahmed. vue
      
 
-  * Laravel Module Command   
-    * Module package [nwidart/laravel-modules](https://nwidart.com/laravel-modules/v6/introduction)
+  ### 03. Laravel Module Command   
+  
+  * Module package [nwidart/laravel-modules](https://nwidart.com/laravel-modules/v6/introduction)
     * php artisan module:make <module-name>
     * php artisan module:make Blog User Auth
     * php artisan module:make Blog --plain (only module)
@@ -100,6 +116,175 @@
 
     https://readypos.razinsoft.com/purchase/list
 
+  ```  
+    <br/>  
+
+ ## Application Features and Table Schema
+  💡  👉  📊  🧱  🛠  🎨  😎 
+
+  # Translated Tables needed for
+  * categories
+  * category_translations
+  * sub_categories
+  * sub_category_translations
+  * products
+  * product_translations
+  * brands
+  * brand_translations
+  * units
+  * unit_translations
+  * payment_methods
+  * payment_method_translations
+  * expense_types
+  * expense_type_translations
+
+  <br>
+
+# ❌ DO NOT CREATE Translation Tables For
+
+  * users
+  * roles
+  * permissions
+  * subscriptions
+  * orders
+  * order_items
+  * stock_movements
+  * transactions
+  * tenants
+  * settings
+
+🧠 Rule You Should Always Follow
+
+If the data:
+
+✔ Is shown to customer
+✔ Is marketing content
+✔ Can change per language
+
+→ Use translation table.
+
+If the data:
+
+✔ Is system logic
+✔ Used in permission checking
+✔ Used internally only
+
+→ DO NOT translate in DB.
+
+  ### New Tables or Extara Column Need to Add
+
+  ## languages Table
+  - id
+  - name (English, Bangla)
+  - code (en, bn)
+  - direction (ltr, rtl)
+  - is_default (boolean)
+  - is_active (boolean)
+  - created_at
+  - updated_at
+
+  ## Users Table
+  * Role  
+  * status_id
+  * tenant_id
+  * language_id  ← user’s preferred language //If language_id is null → use languages.is_default
+
+  ## Roles Table
+  * id
+  * name
+  * description
+  * status
+  * tenant_id
+    
+
+  ## Permissions Table
+  * * id
+  * name - e.g., view_orders, manage_products
+  * description
+  * status
+
+  ## role_permissions
+  * id
+  * role_id
+  * permission_id
+    
+
+  ## user_roles
+  * id
+  * user_id
+  * role_id
+
+  ## featres - d
+    * Id
+    * name
+    * description
+
+  ## plan_features - d
+  * Id
+  * plan_id
+  * feature_id
+  * limit - int
+
+  ## Subscription Table
+  * id
+  * tenant_id
+  * plan_id
+  * start_date - date
+  * end_date - date
+  * status
+  * gateway_ref_id
+* // subscriptions table
+tenant_id
+plan_id
+payment_gateway // stripe/bkash/nagad
+payment_status // pending/active/canceled
+amount
+start_date
+end_date
+next_billing_at
+gateway_reference_id // transaction ID
+* 
+  * Tracks whether the last payment was successful. Examples: pending, success, failed. This is transaction-level.
+  * 
+Gateway transaction reference
+
+* plan is active or expired
+  * //payment_status //active, pending, canceled ->default('pending');
+  * payment_gateway //->default('stripe, ');
+  $tenant->next_billing_at = now()->addMonth(); // or add 3 months
+  
+  <!-- stripe_id string	Only if Stripe is used
+<!-- payment_gateway	string	'stripe', 'bkash', 'nagad', 'rocket' -->
+<!-- payment_status	enum	'active', 'pending', 'canceled' -->
+<!-- next_billing_at	timestamp	Next payment due date --> 
+
+
+  ## Payments Table
+  * Id
+  * user_id
+  * subscription_id
+  * amount
+  * payment_method
+  * status
+  * transaction_id
+  *  
+
+
+  ## Tenants Table
+  * Id - PK
+  * name - Company/store name
+  * subdomain - Unique subdomain (for SaaS)
+  * plan_id
+  * status_id
+  * 
+  $tenant->payment_status = 'success'; pending, success, failed // payment verified
+$tenant->plan_status = 'active';     // subscription is now active
+$tenant->next_billing_at = now()->addMonths(1); // or 3 for quarterly
+$tenant->save();
+
+### Grocery Demo Link
+
+    https://grocery.acnoo.xyz/business/sales/create
     
     <br/>
 
@@ -129,68 +314,140 @@ Piece	    pc	    1.0000
 
 💡 👉 📊 🧱 🛠 🎨 😎
 
-# Frontend Packages
 
 
-# Backend Packages
+```php
+Schema::create('units', function (Blueprint $table) {
+    $table->id();
+    $table->string('name');// Kilogram, Gram, Sack, Liter, Piece
+    $table->string('symbol');// kg, g, sack, l, pc
+    $table->decimal('conversion_to_base', 10, 4)->default(1);//conversion to base unit
+    $table->timestamps();
+});
+```
+
+<br/>
+
+** Examples:
+```sql
+---------------------------------------
+name	    symbol	conversion_to_base
+---------------------------------------
+Kilogram	kg	    1.0000
+Gram	    g	    0.0010
+Sack	    sack	50.0000
+Liter	    l	    1.0000
+Piece	    pc	    1.0000
+```
+
+💡 👉 📊 🧱 🛠 🎨 😎
+
+## Frontend Packages
+  * npm install vue-i18n  - for vue lang
+
+
+## Backend Packages
  *  view-toastification
      * https://vue-toastification.maronato.dev/
      * composer require nwidart/laravel-modules
  * 
 
 
-This is a normal page, which contains VuePress basics.
+## Documentation 
+  with VuePress.
 
 
 
-## Pages
-
-You can add markdown files in your vuepress directory, every markdown file will be converted to a page in your site.
-My  Laravel vue3 [laravue project ][laravue]project
-See [routing][] for more details.
-
-## Content
-
-Every markdown file [will be rendered to HTML, then converted to a Vue SFC][content].
-
-VuePress support basic markdown syntax and [some extensions][synatex-extensions], you can also [use Vue features][vue-feature] in it.
-
-## Configuration
-
-VuePress use a `.vuepress/config.js`(or .ts) file as [site configuration][config], you can use it to config your site.
-
-For [client side configuration][client-config], you can create `.vuepress/client.js`(or .ts).
-
-Meanwhile, you can also add configuration per page with [frontmatter][].
-
-## Layouts and customization
-
-Here are common configuration controlling layout of `@vuepress/theme-default`:
-
-- [navbar][]
-- [sidebar][]
-
-Check [default theme docs][default-theme] for full reference.
-
-You can [add extra style][style] with `.vuepress/styles/index.scss` file.
-
-[routing]: https://vuejs.press/guide/page.html#routing
-[content]: https://vuejs.press/guide/page.html#content
-[synatex-extensions]: https://vuejs.press/guide/markdown.html#syntax-extensions
-[vue-feature]: https://vuejs.press/guide/markdown.html#using-vue-in-markdown
-[config]: https://vuejs.press/guide/configuration.html#client-config-file
-[client-config]: https://vuejs.press/guide/configuration.html#client-config-file
-[frontmatter]: https://vuejs.press/guide/page.html#frontmatter
-[navbar]: https://vuejs.press/reference/default-theme/config.html#navbar
-[sidebar]: https://vuejs.press/reference/default-theme/config.html#sidebar
-[default-theme]: https://vuejs.press/reference/default-theme/
-[style]: https://vuejs.press/reference/default-theme/styles.html#style-file
-[laravue]:http://lara-vue-admin.test/component
+## Application Features and Table Schema
 
 
 
+# Controller Return Response Message Example 
 
+```php
+<?php
 
+namespace App\Http\Controllers;
+
+use App\Models\Customer;
+use Illuminate\Http\Request;
+
+class CustomerController extends Controller
+{
+          // No try/catch needed anymore: added in bootstrap/app.php
+          
+        // public function store(Request $request)        // {
+        //     $customer = Customer::create($request->validated());
+        //     return created_response('Customer', [
+        //         'data' => $customer
+        //     ]);
+        // }
+
+    // public function store(Request $request)
+    // {
+    //     try {
+    //         $customer = Customer::create($request->all());
+
+    //         return created_response('Customer', ['data' => $customer]);
+
+    //     } catch (\Exception $e) {
+    //         return failed_response(['errors' => ['exception' => $e->getMessage()]]);
+    //     }
+    // }
+
+  // DB Transatio Example
+  // public function storeUserWithProfile(Request $request)
+  // {
+  //     try {
+  //         $result = DB::transaction(function () use ($request) {
+
+  //             // 1. Create User
+  //             $user = User::create($request->only(['name', 'email', 'password']));        //           
+
+  //             // return all created data
+  //             return [
+  //                 'user' => $user,
+  //                 'profile' => $profile
+  //             ];
+  //         });
+
+  //         // Transaction succeeded → return professional response
+  //         return created_response('User', ['data' => $result]);
+
+  //     } catch (\Exception $e) {
+  //         // Transaction failed → rollback automatically
+  //         return failed_response([
+  //             'errors' => ['exception' => $e->getMessage()]
+  //         ]);
+  //     }
+  // }
+
+    public function update(Request $request, Customer $customer)
+    {
+        try {
+            $customer->update($request->all());
+
+            return updated_response('Customer', ['data' => $customer]);
+
+        } catch (\Exception $e) {
+            return failed_response(['errors' => ['exception' => $e->getMessage()]]);
+        }
+    }
+
+    public function destroy(Customer $customer)
+    {
+        try {
+            $customer->delete();
+
+            return deleted_response('Customer');
+
+        } catch (\Exception $e) {
+            return failed_response(['errors' => ['exception' => $e->getMessage()]]);
+        }
+    }
+}
+
+```php
 
 
 

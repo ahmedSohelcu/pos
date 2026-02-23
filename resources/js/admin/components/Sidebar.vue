@@ -19,7 +19,7 @@
         <ul class="sidebar-menu">
 
           <li
-            v-for="menu in menus"
+            v-for="menu in AdminMenus"
             :key="menu.key"
             class="menu-item"
           >
@@ -72,35 +72,35 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
-import { menus } from '../../data/sidebar-menus'
+  import { ref, watch } from 'vue'
+  import { useRoute } from 'vue-router'
+  import { AdminMenus } from '../../data/sidebar-menus'
 
-const route = useRoute()
-const openMenu = ref(null)
+  const route = useRoute()
+  const openMenu = ref(null)
 
-// ------------------
-// Helpers
-// ------------------
-const isMenuActive = (menu) => {
-  return menu.items.some(item => item.name === route.name)
-}
+  // ------------------
+  // Helpers
+  // ------------------
+  const isMenuActive = (menu) => {
+    return menu.items.some(item => item.name === route.name)
+  }
 
-const toggleSidebar = (key) => {
-  openMenu.value = openMenu.value === key ? null : key
-}
+  const toggleSidebar = (key) => {
+    openMenu.value = openMenu.value === key ? null : key
+  }
 
-// Auto open active menu
-watch(
-  () => route.name,
-  () => {
-    const activeMenu = menus.find(menu =>
-      menu.items.some(item => item.name === route.name)
-    )
-    openMenu.value = activeMenu ? activeMenu.key : null
-  },
-  { immediate: true }
-)
+  // Auto open active menu
+  watch(
+    () => route.name,
+    () => {
+      const activeMenu = AdminMenus.find(menu =>
+        menu.items.some(item => item.name === route.name)
+      )
+      openMenu.value = activeMenu ? activeMenu.key : null
+    },
+    { immediate: true }
+  )
 </script>
 
 <style scoped>

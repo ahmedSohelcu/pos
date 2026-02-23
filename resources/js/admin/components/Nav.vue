@@ -22,6 +22,25 @@
                 <i class="bi bi-search"></i>
                 </a>
             </li>
+            
+            <!--begin::Language Switch-->
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button">
+                    <i class="bi bi-globe me-2"></i> Language
+                </a>
+                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
+                    <a href="#" class="dropdown-item" @click.prevent="switchLanguage('en')">
+                        <span class="me-2 flag-united-states"></span> English (US)
+                    </a>
+                    <a href="#" class="dropdown-item" @click.prevent="switchLanguage('bn')">
+                        <span class="me-2 flag-bangladesh"></span> Bangla (BD)
+                    </a>
+                    <a href="#" class="dropdown-item" @click.prevent="switchLanguage('ar')">
+                        <span class="me-2 flag-saudi-arabia"></span> Arabic (SA)
+                    </a>
+                </div>
+            </li>
+            <!--end::Language Switch-->
             <!--end::Navbar Search-->
             <!--begin::Messages Dropdown Menu-->
             <li class="nav-item dropdown">
@@ -202,5 +221,11 @@
   
 <script setup>  
     
+  import { useI18n } from 'vue-i18n'
+  const { locale } = useI18n()
+
+  const switchLanguage = (lang) => {
+      locale.value = lang
+  }
 
 </script>

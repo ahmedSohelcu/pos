@@ -31,6 +31,27 @@ select2(window.$)
 //----------------------------------------
 
 
+//------------------------------------
+// language support
+//to call in vue {{ $t('welcome') }}
+//in blade {{@lang('welcome')}}
+//------------------------------------
+import { createI18n } from 'vue-i18n'
+import en from './lang/en'
+import bn from './lang/bn'
+
+const i18n = createI18n({
+    legacy: false,
+    locale: 'en',
+    fallbackLocale: 'en',
+    messages: {
+        en,
+        bn
+    }
+});
+
+
+
 
 const app = createApp(Master);
 
@@ -56,6 +77,10 @@ app.use(Toast, {
 
 app.use(createPinia());
 app.use(router);
+
+app.use(i18n)
+//------------------------------------
+
 app.mount('#app');
 
 
