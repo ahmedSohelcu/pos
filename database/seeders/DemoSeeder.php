@@ -5,13 +5,20 @@ namespace Database\Seeders;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Modules\Feature\database\seeders\FeatureSeeder;
 use Modules\Feature\database\seeders\PlanFeatureSeeder;
 use Illuminate\Support\Facades\DB;
+use Modules\Brand\database\seeders\BrandDatabaseSeeder;
+use Modules\Category\database\seeders\CategoryDatabaseSeeder;
+use Modules\Customer\database\seeders\CustomerDatabaseSeeder;
 use Modules\Payment\database\seeders\PaymentSeeder;
 use Modules\Plan\database\seeders\PlanSeeder;
+use Modules\Role\database\seeders\RoleDatabaseSeeder;
 use Modules\Tenant\database\seeders\TenantSeeder;
 use Modules\Subscription\database\seeders\SubscriptionSeeder;
+use Modules\Unit\database\seeders\UnitDatabaseSeeder;
 
 class DemoSeeder extends Seeder
 {
@@ -37,14 +44,19 @@ class DemoSeeder extends Seeder
         DB::statement("SET foreign_key_checks=1");
         //-------------------------------------------------------------
 
-
         // User::factory(10)->create();
 
-        // Clean table first
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        //-------------------------
+        // Create System Admin
+        //-------------------------
+        $user = User::create([
+                'name'              => config('settings.system_admin.name'),
+                'email'             => config('settings.system_admin.email'),
+                'password'          => bcrypt(config('settings.system_admin.email'),),
+                'email_verified_at' => now(),
+                'remember_token'    => Str::random(10)
+            ]);    
+        // User::factory()->create();
 
         $this->call([
             PlanSeeder::class,
@@ -53,6 +65,12 @@ class DemoSeeder extends Seeder
             TenantSeeder::class,
             SubscriptionSeeder::class,
             PaymentSeeder::class,
+            RoleDatabaseSeeder::class,
+            PermissioSeeder::class,
+            CategoryDatabaseSeeder::class,
+            BrandDatabaseSeeder::class,
+            UnitDatabaseSeeder::class,
+            CustomerDatabaseSeeder::class
         ]);
     }
 }

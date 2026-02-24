@@ -5,6 +5,8 @@ namespace Modules\Tenant\App\Providers;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Nwidart\Modules\Traits\PathNamespace;
+use Modules\Tenant\app\Providers\EventServiceProvider;
+use Modules\Tenant\app\Providers\RouteServiceProvider;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 
@@ -35,7 +37,7 @@ class TenantServiceProvider extends ServiceProvider
     public function register(): void
     {
         // $this->app->register(EventServiceProvider::class);
-        // $this->app->register(RouteServiceProvider::class);
+        $this->app->register(RouteServiceProvider::class);
     }
 
     /**

@@ -4,9 +4,9 @@ namespace Modules\Category\App\Providers;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Nwidart\Modules\Traits\PathNamespace;
 use Modules\Category\app\Providers\EventServiceProvider;
 use Modules\Category\app\Providers\RouteServiceProvider;
-use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 
@@ -35,8 +35,8 @@ class CategoryServiceProvider extends ServiceProvider
      * Register the service provider.
      */
     public function register(): void
-    {        
-        $this->app->register(EventServiceProvider::class);
+    {
+        // $this->app->register(EventServiceProvider::class);
         $this->app->register(RouteServiceProvider::class);
     }
 

@@ -4,23 +4,27 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Modules\Tenant\App\Models\Tenant;
+use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable
+class User extends BaseModel
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory,
+        HasRoles,
+        Notifiable;
 
     /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
      */
-    protected $fillable = [
+     protected $fillable = [
         'name',
         'email',
         'password',
+        'tenant_id', // important for multi-tenant
     ];
 
     /**
@@ -45,4 +49,23 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function tenant()
+    {
+        return $this->belongsTo(Tenant::class);
+    }
+
+
+    // Optional: Global scope by tenant
+    protected static function booted()
+    {
+        static::addGlobalScope('tenant', function ($query) {
+            if (auth()->check()) {
+                $query->where('tenant_id', auth()->user()->tenant_id);
+            }
+        });
+    }
+
+
+    
 }

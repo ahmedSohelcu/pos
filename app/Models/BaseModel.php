@@ -3,11 +3,13 @@
 namespace App\Models;
 
 use App\Filters\FilterBuilder;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Container\Attributes\Auth;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 // use Illuminate\Database\Eloquent\SoftDeletes;
 
-class BaseModel extends Model
+class BaseModel extends Authenticatable
 {
     // use SoftDeletes;
 

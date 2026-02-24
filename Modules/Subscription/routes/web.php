@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use Modules\Subscription\Http\Controllers\SubscriptionController;
+// use Illuminate\Support\Facades\Route;
+// // use Modules\Role\App\Http\Controllers\Api\RoleController;
 
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::resource('subscriptions', SubscriptionController::class)->names('subscription');
-});
+
+// // Route::middleware(['auth', 'verified'])->group(function () {
+// //     Route::resource('roles', RoleController::class)->names('role');
+// // });

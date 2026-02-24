@@ -5,6 +5,7 @@
 💡  👉  📊  🧱  🛠  🎨  😎 
 
 * php artisan module:make Feature
+* php artisan module:make Category Brand Customer Unit
 * php artisan module:make-migration create_features_table Feature
 * pa module:make-model Feature Feature
 * php artisan module:make-migration create_plan_features_table Feature
@@ -32,10 +33,16 @@
   
 
 # Todo
+  * Seed Roles & Permissions Per Tenant
+  * assign Role & Permissions to Users
+  * Protect Routes / API
+  * Optional: Tie Features to Permissions
+
   * laravel response handler
   * Everything Tenant Based 
   * Role Permission
-  * Subscription
+  * 
+  
 
 # Table List
   * User
@@ -153,7 +160,7 @@
   * orders
   * order_items
   * stock_movements
-  * transactions
+  * transactions - these table later
   * tenants
   * settings
 
@@ -263,7 +270,7 @@ Gateway transaction reference
 <!-- next_billing_at	timestamp	Next payment due date --> 
 
 
-  ## Payments Table
+  ## Payments Table -d
   * Id
   * user_id
   * subscription_id
@@ -274,7 +281,7 @@ Gateway transaction reference
   *  
 
 
-  ## Tenants Table
+  ## Tenants Table -d
   * Id - PK
   * name - Company/store name
   * subdomain - Unique subdomain (for SaaS)
@@ -354,6 +361,7 @@ Piece	    pc	    1.0000
  *  view-toastification
      * https://vue-toastification.maronato.dev/
      * composer require nwidart/laravel-modules
+     * composer require spatie/laravel-permission
  * 
 
 

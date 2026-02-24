@@ -5,5 +5,8 @@
     "Feature": true,
     "Tenant": true,
     "Subscription": true,
-    "Payment": true
+    "Payment": true,
+    "Role": true,
+    "Customer": true,
+    "Unit": true
 }

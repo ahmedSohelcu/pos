@@ -4,9 +4,8 @@ namespace Modules\Brand\App\Providers;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
-use Nwidart\Modules\Traits\PathNamespace;
-use Modules\Brand\app\Providers\EventServiceProvider;
 use Modules\Brand\app\Providers\RouteServiceProvider;
+use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 
@@ -36,7 +35,7 @@ class BrandServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->register(EventServiceProvider::class);
+        // $this->app->register(EventServiceProvider::class);
         $this->app->register(RouteServiceProvider::class);
     }
 
