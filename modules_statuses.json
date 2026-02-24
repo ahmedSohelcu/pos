@@ -4,5 +4,6 @@
     "Plan": true,
     "Feature": true,
     "Tenant": true,
-    "Subscription": true
+    "Subscription": true,
+    "Payment": true
 }

@@ -19,7 +19,7 @@ class TenantSeeder extends Seeder
         $tenants = [
             [
                 'name' => 'Rahim Super Shop',
-                'slug' => 'rahim-super-shop',
+                'subdomain' => 'rahim-super-shop',
                 'email' => 'rahim@example.com',
                 'phone' => '01711111111',
                 'address' => '123 Market Street',
@@ -28,7 +28,7 @@ class TenantSeeder extends Seeder
             ],
             [
                 'name' => 'Karim Pharmacy',
-                'slug' => 'karim-pharmacy',
+                'subdomain' => 'karim-pharmacy',
                 'email' => 'karim@example.com',
                 'phone' => '01722222222',
                 'address' => '45 Health Road',

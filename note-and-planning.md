@@ -10,6 +10,10 @@
 * php artisan module:make-migration create_plan_features_table Feature
 * php artisan module:make-migration add_tenant_id_to_user_table Tenant
 
+### Laravel make auto index for unique, foreign key
+
+# $payment->invoice_no = 'INV-' . now()->format('Ymd') . '-' . str_pad($payment->id, 5, '0', STR_PAD_LEFT);
+
 
 # Index
   * Todo  * 
@@ -225,7 +229,7 @@ If the data:
   * feature_id
   * limit - int
 
-  ## Subscription Table
+  ## Subscription Table -d 
   * id
   * tenant_id
   * plan_id

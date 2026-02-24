@@ -8,6 +8,7 @@ use Illuminate\Database\Seeder;
 use Modules\Feature\database\seeders\FeatureSeeder;
 use Modules\Feature\database\seeders\PlanFeatureSeeder;
 use Illuminate\Support\Facades\DB;
+use Modules\Payment\database\seeders\PaymentSeeder;
 use Modules\Plan\database\seeders\PlanSeeder;
 use Modules\Tenant\database\seeders\TenantSeeder;
 use Modules\Subscription\database\seeders\SubscriptionSeeder;
@@ -50,7 +51,8 @@ class DemoSeeder extends Seeder
             FeatureSeeder::class,
             PlanFeatureSeeder::class,
             TenantSeeder::class,
-            SubscriptionSeeder::class
+            SubscriptionSeeder::class,
+            PaymentSeeder::class,
         ]);
     }
 }

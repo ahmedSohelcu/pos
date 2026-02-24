@@ -15,10 +15,23 @@ return new class extends Migration
             $table->id();
 
             // 🔹 Business Info
-            $table->string('name')->comment('Shop/Business name');                // Shop/Business name
-            $table->string('slug')->unique()->nullable()->comment('subdomain or unique identifier');      // subdomain or unique identifier
-            $table->string('email')->unique()->nullable()->comment('Business email');
-            $table->string('phone')->nullable()->nullable()->comment('Business phone');
+            $table->string('name')
+                ->comment('Shop/Business name');    // Shop/Business name
+                
+            $table->string('subdomain')
+                ->unique()
+                ->nullable()
+                ->comment('subdomain or unique identifier');      // subdomain or unique identifier
+            
+            $table->string('email')
+                ->unique()
+                ->nullable()
+                ->comment('Business email');
+
+            $table->string('phone')
+                ->nullable()
+                ->comment('Business phone')
+                ->index(); // ✅ add index for faster search;
 
             // 🔹 Address
             $table->string('address')->nullable();
