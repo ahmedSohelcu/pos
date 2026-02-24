@@ -7,6 +7,8 @@
 
             {{ $t('items', 5) }}
 
+            {{ $t('user_create', 5) }}
+
         <button class="btn btn-danger" @click="showModal = true">
           Show Modal
         </button>
