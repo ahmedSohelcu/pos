@@ -23,6 +23,7 @@ class PermissioSeeder extends Seeder
             ['name' => 'user_edit',   'guard_name' => 'api', 'tenant_id' => null],
             ['name' => 'user_delete', 'guard_name' => 'api', 'tenant_id' => null],
             ['name' => 'user_view',   'guard_name' => 'api', 'tenant_id' => null],
+            //full user modules permission need to add
         ];
 
         // 2️⃣ Collect module permissions

@@ -12,7 +12,7 @@ class MakeService extends Command
                             {name : The service class name}
                             {--module= : Optional module name}';
 
-    protected $description = 'Create a service class in main app or module';
+    protected $description = 'Create a service class in main app or module, extends BaseService, injects model automatically';
 
     public function handle(): int
     {
@@ -26,7 +26,6 @@ class MakeService extends Command
         $module = $this->option('module');
 
         if ($module) {
-
             $module = Str::studly($module);
             $modulePath = base_path("Modules/{$module}");
 
@@ -38,10 +37,16 @@ class MakeService extends Command
             $path = "{$modulePath}/app/Services";
             $namespace = "Modules\\{$module}\\Services";
 
-        } else {
+            // Guess model class: if service = TenantService, model = Tenant
+            $modelName = str_replace('Service', '', $name);
+            $modelNamespace = "Modules\\{$module}\\App\\Models\\{$modelName}";
 
+        } else {
             $path = app_path('Services');
             $namespace = "App\\Services";
+
+            $modelName = str_replace('Service', '', $name);
+            $modelNamespace = "App\\Models\\{$modelName}";
         }
 
         // Ensure directory exists
@@ -56,7 +61,7 @@ class MakeService extends Command
             return Command::FAILURE;
         }
 
-        $stub = $this->buildClass($namespace, $name);
+        $stub = $this->buildClass($namespace, $name, $modelNamespace, $modelName);
 
         File::put($filePath, $stub);
 
@@ -66,21 +71,29 @@ class MakeService extends Command
         return Command::SUCCESS;
     }
 
-    protected function buildClass(string $namespace, string $name): string
+    protected function buildClass(string $namespace, string $name, string $modelNamespace, string $modelName): string
     {
         return <<<PHP
 <?php
 
 namespace {$namespace};
 
-class {$name}
+use App\Services\Core\BaseService;
+use {$modelNamespace};
+
+class {$name} extends BaseService
 {
-    public function __construct()
+    public function __construct({$modelName} \${$this->camelCase($modelName)})
     {
-        //
+        \$this->model = \${$this->camelCase($modelName)};
     }
 }
 
 PHP;
+    }
+
+    protected function camelCase(string $string): string
+    {
+        return lcfirst($string);
     }
 }

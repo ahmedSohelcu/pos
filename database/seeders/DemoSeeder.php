@@ -52,6 +52,7 @@ class DemoSeeder extends Seeder
         $user = User::create([
                 'name'              => config('settings.system_admin.name'),
                 'email'             => config('settings.system_admin.email'),
+                'user_type'         => 'super_admin',
                 'password'          => bcrypt(config('settings.system_admin.email'),),
                 'email_verified_at' => now(),
                 'remember_token'    => Str::random(10)

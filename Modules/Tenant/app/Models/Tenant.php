@@ -2,13 +2,14 @@
 
 namespace Modules\Tenant\App\Models;
 
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\Subscription\app\Models\Subscription;
 
 // use Modules\Tenant\Database\Factories\TenantFactory;
 
-class Tenant extends Model
+class Tenant extends BaseModel
 {
     use HasFactory;
 

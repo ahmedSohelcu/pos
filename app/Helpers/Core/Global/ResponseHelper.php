@@ -9,6 +9,19 @@ if (!function_exists('created_responses')) {
     }
 }
 
+//For fetch data
+if (!function_exists('success_response')) {
+    function success_response($message, $data = [], $status = 200)
+    {
+        return response()->json([
+            'status'  => 'success',
+            'message' => $message,
+            'data'    => $data,
+        ], $status);
+    }
+}
+
+
 
 if (!function_exists('updated_responses')) {
     function updated_responses($name, $data = [])

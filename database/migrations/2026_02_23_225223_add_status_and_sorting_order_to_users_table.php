@@ -11,8 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->foreignId('status_id')->after('email_verified_at')->nullable()->constrained('statuses');
+        Schema::table('users', function (Blueprint $table) {            
+            $table->enum('user_type',['super_admin', 'tenant_user', 'tenant_customer'])
+                ->nullable()
+                ->default('tenant_user')
+                ->after('email_verified_at')
+                ->comment('super_admin, tenant_user, tenant_customer');
+
+            $table->foreignId('status_id')->after('user_type')->nullable()->constrained('statuses');
             $table->integer('sorting_order')->after('status_id')->nullable();
         });
     }
@@ -24,7 +30,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropForeign(['status_id']);
-            $table->dropColumn(['status_id', 'sorting_order']);
+            $table->dropColumn(['status_id', 'sorting_order', 'user_type']);
         });
     }
 };

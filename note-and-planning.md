@@ -11,6 +11,14 @@
 * php artisan module:make-migration create_plan_features_table Feature
 * php artisan module:make-migration add_tenant_id_to_user_table Tenant
 
+  ### vue file or module with command
+  * php artisan make:vue admin/test
+  * php artisan make:vue-module users
+    * will create modules in js/admin folder
+
+  ### make service
+    * php artisan make:service Tenant --module=Tenant
+
 ### Laravel make auto index for unique, foreign key
 
 # $payment->invoice_no = 'INV-' . now()->format('Ymd') . '-' . str_pad($payment->id, 5, '0', STR_PAD_LEFT);
@@ -28,25 +36,32 @@
   * Create Vue File
   * Command List
   * Controller return response Example
-  * Table list
+  * Table / crud list
     
   
 
 # Todo
-  * Seed Roles & Permissions Per Tenant
   * assign Role & Permissions to Users
   * Protect Routes / API
   * Optional: Tie Features to Permissions
-
   * laravel response handler
   * Everything Tenant Based 
   * Role Permission
   * 
   
 
-# Table List
+# Crud List
+  * Tenants
   * User
+  * Role 
+  * Permission
+  * Brand
+  * Category
+  * Feature
   * Plan
+  * Subscription
+  * Unit 
+  * Customer
 
 ---
 #### ✅ Frontend Technologies

@@ -1,18 +1,28 @@
 <?php
 
-namespace Modules\Tenant\app\Http\Controllers\Api;
+namespace Modules\Tenant\App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Modules\Tenant\app\Services\TenantService;
 
 class TenantController extends Controller
-{
-    /**
-     * Display a listing of the resource.
-     */
+{   
+    protected $service;    
+
+    public function __construct(TenantService $tenantService)
+    {
+        $this->service = $tenantService;
+    }
     public function index()
     {
-        return view('tenant::index');
+        try {
+            $tenants = $this->service->all();
+                // $tenants = Tenant::paginate($request->per_page ?? 10);
+            return success_response('Tenant List', $tenants);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     /**
