@@ -15,6 +15,7 @@ class TenantService extends BaseService
     public function all()
     {
         return $this->model
+            ->filters(request()->filters ?? [])
             ->paginate(request('per_page', 10));
     }
 }

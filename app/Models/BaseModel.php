@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Filters\FilterBuilder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Container\Attributes\Auth;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 // use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -29,8 +28,16 @@ class BaseModel extends Authenticatable
         return $query->where('is_active', $value);
     }
 
-    public function scopeFilters($query, FilterBuilder $filter): Builder
+    public function scopeFilters($query, $filter)
     {
+        if (is_array($filter)) {
+            $filter = new FilterBuilder($filter); // or your base filter
+        }
+
+        if (!$filter instanceof FilterBuilder) {
+            throw new \InvalidArgumentException("Filters must be a FilterBuilder instance or array.");
+        }
+
         return $filter->apply($query);
     }
 

@@ -42,7 +42,14 @@ const columns = [
   },
   { name: 'phone', label: 'Phone', sortable: true },
   { name: 'address', label: 'Address', sortable: true },
-  { name: 'created_at', label: 'Created At', sortable: true },
+  {
+    name: 'created_at',
+    label: 'Created At',
+    sortable: true,
+    custom: (row) => {
+      return new Date(row.created_at).toLocaleString();
+    },
+  },
   {
     name: 'status',
     label: 'Status',

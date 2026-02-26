@@ -10,16 +10,20 @@ export default function useApiTable(endpoint) {
     search: '',
     page: 1,
     perPage: 10,
+    filters: {},
   });
 
   const fetchData = async () => {
     try {
-        loading.value = true;
-        const response = await axios.get(endpoint, {
+      loading.value = true;
+      const response = await axios.get(endpoint, {
         params: {
           search: query.value.search,
           page: query.value.page,
           per_page: query.value.perPage,
+          filters: {
+            ...query.value.filters,
+          },
         },
       });
 
@@ -44,6 +48,7 @@ export default function useApiTable(endpoint) {
 
   const handleQueryChange = (value) => {
     query.value = value;
+    console.log('Updated Query:', query.value);
     fetchData();
   };
 

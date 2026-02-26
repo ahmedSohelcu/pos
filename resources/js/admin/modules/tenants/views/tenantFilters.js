@@ -29,9 +29,9 @@ export const tenantFilters = [
   //     type: 'datetime'
   // },
   // {
-  //     name: 'date_range',
-  //     label: 'Date Range',
-  //     type: 'datetimerange'
+  //   name: 'date_range',
+  //   label: 'Date Range',
+  //   type: 'datetimerange',
   // },
   // Support types: date, time, datetime, datetimerange
 ];

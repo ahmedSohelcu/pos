@@ -22,37 +22,51 @@ class FilterBuilder
     /**
      * Apply filters to query
      */
-    public function apply(Builder $query): Builder
+    public function apply(Builder $query)
     {
+
         // Generic search filter (across multiple fields)
-        if (!empty($this->filters['search'])) {
+        if (!empty(request()->search)) {
             $query->where(function ($q) {
-                foreach (['name', 'email'] as $field) { // default fields, can override in child
-                    $q->orWhere($field, 'like', '%' . $this->filters['search'] . '%');
+                foreach (['name', 'email', 'phone'] as $field) { // default fields, can override in child
+                    $q->orWhere($field, 'like', '%' . request()->search . '%');
                 }
             });
         }
+        
+        // Created at filter
+        if (!empty($this->filters['created_at'])) {
+            $query->whereDate('created_at', $this->filters['created_at']);
+        }
+        
+        // Status filter
+        if (!empty($this->filters['status_id'])) {
+            $query->where('status_id', $this->filters['status_id']);
+        }
 
+        // dd(request()->all());
+
+            
         // Active status filter
-        if (isset($this->filters['is_active'])) {
-            $query->where('is_active', $this->filters['is_active']);
-        }
+        // if (isset($this->filters['is_active'])) {
+        //     $query->where('is_active', $this->filters['is_active']);
+        // }
 
-        // Date range filters
-        if (!empty($this->filters['created_from'])) {
-            $query->whereDate('created_at', '>=', $this->filters['created_from']);
-        }
+        // // Date range filters
+        // if (!empty($this->filters['created_from'])) {
+        //     $query->whereDate('created_at', '>=', $this->filters['created_from']);
+        // }
 
-        if (!empty($this->filters['created_to'])) {
-            $query->whereDate('created_at', '<=', $this->filters['created_to']);
-        }
+        // if (!empty($this->filters['created_to'])) {
+        //     $query->whereDate('created_at', '<=', $this->filters['created_to']);
+        // }
 
-        // Optional: other generic filters
-        foreach ($this->filters as $key => $value) {
-            if (!in_array($key, ['search', 'is_active', 'created_from', 'created_to']) && $value !== null) {
-                $query->where($key, $value);
-            }
-        }
+        // // Optional: other generic filters
+        // foreach ($this->filters as $key => $value) {
+        //     if (!in_array($key, ['search', 'is_active', 'created_from', 'created_to']) && $value !== null) {
+        //         $query->where($key, $value);
+        //     }
+        // }
 
         return $query;
     }

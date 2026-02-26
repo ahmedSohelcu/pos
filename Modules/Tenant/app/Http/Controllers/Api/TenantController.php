@@ -18,7 +18,6 @@ class TenantController extends Controller
     {
         try {
             $tenants = $this->service->all();
-                // $tenants = Tenant::paginate($request->per_page ?? 10);
             return success_response('Tenant List', $tenants);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
