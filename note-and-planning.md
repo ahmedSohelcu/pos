@@ -1,139 +1,147 @@
-
 ----------------------------------
 # 🚀 Grocery SaaS app need to concern about 🚀
-----------------------------------
-💡  👉  📊  🧱  🛠  🎨  😎 
+---
 
-* php artisan module:make Feature
-* php artisan module:make Category Brand Customer Unit
-* php artisan module:make-migration create_features_table Feature
-* pa module:make-model Feature Feature
-* php artisan module:make-migration create_plan_features_table Feature
-* php artisan module:make-migration add_tenant_id_to_user_table Tenant
+---
+
+💡 👉 📊 🧱 🛠 🎨 😎
+
+### All essential command
+
+- php artisan module:make Feature
+- php artisan module:make Category Brand Customer Unit
+- php artisan module:make-migration create_features_table Feature
+- pa module:make-model Feature Feature
+- php artisan module:make-migration create_plan_features_table Feature
+- php artisan module:make-migration add_tenant_id_to_user_table Tenant
+- pa module:make-request TenantRequest Tenant
 
   ### vue file or module with command
-  * php artisan make:vue admin/test
-  * php artisan make:vue-module users
-    * will create modules in js/admin folder
+  - php artisan make:vue admin/test
+  - php artisan make:vue-module users
+    - will create modules in js/admin folder
 
   ### make service
-    * php artisan make:service Tenant --module=Tenant
+  - php artisan make:service Tenant --module=Tenant
+
+  ### make trait
+  - pa make:trait Requests/CommonRules
+
+### Requet for module
+
+- pa module:make-request TenantRequest Tenant
 
 ### Laravel make auto index for unique, foreign key
 
 # $payment->invoice_no = 'INV-' . now()->format('Ymd') . '-' . str_pad($payment->id, 5, '0', STR_PAD_LEFT);
 
-
 # Index
-  * Todo  * 
-  * Frontend Technologies
-  * Backend Technologies
-  * Grocery Demo Link
-  * Application Features and Table Schema
-  * Frontend Packages
-  * Backend Packages
-  * Create Service For main app and modules
-  * Create Vue File
-  * Command List
-  * Controller return response Example
-  * Table / crud list
-    
-  
+
+- Todo \*
+- Frontend Technologies
+- Backend Technologies
+- Grocery Demo Link
+- Application Features and Table Schema
+- Frontend Packages
+- Backend Packages
+- Create Service For main app and modules
+- Create Vue File
+- Command List
+- Controller return response Example
+- Table / crud list
 
 # Todo
-  * assign Role & Permissions to Users
-  * Protect Routes / API
-  * Optional: Tie Features to Permissions
-  * laravel response handler
-  * Everything Tenant Based 
-  * Role Permission
-  * 
-  
+
+- assign Role & Permissions to Users
+- Protect Routes / API
+- Optional: Tie Features to Permissions
+- laravel response handler
+- Everything Tenant Based
+- Role Permission
+-
 
 # Crud List
-  * Tenants
-  * User
-  * Role 
-  * Permission
-  * Brand
-  * Category
-  * Feature
-  * Plan
-  * Subscription
-  * Unit 
-  * Customer
+
+- Tenants
+- User
+- Role
+- Permission
+- Brand
+- Category
+- Feature
+- Plan
+- Subscription
+- Unit
+- Customer
 
 ---
+
 #### ✅ Frontend Technologies
+
 ---
-* Vue 3 (Composition API)
-* Pinia
-* Bootstrap 5.3
-* Axios
-* Vite
-* vue-quill
-* flatpickr - for daterange picker
-* select2
-* sweetalert2
-* vue router
-* vue toastification    
-* ziggy-js ( to use route from vue file)
-* 
----
+
+- Vue 3 (Composition API)
+- Pinia
+- Bootstrap 5.3
+- Axios
+- Vite
+- vue-quill
+- flatpickr - for daterange picker
+- select2
+- sweetalert2
+- vue router
+- vue toastification
+- ziggy-js ( to use route from vue file)
+- ***
+
 #### ✅ Backend Technologies
----  
 
-* Laravel 12 [Documentation](https://laravel.com/)
-  
-* Module package [nwidart/laravel-modules](https://nwidart.com/laravel-modules/v6/introduction)
-  * 
-    #### nwidart Module Commands List [click here][modulecommand]
+---
 
-    [modulecommand]: https://nwidart.com/laravel-modules/v6/advanced-tools/artisan-commands
+- Laravel 12 [Documentation](https://laravel.com/)
+- Module package [nwidart/laravel-modules](https://nwidart.com/laravel-modules/v6/introduction)
+  - #### nwidart Module Commands List [click here][modulecommand]
 
+    ## [modulecommand]: https://nwidart.com/laravel-modules/v6/advanced-tools/artisan-commands
 
-
-    * 
-     
-* Sanctum
-* 01.DB transaction
-* 02.row locking
-* 03.stock validation at checkout
-* 04.overselling prevention
+- Sanctum
+- 01.DB transaction
+- 02.row locking
+- 03.stock validation at checkout
+- 04.overselling prevention
 
 <br>
 
 # Command List
 
-  ### 01. Create Service For main app and modules
+### 01. Create Service For main app and modules
+
       01. php artisan make:service TestService
-    
+
       02. php artisan make:service Product --module=Product
-      
-       
-  ### 02. Create Vue File
+
+### 02. Create Vue File
+
     01. php artisan make:vue admin/pages/Ahmed
-          
+
         will create file in js/admin/pages/Ahmed. vue
-     
 
-  ### 03. Laravel Module Command   
-  
-  * Module package [nwidart/laravel-modules](https://nwidart.com/laravel-modules/v6/introduction)
-    * php artisan module:make <module-name>
-    * php artisan module:make Blog User Auth
-    * php artisan module:make Blog --plain (only module)
-    * php artisan module:list
-    * php artisan module:migrate-rollback Blog    
-    * php artisan module:v6:migrate
-    * php artisan module:seed Blog
-    * php artisan module:publish-config Blog
-    * php artisan module:publish-translation Blog
-    * php artisan module:enable Blog
-    * php artisan module:disable Blog
-    * php artisan module:update Blog
-    * php artisan module:make-command CreatePostCommand Blog
+### 03. Laravel Module Command
 
+- Module package [nwidart/laravel-modules](https://nwidart.com/laravel-modules/v6/introduction)
+  - php artisan module:make <module-name>
+  - php artisan module:make Blog User Auth
+  - php artisan module:make Blog --plain (only module)
+  - php artisan module:list
+  - php artisan module:migrate-rollback Blog
+  - php artisan module:v6:migrate
+  - php artisan module:seed Blog
+  - php artisan module:publish-config Blog
+  - php artisan module:publish-translation Blog
+  - php artisan module:enable Blog
+  - php artisan module:disable Blog
+  - php artisan module:update Blog
+  - php artisan module:make-command CreatePostCommand Blog
 
 ### Grocery Demo Link
 
@@ -142,42 +150,45 @@
 
     https://readypos.razinsoft.com/purchase/list
 
-  ```  
-    <br/>  
+```
 
- ## Application Features and Table Schema
-  💡  👉  📊  🧱  🛠  🎨  😎 
+    <br/>
 
-  # Translated Tables needed for
-  * categories
-  * category_translations
-  * sub_categories
-  * sub_category_translations
-  * products
-  * product_translations
-  * brands
-  * brand_translations
-  * units
-  * unit_translations
-  * payment_methods
-  * payment_method_translations
-  * expense_types
-  * expense_type_translations
+## Application Features and Table Schema
+
+💡 👉 📊 🧱 🛠 🎨 😎
+
+# Translated Tables needed for
+
+- categories
+- category_translations
+- sub_categories
+- sub_category_translations
+- products
+- product_translations
+- brands
+- brand_translations
+- units
+- unit_translations
+- payment_methods
+- payment_method_translations
+- expense_types
+- expense_type_translations
 
   <br>
 
 # ❌ DO NOT CREATE Translation Tables For
 
-  * users
-  * roles
-  * permissions
-  * subscriptions
-  * orders
-  * order_items
-  * stock_movements
-  * transactions - these table later
-  * tenants
-  * settings
+- users
+- roles
+- permissions
+- subscriptions
+- orders
+- order_items
+- stock_movements
+- transactions - these table later
+- tenants
+- settings
 
 🧠 Rule You Should Always Follow
 
@@ -197,121 +208,123 @@ If the data:
 
 → DO NOT translate in DB.
 
-  ### New Tables or Extara Column Need to Add
+### New Tables or Extara Column Need to Add
 
-  ## languages Table
-  - id
-  - name (English, Bangla)
-  - code (en, bn)
-  - direction (ltr, rtl)
-  - is_default (boolean)
-  - is_active (boolean)
-  - created_at
-  - updated_at
+## languages Table
 
-  ## Users Table
-  * Role  
-  * status_id
-  * tenant_id
-  * language_id  ← user’s preferred language //If language_id is null → use languages.is_default
+- id
+- name (English, Bangla)
+- code (en, bn)
+- direction (ltr, rtl)
+- is_default (boolean)
+- is_active (boolean)
+- created_at
+- updated_at
 
-  ## Roles Table
-  * id
-  * name
-  * description
-  * status
-  * tenant_id
-    
+## Users Table
 
-  ## Permissions Table
-  * * id
-  * name - e.g., view_orders, manage_products
-  * description
-  * status
+- Role
+- status_id
+- tenant_id
+- language_id ← user’s preferred language //If language_id is null → use languages.is_default
 
-  ## role_permissions
-  * id
-  * role_id
-  * permission_id
-    
+## Roles Table
 
-  ## user_roles
-  * id
-  * user_id
-  * role_id
+- id
+- name
+- description
+- status
+- tenant_id
 
-  ## featres - d
+## Permissions Table
+
+- - id
+- name - e.g., view_orders, manage_products
+- description
+- status
+
+## role_permissions
+
+- id
+- role_id
+- permission_id
+
+## user_roles
+
+- id
+- user_id
+- role_id
+
+## featres - d
+
     * Id
     * name
     * description
 
-  ## plan_features - d
-  * Id
-  * plan_id
-  * feature_id
-  * limit - int
+## plan_features - d
 
-  ## Subscription Table -d 
-  * id
-  * tenant_id
-  * plan_id
-  * start_date - date
-  * end_date - date
-  * status
-  * gateway_ref_id
-* // subscriptions table
-tenant_id
-plan_id
-payment_gateway // stripe/bkash/nagad
-payment_status // pending/active/canceled
-amount
-start_date
-end_date
-next_billing_at
-gateway_reference_id // transaction ID
-* 
-  * Tracks whether the last payment was successful. Examples: pending, success, failed. This is transaction-level.
-  * 
-Gateway transaction reference
+- Id
+- plan_id
+- feature_id
+- limit - int
 
-* plan is active or expired
-  * //payment_status //active, pending, canceled ->default('pending');
-  * payment_gateway //->default('stripe, ');
-  $tenant->next_billing_at = now()->addMonth(); // or add 3 months
-  
-  <!-- stripe_id string	Only if Stripe is used
-<!-- payment_gateway	string	'stripe', 'bkash', 'nagad', 'rocket' -->
-<!-- payment_status	enum	'active', 'pending', 'canceled' -->
-<!-- next_billing_at	timestamp	Next payment due date --> 
+## Subscription Table -d
 
+- id
+- tenant_id
+- plan_id
+- start_date - date
+- end_date - date
+- status
+- gateway_ref_id
+- // subscriptions table
+  tenant_id
+  plan_id
+  payment_gateway // stripe/bkash/nagad
+  payment_status // pending/active/canceled
+  amount
+  start_date
+  end_date
+  next_billing_at
+  gateway_reference_id // transaction ID
+- - Tracks whether the last payment was successful. Examples: pending, success, failed. This is transaction-level.
+  - Gateway transaction reference
+
+- plan is active or expired
+  - //payment_status //active, pending, canceled ->default('pending');
+  - payment_gateway //->default('stripe, ');
+    $tenant->next_billing_at = now()->addMonth(); // or add 3 months
+
+      <!-- stripe_id string	Only if Stripe is used
+    <!-- payment_gateway	string	'stripe', 'bkash', 'nagad', 'rocket' -->
+    <!-- payment_status	enum	'active', 'pending', 'canceled' -->
+    <!-- next_billing_at	timestamp	Next payment due date -->
 
   ## Payments Table -d
-  * Id
-  * user_id
-  * subscription_id
-  * amount
-  * payment_method
-  * status
-  * transaction_id
-  *  
-
+  - Id
+  - user_id
+  - subscription_id
+  - amount
+  - payment_method
+  - status
+  - transaction_id
+  -
 
   ## Tenants Table -d
-  * Id - PK
-  * name - Company/store name
-  * subdomain - Unique subdomain (for SaaS)
-  * plan_id
-  * status_id
-  * 
-  $tenant->payment_status = 'success'; pending, success, failed // payment verified
-$tenant->plan_status = 'active';     // subscription is now active
-$tenant->next_billing_at = now()->addMonths(1); // or 3 for quarterly
+  - Id - PK
+  - name - Company/store name
+  - subdomain - Unique subdomain (for SaaS)
+  - plan_id
+  - status_id
+  - $tenant->payment_status = 'success'; pending, success, failed // payment verified
+$tenant->plan_status = 'active'; // subscription is now active
+    $tenant->next_billing_at = now()->addMonths(1); // or 3 for quarterly
 $tenant->save();
 
 ### Grocery Demo Link
 
     https://grocery.acnoo.xyz/business/sales/create
-    
+
     <br/>
 
 ```php
@@ -326,7 +339,8 @@ Schema::create('units', function (Blueprint $table) {
 
 <br/>
 
-** Examples:
+\*\* Examples:
+
 ```sql
 ---------------------------------------
 name	    symbol	conversion_to_base
@@ -340,8 +354,6 @@ Piece	    pc	    1.0000
 
 💡 👉 📊 🧱 🛠 🎨 😎
 
-
-
 ```php
 Schema::create('units', function (Blueprint $table) {
     $table->id();
@@ -354,7 +366,8 @@ Schema::create('units', function (Blueprint $table) {
 
 <br/>
 
-** Examples:
+\*\* Examples:
+
 ```sql
 ---------------------------------------
 name	    symbol	conversion_to_base
@@ -369,29 +382,26 @@ Piece	    pc	    1.0000
 💡 👉 📊 🧱 🛠 🎨 😎
 
 ## Frontend Packages
-  * npm install vue-i18n  - for vue lang
 
+- npm install vue-i18n - for vue lang
 
 ## Backend Packages
- *  view-toastification
-     * https://vue-toastification.maronato.dev/
-     * composer require nwidart/laravel-modules
-     * composer require spatie/laravel-permission
- * 
 
+- view-toastification
+  - https://vue-toastification.maronato.dev/
+  - composer require nwidart/laravel-modules
+  - composer require spatie/laravel-permission
+-
 
-## Documentation 
-  with VuePress.
+## Documentation
 
-
+with VuePress.
 
 ## Application Features and Table Schema
 
+# Controller Return Response Message Example
 
-
-# Controller Return Response Message Example 
-
-```php
+````php
 <?php
 
 namespace App\Http\Controllers;
@@ -402,7 +412,7 @@ use Illuminate\Http\Request;
 class CustomerController extends Controller
 {
           // No try/catch needed anymore: added in bootstrap/app.php
-          
+
         // public function store(Request $request)        // {
         //     $customer = Customer::create($request->validated());
         //     return created_response('Customer', [
@@ -429,7 +439,7 @@ class CustomerController extends Controller
   //         $result = DB::transaction(function () use ($request) {
 
   //             // 1. Create User
-  //             $user = User::create($request->only(['name', 'email', 'password']));        //           
+  //             $user = User::create($request->only(['name', 'email', 'password']));        //
 
   //             // return all created data
   //             return [
@@ -544,4 +554,4 @@ https://dummyjson.com/products
       "thumbnail": "https://cdn.dummyjson.com/product-images/beauty/essence-mascara-lash-princess/thumbnail.webp"
     },
 ]
-```
+````

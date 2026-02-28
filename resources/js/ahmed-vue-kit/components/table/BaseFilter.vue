@@ -1,8 +1,6 @@
-
 <template>
   <!-- Compact POS-style Filter Card -->
   <div v-if="filters.length" class="filter-pos-card">
-
     <!-- Header: Filter title + toggle chevron -->
     <div
       class="filter-card-header d-flex justify-content-between align-items-center"
@@ -14,7 +12,6 @@
 
     <!-- Body: Filters, Actions, Active Chips -->
     <div v-show="!collapsed" class="filter-card-body">
-
       <!-- Filters Row -->
       <div class="row g-2 align-items-end">
         <div
@@ -52,7 +49,10 @@
           <button class="btn btn-primary btn-sm" @click="emitFilter">
             <i class="fas fa-filter me-1"></i> Apply
           </button>
-          <button class="btn btn-outline-secondary btn-sm" @click="resetFilters">
+          <button
+            class="btn btn-outline-secondary btn-sm"
+            @click="resetFilters"
+          >
             <i class="fas fa-undo me-1"></i> Reset
           </button>
         </div>
@@ -70,88 +70,89 @@
           <i class="fas fa-times ms-1"></i>
         </span>
       </div>
-
     </div>
   </div>
 </template>
 
 <script setup>
-    import { reactive, watch, ref, computed } from 'vue'
+import { reactive, watch, ref, computed } from 'vue';
 
-    const props = defineProps({
-    filters: { type: Array, required: true }
-    })
+const props = defineProps({
+  filters: { type: Array, required: true },
+});
 
-    const emit = defineEmits(['filter-change'])
+const emit = defineEmits(['filter-change']);
 
-    const form = reactive({})
-    const collapsed = ref(false)
-    const toggleCollapse = () => (collapsed.value = !collapsed.value)
+const form = reactive({});
+const collapsed = ref(false);
+const toggleCollapse = () => (collapsed.value = !collapsed.value);
 
-    // Initialize filter form with defaults
-    watch(
-    () => props.filters,
-    (newFilters) => {
-        newFilters.forEach(f => {
-        form[f.name] = f.multiple ? (f.default || []) : (f.default || '')
-        })
-    },
-    { immediate: true }
-    )
+// Initialize filter form with defaults
+watch(
+  () => props.filters,
+  (newFilters) => {
+    newFilters.forEach((f) => {
+      form[f.name] = f.multiple ? f.default || [] : f.default || '';
+    });
+  },
+  { immediate: true }
+);
 
-    // Auto emit on form changes
-    watch(
-    () => JSON.stringify(form),
-    () => emit('filter-change', { ...form })
-    )
+// Auto emit on form changes
+watch(
+  () => JSON.stringify(form),
+  () => emit('filter-change', { ...form })
+);
 
-    // Manual apply
-    const emitFilter = () => emit('filter-change', { ...form })
+// Manual apply
+const emitFilter = () => emit('filter-change', { ...form });
 
-    // Reset all filters
-    const resetFilters = () => {
-    props.filters.forEach(f => {
-        form[f.name] = f.multiple ? [] : ''
-    })
-    emitFilter()
+// Reset all filters
+const resetFilters = () => {
+  props.filters.forEach((f) => {
+    form[f.name] = f.multiple ? [] : '';
+  });
+
+  // emit filters + reset flag
+  emit('filter-change', { ...form }, true);
+};
+
+// Active filters for chips
+const activeFilters = computed(() => {
+  const actives = {};
+  Object.keys(form).forEach((key) => {
+    if (form[key] !== '' && form[key] !== null && form[key] !== undefined) {
+      if (Array.isArray(form[key]) && form[key].length === 0) return;
+      actives[key] = form[key];
     }
+  });
+  return actives;
+});
 
-    // Active filters for chips
-    const activeFilters = computed(() => {
-    const actives = {}
-    Object.keys(form).forEach(key => {
-        if (form[key] !== '' && form[key] !== null && form[key] !== undefined) {
-        if (Array.isArray(form[key]) && form[key].length === 0) return
-        actives[key] = form[key]
-        }
-    })
-    return actives
-    })
+// Remove individual filter
+const removeFilter = (key) => {
+  const filter = props.filters.find((f) => f.name === key);
+  form[key] = filter?.multiple ? [] : '';
+  emitFilter();
+};
 
-    // Remove individual filter
-    const removeFilter = (key) => {
-    const filter = props.filters.find(f => f.name === key)
-    form[key] = filter?.multiple ? [] : ''
-    emitFilter()
-    }
+// Helper to get filter label
+const getFilterLabel = (key) => {
+  const filter = props.filters.find((f) => f.name === key);
+  return filter?.label || key;
+};
 
-    // Helper to get filter label
-    const getFilterLabel = (key) => {
-    const filter = props.filters.find(f => f.name === key)
-    return filter?.label || key
-    }
-
-    // Helper to format filter value for display
-    const formatFilterValue = (key, value) => {
-    if (Array.isArray(value)) return value.join(', ')
-    return value
-    }
+// Helper to format filter value for display
+const formatFilterValue = (key, value) => {
+  if (Array.isArray(value)) return value.join(', ');
+  return value;
+};
 </script>
 
 <style scoped>
 .filter-pos-card {
   border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0,0,0,.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   background-color: var(--bs-white);
   transition: all 0.2s ease;
 }

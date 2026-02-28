@@ -1,85 +1,83 @@
 <script setup>
-    
-    import { computed } from 'vue'
+import { computed } from 'vue';
 
-    /**
-     * Props for the BaseInput component
-     * @typedef {Object} BaseInputProps
-     * @property {String|Number} modelValue - The value of the input
-     * @property {String} [label] - The label for the input
-     * @property {String} [type=text] - The type of the input (e.g. text, email, password, etc.)
-     * @property {String} [error] - The error message to display
-     * @property {String} [placeholder] - The placeholder text for the input
-     */
-    const props = defineProps({
-        modelValue: {
-            type: [String, Number],
-            default: '',
-        },                
-        label: {
-            type: String,
-            default: ''
-        },
-        name: {
-            type: String,
-            default: ''
-        },
-        type: {
-            type: String,
-            default: 'text'
-        },       
-        placeholder: {
-            type: String,
-            default: ''
-        },
-        disabled: {
-            type: Boolean,
-            default: false
-        },    
-        error: {
-            type: String,
-            default: ''
-        },
-        customClass: {
-            type: String,
-            default: ''
-        },
-        size: {
-            type: String,
-            default: 'md',
-            validator: v => ['sm','md','lg'].includes(v)
-        }
-    })
+/**
+ * Props for the BaseInput component
+ * @typedef {Object} BaseInputProps
+ * @property {String|Number} modelValue - The value of the input
+ * @property {String} [label] - The label for the input
+ * @property {String} [type=text] - The type of the input (e.g. text, email, password, etc.)
+ * @property {String} [error] - The error message to display
+ * @property {String} [placeholder] - The placeholder text for the input
+ */
+const props = defineProps({
+  modelValue: {
+    type: [String, Number],
+    default: '',
+  },
+  label: {
+    type: String,
+    default: '',
+  },
+  name: {
+    type: String,
+    default: '',
+  },
+  type: {
+    type: String,
+    default: 'text',
+  },
+  placeholder: {
+    type: String,
+    default: '',
+  },
+  disabled: {
+    type: Boolean,
+    default: false,
+  },
+  error: {
+    type: String,
+    default: '',
+  },
+  customClass: {
+    type: String,
+    default: '',
+  },
+  size: {
+    type: String,
+    default: 'md',
+    validator: (v) => ['sm', 'md', 'lg'].includes(v),
+  },
+});
 
-    /**
-     * Emits an event to update the modelValue
-     * @param {String|Number} value - The new value of the input
-     */
-    const emit = defineEmits(['update:modelValue'])
+/**
+ * Emits an event to update the modelValue
+ * @param {String|Number} value - The new value of the input
+ */
+const emit = defineEmits(['update:modelValue']);
 
-    const sizeClass = computed(() => {
-        return props.size === 'md' ? '' : `form-control-${props.size}`
-    })
+const sizeClass = computed(() => {
+  return props.size === 'md' ? '' : `form-control-${props.size}`;
+});
 </script>
 
 <template>
   <div class="mb-3">
     <label v-if="label" class="form-label">{{ label }}</label>
-    
+
     <input
-      :type="type"      
+      :type="type"
       :placeholder="placeholder"
       :value="modelValue"
       :class="['form-control', sizeClass, { 'is-invalid': error }, customClass]"
       :disabled="disabled"
       @input="emit('update:modelValue', $event.target.value)"
     />
-
-    <small v-if="error" class="text-danger">{{ error }}</small>
+    <!-- first error -->
+    <small v-if="error" class="text-danger">{{ error[0] }}</small>
   </div>
 </template>
 
-    
 <!-- 
     Example how to use the component
     
@@ -96,4 +94,6 @@ const form = reactive({
     :error="errors.username"
     @update:modelValue="val => name = val"
 />
+
+
 -->

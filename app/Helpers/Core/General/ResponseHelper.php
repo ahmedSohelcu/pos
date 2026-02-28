@@ -39,11 +39,19 @@ class ResponseHelper
         ], $data);
     }
 
-    public function failedResponse($data = [])
+    public function failedResponse($name, $data = [])
     {
+        // return [
+        //     'status' => false,
+        //     'message' => trans('default.failed_response')
+        // ];
+
         return array_merge([
             'status' => false,
-            'message' => trans('default.failed_response')
+            'message' => trans('default.failed_response', [
+//                'name' => __t($name),
+                'name' => $name
+            ])
         ], $data);
     }
 

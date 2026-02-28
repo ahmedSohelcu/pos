@@ -1,29 +1,65 @@
 <template>
   <div class="container-fluid">
     <BaseTable
-      label="User Management"
+      label="Tenant Management"
       :columns="columns"
-      :rows="rows"
-      :show-search="true"
-      :actions="tenantActions"
+      :rows="tenantStore.rows"
+      :loading="tenantStore.loading"
+      :meta="tenantStore.meta"
       :filters="tenantFilters"
-      @query-change="handleQueryChange"
+      :actions="tenantActions"
+      @query-change="tenantStore.updateQuery"
+      @create="createFromTableBtn"
+      @refresh="tenantStore.fetchData"
+      @bulk-delete="tenantStore.bulkDelete"
     />
+
+    <BaseModal
+      v-model="tenantStore.showModal"
+      size="lg"
+      :loading="tenantStore.loading"
+      confirmVariant="outline-success"
+      cancelVariant="outline-danger"
+      :centered="true"
+      @confirm="createOrUpate"
+      @close="closeModal"
+      :title="tenantStore.mode === 'edit' ? '' : 'Create Tenant'"
+      :confirmText="tenantStore.mode === 'edit' ? 'Update' : 'Create'"
+    >
+      <TenantForm
+        :model="tenantStore.selectedItem"
+        :errors="tenantStore.errors"
+      />
+    </BaseModal>
   </div>
 </template>
 
 <script setup>
 import { ref, reactive, computed, onMounted } from 'vue';
-import useApiTable from '../../../../ahmed-vue-kit/composables/useApiTable';
 import { tenantFilters } from './tenantFilters';
-import { tenantActions } from './tenantActions';
+import { getTenantActions } from './tenantActions';
+const showModal = ref(false);
+// store
+import { useTenantStore } from '../store';
+import BaseModal from '@kit/components/ui/BaseModal.vue';
+import { error } from 'jquery';
+import { route } from 'ziggy-js';
+import TenantForm from './TenantForm.vue';
 
-const { query, rows, loading, meta, fetchData, handleQueryChange } =
-  useApiTable('http://lara-vue-admin.test/api/v1/tenants');
+const tenantStore = useTenantStore();
 
-onMounted(async () => {
-  await fetchData();
+const closeModal = () => {
+  tenantStore.loading = false;
+};
+// fetch data
+onMounted(() => {
+  tenantStore.fetchData();
 });
+
+//-------------------------
+//load table actions button
+//-------------------------
+const tenantActions = getTenantActions(tenantStore);
 
 const columns = [
   { name: 'id', label: 'ID', sortable: true },
@@ -38,7 +74,7 @@ const columns = [
     label: 'Email',
     sortable: true,
     custom: (row) =>
-      `<button class='btn btn-sm btn-primary'>${row.email}</button>`,
+      `<button class='btn btn-sm btn-outline-successs'>${row.email}</button>`,
   },
   { name: 'phone', label: 'Phone', sortable: true },
   { name: 'address', label: 'Address', sortable: true },
@@ -51,14 +87,36 @@ const columns = [
     },
   },
   {
-    name: 'status',
+    name: 'status_id',
     label: 'Status',
     sortable: true,
     custom: (row) => {
-      return `<span class="badge bg-${row.status === 'active' ? 'success' : 'danger'}">${row.status}</span>`;
+      return `<span class="badge bg-${row.status?.class ?? 'secondary'}">${row.status?.name ?? ''}</span>`;
     },
   },
 ];
+
+const createOrUpate = async () => {
+  tenantStore.errors = {};
+  if (tenantStore.mode === 'edit') {
+    await tenantStore.update(
+      route('api.tenants.update', tenantStore.selectedItem.id),
+      tenantStore.selectedItem
+    );
+  } else {
+    await tenantStore.create(
+      route('api.tenants.store'),
+      tenantStore.selectedItem
+    );
+  }
+};
+
+const createFromTableBtn = () => {
+  tenantStore.mode = 'create';
+  tenantStore.errors = {};
+  tenantStore.selectedItem = {};
+  tenantStore.showModal = true;
+};
 </script>
 
 <style scoped></style>

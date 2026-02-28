@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Core;
 
 use App\Filters\FilterBuilder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -39,6 +39,11 @@ class BaseModel extends Authenticatable
         }
 
         return $filter->apply($query);
+    }
+
+    public function scopeSort($query)
+    {
+        return $query->orderBy(request('sort_column', 'id'), request('sort_direction', 'asc'));
     }
 
     // Optional: format price helper

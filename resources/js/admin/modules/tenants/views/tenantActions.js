@@ -1,29 +1,42 @@
-export const tenantActions = [
+// tenantActions.js
+import { confirmDelete } from '@kit/composables/useDelete';
+
+export const getTenantActions = (tenantStore) => [
   {
-    label: 'View',
-    handler: (row) => alert(`View: ${row.name}`),
-  },
-  {
-    label: 'Edit',
+    label: (row) => {
+      return `<i class="fas fa-plus-circle text-success me-2"></i>Create`;
+    },
     handler: (row) => {
-      console.log('Edit:', row);
+      tenantStore.mode = 'create';
+      tenantStore.errors = {};
+      tenantStore.selectedItem = {}; // reset form
+      tenantStore.showModal = true;
     },
   },
   {
-    label: 'Delete',
-    handler: (row) => alert(`Delete: ${row.name}`),
-  },
-  {
-    label: (row) =>
-      `Message <button class="btn btn-sm btn-warning">(${row.id})</button>`,
-    handler: (row) => {
-      console.log('Message clicked', row);
+    label: '<i class="fas fa-edit text-warning me-2"></i> Edit',
+    handler: async (row) => {
+      tenantStore.showModal = true;
+      tenantStore.errors = {};
+      tenantStore.mode = 'edit';
+      await tenantStore.show(
+        row.id,
+        'http://lara-vue-admin.test/api/v1/tenants'
+      );
+
+      console.log('tenantStore.selectedItem', tenantStore.selectedItem);
     },
   },
   {
-    label: 'Go To Home',
-    handler: (row) => {
-      router.push('/');
+    label: '<i class="fas fa-trash text-danger me-2"></i> Delete',
+    handler: async (row) => {
+      await confirmDelete({
+        apiUrl: `http://lara-vue-admin.test/api/v1/tenants/${row.id}`,
+        confirmTitle: `Delete ${row.name}?`,
+        onSuccess: () => {
+          tenantStore.fetchData(); // 🔥 correct refresh
+        },
+      });
     },
   },
 ];

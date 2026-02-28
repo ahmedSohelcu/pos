@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Models\Status;
+use App\Models\Core\Status;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Modules\Tenant\app\Models\Tenant;
 
 class StatusController extends Controller
 {
@@ -14,9 +16,12 @@ class StatusController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function selectableStatuses()
+    public function selectableStatuses($type = null)
     {
-        return Status::query()->select('id', 'name')->get();
+        return Status::query()
+            ->where('type', $type)
+            ->select('id', 'name')
+            ->get();
     }
     /**
      * Display a listing of the resource.

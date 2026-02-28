@@ -12,7 +12,8 @@ Route::get('/user', function (Request $request) {
 
 
 Route::prefix('v1')->group(function () {
-    Route::get('selectable-statuses', [StatusController::class, 'selectableStatuses'])->name('selectable_statuses');
+    Route::get('selectable-statuses/{type?}', [StatusController::class, 'selectableStatuses'])
+        ->name('selectable_statuses');
 });
 
 

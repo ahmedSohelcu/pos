@@ -44,8 +44,6 @@ class FilterBuilder
             $query->where('status_id', $this->filters['status_id']);
         }
 
-        // dd(request()->all());
-
             
         // Active status filter
         // if (isset($this->filters['is_active'])) {

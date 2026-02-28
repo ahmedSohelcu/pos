@@ -39,9 +39,14 @@ if (!function_exists('deleted_responses')) {
 }
 
 if (!function_exists('failed_responses')) {
-    function failed_responses($data = [])
+    function failed_responses($name, $data = [])
     {
-        return resolve(ResponseHelper::class)->failedResponse($data);
+        return [
+            'status' => false,
+            'message' => trans('default.failed_response')
+        ];
+
+        // return resolve(ResponseHelper::class)->failedResponse($name, $data);
     }
 }
 

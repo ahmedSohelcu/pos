@@ -1,241 +1,345 @@
 <script setup>
-    import { ref, computed, onMounted, onBeforeUnmount, nextTick, watch } from 'vue'
-    import api from '../../api/api'
+import {
+  ref,
+  computed,
+  onMounted,
+  onBeforeUnmount,
+  nextTick,
+  watch,
+} from 'vue';
+
+import api from '../../api/api';
 
 const props = defineProps({
-    modelValue: {
-        type: [String, Number, Array],
-        default: ''
-    },
-    label: String,
-    name: String,
-    options: {
-        type: Array,
-        default: () => []
-    },
-    getApiRoute: String,
-    optionKeyName: {
-        type: String,
-        default: 'name'
-    },
-    placeholder: {
-        type: String,
-        default: 'Select an option'
-    },
-    error: String,
-    disabled: Boolean,
-    select2: Boolean,
-    multiple: Boolean,
-    customClass: String,
-})
+  modelValue: { type: [String, Number, Array], default: '' },
+  label: String,
+  name: String,
+  options: { type: Array, default: () => [] },
+  getApiRoute: String,
+  optionKeyName: { type: String, default: 'name' },
+  placeholder: { type: String, default: 'Select an option' },
+  error: String,
+  disabled: Boolean,
+  select2: Boolean,
+  multiple: Boolean,
+  customClass: String,
+  visible: { type: Boolean, default: true },
+  infinite: { type: Boolean, default: false }, // ✅ enable infinite scroll
+});
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue']);
 
-const selectRef = ref(null)
-const optionsRef = ref([])
-const loadingRef = ref(false)
-let selectInstance = null
+const selectRef = ref(null);
+const optionsRef = ref([]);
+const loadingRef = ref(false);
+let selectInstance = null;
+
+const finalOptions = computed(() =>
+  props.options.length ? props.options : optionsRef.value
+);
 
 // ==========================
-// Load Options (API)
+// Load all options (non-infinite)
 // ==========================
 const loadOptions = async () => {
-    if (!props.getApiRoute) return
-
-    loadingRef.value = true
-    try {
-        const res = await api.get(props.getApiRoute)
-        optionsRef.value = res.data
-    } finally {
-        loadingRef.value = false
-    }
-}
-
-const finalOptions = computed(() => {
-    return props.options.length ? props.options : optionsRef.value
-})
+  if (!props.getApiRoute || props.infinite) return;
+  loadingRef.value = true;
+  try {
+    const res = await api.get(props.getApiRoute);
+    optionsRef.value = res.data;
+  } finally {
+    loadingRef.value = false;
+  }
+};
 
 // ==========================
-// Init Select2 (SAFE)
+// Init Select2
 // ==========================
 const initSelect2 = async () => {
-    if (!props.select2 || !selectRef.value) return
+  if (!props.select2 || !selectRef.value) return;
+  await nextTick();
 
-    await nextTick()
+  const $select = window.$(selectRef.value);
+  const $modalParent = $select.closest('.modal');
 
-    const $select = window.$(selectRef.value)
+  if ($select.hasClass('select2-hidden-accessible')) $select.select2('destroy');
 
-    // Prevent duplicate init
-    if ($select.hasClass('select2-hidden-accessible')) {
-        $select.select2('destroy')
+  const select2Options = {
+    placeholder: props.placeholder,
+    allowClear: !props.multiple,
+    width: '100%',
+    closeOnSelect: !props.multiple,
+    dropdownParent: $modalParent.length ? $modalParent : undefined,
+  };
+
+  // ==========================
+  // Infinite scroll configuration
+  // ==========================
+  if (props.infinite && props.getApiRoute) {
+    select2Options.ajax = {
+      url: props.getApiRoute,
+      dataType: 'json',
+      delay: 250,
+      data: (params) => ({ q: params.term, page: params.page || 1 }),
+      processResults: (data, params) => {
+        params.page = params.page || 1;
+        return {
+          results: data.data.map((item) => ({
+            id: item.id,
+            text: item[props.optionKeyName],
+          })),
+          pagination: { more: params.page < data.meta.last_page },
+        };
+      },
+      cache: true,
+    };
+    select2Options.minimumInputLength = 1;
+  }
+
+  selectInstance = $select.select2(select2Options);
+
+  // Set initial value safely
+  if (props.infinite) {
+    $select.val(props.modelValue).trigger('change');
+  } else {
+    $select.val(props.modelValue).trigger('change.select2');
+  }
+
+  // Sync with v-model
+  $select.on('change.select2', function () {
+    const value = props.multiple ? $(this).val() || [] : $(this).val();
+    if (JSON.stringify(value) !== JSON.stringify(props.modelValue)) {
+      emit('update:modelValue', value);
     }
-
-    selectInstance = $select.select2({
-        placeholder: props.placeholder,
-        allowClear: !props.multiple,
-        width: '100%',
-        closeOnSelect: !props.multiple
-    })
-
-    // Set initial value safely
-    $select.val(props.modelValue).trigger('change.select2')
-
-    // Sync with v-model
-    $select.on('change.select2', function () {
-        const value = props.multiple
-            ? ($(this).val() || [])
-            : $(this).val()
-
-        if (JSON.stringify(value) !== JSON.stringify(props.modelValue)) {
-            emit('update:modelValue', value)
-        }
-    })
-}
+  });
+};
 
 // ==========================
-// Destroy Select2 (IMPORTANT)
+// Destroy Select2
 // ==========================
 const destroySelect2 = () => {
-    if (!props.select2 || !selectRef.value) return
-
-    const $select = window.$(selectRef.value)
-
-    if ($select.hasClass('select2-hidden-accessible')) {
-        $select.off('change.select2')
-        $select.select2('destroy')
-    }
-
-    selectInstance = null
-}
+  if (!props.select2 || !selectRef.value) return;
+  const $select = window.$(selectRef.value);
+  if ($select.hasClass('select2-hidden-accessible')) {
+    $select.off('change.select2');
+    $select.select2('destroy');
+  }
+  selectInstance = null;
+};
 
 // ==========================
-// Watch modelValue
+// Watchers
 // ==========================
 watch(
-    () => props.modelValue,
-    async (val) => {
-        if (!props.select2 || !selectRef.value) return
+  () => props.modelValue,
+  (val) => {
+    if (!props.select2 || !selectRef.value) return;
+    const $select = window.$(selectRef.value);
+    const currentVal = $select.val();
+    if (JSON.stringify(currentVal) !== JSON.stringify(val))
+      $select.val(val).trigger('change.select2');
+  }
+);
 
-        const $select = window.$(selectRef.value)
-        const currentVal = $select.val()
-
-        if (JSON.stringify(currentVal) !== JSON.stringify(val)) {
-            $select.val(val).trigger('change.select2')
-        }
-    }
-)
-
-// ==========================
-// Watch options change
-// ==========================
 watch(
-    () => JSON.stringify(finalOptions.value),
-    async () => {
-        if (!props.select2) return
+  () => JSON.stringify(finalOptions.value),
+  async () => {
+    if (!props.select2 || props.infinite) return;
+    destroySelect2();
+    await nextTick();
+    initSelect2();
+  }
+);
 
-        destroySelect2()
-        await nextTick()
-        initSelect2()
+watch(
+  () => props.visible,
+  async (val) => {
+    if (!props.select2 || !selectRef.value) return;
+    if (val) {
+      await nextTick();
+      initSelect2();
+    } else {
+      destroySelect2();
     }
-)
+  }
+);
 
 // ==========================
 // Lifecycle
 // ==========================
 onMounted(async () => {
-    await loadOptions()
-    await nextTick()
-
-    if (props.select2) {
-        initSelect2()
-    }
-})
+  await loadOptions();
+  await nextTick();
+  if (props.select2) initSelect2();
+});
 
 onBeforeUnmount(() => {
-    destroySelect2()
-})
+  destroySelect2();
+});
 </script>
 
 <template>
-    <div class="mb-2 me-2 justify-content-between">
-        <label v-if="label" class="form-label">
-            {{ label }}
-        </label>
+  <div class="mb-2 me-2 justify-content-between">
+    <label v-if="label" class="form-label">{{ label }}</label>
 
-        <select
-            ref="selectRef"
-            :name="name"
-            :multiple="multiple"
-            :disabled="disabled"
-            :class="[
-                'form-selects',
-                customClass,
-                { 'is-invalid': error }
-            ]"
-            @change="!select2 && emit(
-                'update:modelValue',
-                multiple
-                    ? Array.from($event.target.selectedOptions).map(o => o.value)
-                    : $event.target.value
-            )"
-        >
-            <option
-                v-if="!multiple"
-                value=""
-                disabled
-            >
-                {{ loadingRef ? 'Loading...' : placeholder }}
-            </option>
+    <select
+      ref="selectRef"
+      :name="name"
+      :multiple="multiple"
+      :disabled="disabled"
+      :class="['form-selects', customClass, { 'is-invalid': error }]"
+      @change="
+        !select2 &&
+        emit(
+          'update:modelValue',
+          multiple
+            ? Array.from($event.target.selectedOptions).map((o) => o.value)
+            : $event.target.value
+        )
+      "
+    >
+      <option v-if="!multiple" value="" disabled>
+        {{ loadingRef ? 'Loading...' : placeholder }}
+      </option>
 
-            <option
-                v-for="option in finalOptions ?? []"
-                :key="option.id"
-                :value="option.id"
-            >
-                {{ option[optionKeyName] }}
-            </option>
-        </select>
+      <option
+        v-for="option in finalOptions ?? []"
+        :key="option.id"
+        :value="option.id"
+      >
+        {{ $t ? $t(option[optionKeyName]) : option[optionKeyName] }}
+      </option>
+    </select>
 
-        <small v-if="error" class="text-danger">
-            {{ error }}
-        </small>
-
-    </div>
+    <small v-if="error" class="text-danger">{{ error[0] }}</small>
+  </div>
 </template>
 
 <style>
-    /* Increase Select2 height */
-    .select2-container .select2-selection--single {
-        height: 35px !important;
-        /* padding: 8px 12px; */
-    }
+/* Base professional styling for Select2 */
+.select2-container--default .select2-selection--single {
+  background-color: #fff;
+  border: 1px solid #ced4da;
+  border-radius: 8px;
+  height: 40px !important;
+  padding: 5px 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
 
-    .select2-container .select2-selection--single .select2-selection__rendered {
-        line-height: 35px !important;
-    }
+.select2-container--default .select2-selection--single:focus,
+.select2-container--default .select2-selection--single:hover {
+  border-color: #86b7fe;
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
 
-    .select2-container .select2-selection--single .select2-selection__arrow {
-        height: 35px !important;
-    }
+.select2-container--default
+  .select2-selection--single
+  .select2-selection__rendered {
+  line-height: 30px !important;
+  font-size: 0.95rem;
+  color: #495057;
+}
 
-    /* Multiple Select height */
-    .select2-container .select2-selection--multiple {
-        min-height: 35px !important;
-        /* padding: 5px; */
-    }
+.select2-container--default
+  .select2-selection--single
+  .select2-selection__arrow {
+  height: 40px !important;
+  right: 10px;
+}
 
-    .form-label {
-        color: #6c757d;
-        text-transform: uppercase;
-        font-size: 14px;
-        font-weight: 600;
-        color: #344767;
-        margin-bottom: 6px;
-        letter-spacing: 0.3px;
-    }
+/* Multiple select look */
+.select2-container--default .select2-selection--multiple {
+  min-height: 40px !important;
+  border-radius: 8px;
+  padding: 5px 8px;
+  border: 1px solid #ced4da;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
 
+.select2-container--default
+  .select2-selection--multiple
+  .select2-selection__choice {
+  background-color: #0d6efd;
+  border: none;
+  color: #fff;
+  padding: 3px 10px;
+  font-size: 0.85rem;
+  border-radius: 6px;
+  margin-top: 3px;
+}
+
+.select2-container--default
+  .select2-selection--multiple
+  .select2-selection__choice__remove {
+  color: #fff;
+  margin-right: 4px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.select2-container--default
+  .select2-selection--multiple
+  .select2-selection__choice__remove:hover {
+  color: #ffc107;
+}
+
+/* Dropdown menu */
+.select2-container--default .select2-dropdown {
+  border-radius: 8px;
+  border: 1px solid #ced4da;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.select2-container--default .select2-results__option--highlighted {
+  background-color: #0d6efd;
+  color: white;
+}
+
+/* Multiple select look with black text */
+.select2-container--default
+  .select2-selection--multiple
+  .select2-selection__choice {
+  background-color: #0d6efd; /* keep blue background */
+  border: none;
+  color: #000; /* black font */
+  padding: 3px 10px;
+  font-size: 0.85rem;
+  border-radius: 6px;
+  margin-top: 3px;
+}
+
+.select2-container--default
+  .select2-selection--multiple
+  .select2-selection__choice__remove {
+  color: #000; /* black remove icon */
+  margin-right: 4px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.select2-container .select2-search--inline .select2-search__field {
+  height: 22px !important;
+}
+
+/* Multiple Select height */
+.select2-container .select2-selection--multiple {
+  min-height: 35px !important;
+  /* padding: 5px; */
+}
+
+.form-label {
+  color: #6c757d;
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 600;
+  color: #344767;
+  margin-bottom: 6px;
+  letter-spacing: 0.3px;
+}
 </style>
-
 <!-- 
     ---------------
     How to use

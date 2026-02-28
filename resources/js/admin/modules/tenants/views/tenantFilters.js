@@ -5,12 +5,8 @@ export const tenantFilters = [
     type: 'select',
     select2: true, // 🔥 enable select2
     multiple: false, // single select
-    options: [
-      { id: 1, type: 'active' },
-      { id: 2, type: 'inactive' },
-    ],
-    getApiRoute: route('selectable_statuses'),
-    optionKeyName: 'type',
+    getApiRoute: route('selectable_statuses', { type: 'user' }),
+    optionKeyName: 'name',
     // optionValueName: 'label'
   },
   {

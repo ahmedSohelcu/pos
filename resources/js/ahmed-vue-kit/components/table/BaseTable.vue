@@ -17,7 +17,8 @@
         <div class="d-flex align-items-center gap-3 flex-wrap">
           <div>
             <h5 class="mb-1 fw-bold table-title">
-              {{ label || 'Data Management' }}
+              <!-- {{ $t(label || 'Data Management') }} -->
+              {{ $t(label || 'data_management') }}
             </h5>
             <div class="table-subtitle">
               <span class="me-3"
@@ -38,6 +39,7 @@
               v-model="search"
               type="text"
               placeholder="Search records..."
+              class="form-control form-control-sm"
             />
           </div>
 
@@ -45,11 +47,11 @@
             <i class="fas fa-plus me-1"></i> New
           </button>
 
-          <button class="btn btn-sm btn-light border" @click="$emit('refresh')">
+          <!-- <button class="btn btn-sm btn-light border" @click="$emit('refresh')">
             <i class="fas fa-rotate-right"></i>
-          </button>
+          </button> -->
 
-          <div class="dropdown">
+          <!-- <div class="dropdown">
             <button
               class="btn btn-sm btn-light border"
               data-bs-toggle="dropdown"
@@ -69,7 +71,7 @@
                 </label>
               </li>
             </ul>
-          </div>
+          </div> -->
 
           <div class="btn-group btn-group-sm">
             <button
@@ -207,7 +209,8 @@
     <div class="card-footer bg-white border-0">
       <div class="d-flex justify-content-between align-items-center">
         <BaseTableEntities v-model="query.perPage" />
-        <BaseTablePagination v-model="query.page" :last-page="lastPage" />
+
+        <BaseTablePagination v-model="query.page" :last-page="meta.last_page" />
       </div>
     </div>
   </div>
@@ -228,9 +231,15 @@ const props = defineProps({
   actionLabel: { type: String, default: 'Action' },
   loading: { type: Boolean, default: false },
   showSearch: { type: Boolean, default: true },
-  perPage: { type: Number, default: 10 },
-  page: { type: Number, default: 1 },
-  lastPage: { type: Number, default: 1 },
+  meta: {
+    type: Object,
+    default: () => ({
+      current_page: 1,
+      last_page: 1,
+      per_page: 10,
+      total: 0,
+    }),
+  },
 });
 
 /* ================= EMITS ================= */
@@ -248,8 +257,8 @@ const emit = defineEmits([
 const query = reactive({
   search: '',
   filters: {},
-  perPage: props.perPage,
-  page: props.page,
+  perPage: props.meta.per_page,
+  page: props.meta.current_page,
 });
 const sort = reactive({ column: null, direction: null });
 const visibleColumns = ref([...props.columns]);
@@ -258,6 +267,15 @@ const search = ref('');
 let debounce = null;
 
 /* ================= WATCHERS ================= */
+watch(
+  () => props.meta,
+  (newMeta) => {
+    query.page = newMeta.current_page;
+    query.perPage = newMeta.per_page;
+  },
+  { deep: true }
+);
+
 watch(
   [query, sort],
   () => {
@@ -279,20 +297,31 @@ watch(search, (val) => {
 });
 
 /* ================= METHODS ================= */
-const handleFilterChange = (filters) => {
+const handleFilterChange = (filters, isReset = false) => {
   query.filters = filters;
   query.page = 1;
+
+  if (isReset) {
+    query.search = '';
+    search.value = '';
+  }
 };
+
 const handleSort = (col) => {
   if (!col.sortable) return;
-  sort.column = sort.column !== col.name ? col.name : sort.column;
-  sort.direction =
-    sort.column !== col.name
-      ? 'asc'
-      : sort.direction === 'asc'
-        ? 'desc'
-        : 'asc';
+
+  if (sort.column !== col.name) {
+    // new column
+    sort.column = col.name;
+    sort.direction = 'asc';
+  } else {
+    // toggle
+    sort.direction = sort.direction === 'asc' ? 'desc' : 'asc';
+  }
+
+  query.page = 1; // reset page when sorting
 };
+
 const toggleSelectAll = (e) => {
   selectedRows.value = e.target.checked ? [...props.rows] : [];
 };
@@ -396,11 +425,11 @@ const toggleColumn = (col) => {
 
 // How to use
         <BaseTable
-            :last-page="meta.last_page"
             :loading="form.loading"
             @query-change="handleQuery"
             label="User Management"
             :columns="columns"
+            :meta="meta"
             :rows="users"
             :actions="actions"
             :filters="filters"
@@ -410,10 +439,24 @@ const toggleColumn = (col) => {
             @bulk-delete="(selected)=>alert('Delete bulk: ' + selected.map(r=>r.name).join(', '))"
         />
 
+
+        //---------------
+        // Meta example
+        //---------------
+          const meta = ref({
+            current_page: 1,
+            last_page: 1,
+            per_page: 10,
+            total: 0,
+            from: null,
+            to: null,
+          });
+
+
         // Data
-        //---------------------
-        //01.  for table heading
-        //---------------------
+        //----------------------------------------
+        //01. For columns Name and modify row data
+        //-----------------------------------------
         // supports name,label and width
         
         //Column supports custom to modify the rows data
@@ -454,11 +497,12 @@ const toggleColumn = (col) => {
         //-------------------------------------
             i. Action support label as Plain Text
             ii. Action support label as HTML
-            iii. Action support label as Function and login
+            iii. Action support label as Function and logic
 
             const actions = [
             { 
-                label: 'View', handler: (row) => alert(`View: ${row.name}`) 
+                label: label: '<i class="fas fa-edit text-warning me-2"></i> View',
+                handler: (row) => alert(`View: ${row.name}`) 
             },
             { 
                 label: 'Edit', handler: (row) => {
@@ -522,10 +566,12 @@ const toggleColumn = (col) => {
         //define data for filter and serarch
           const query = ref({
             search: '',
-            filters: {},
+            page: 1,
             perPage: 10,
-            page: 1
-        })
+            filters: {},
+            sortColumn: null,
+            sortDirection: null,
+          });
         /*
                 //07. To hide search option (By default will show)
         ** :showSearch="false"

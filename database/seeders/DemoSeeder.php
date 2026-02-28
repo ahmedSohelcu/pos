@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Core\Status;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -60,6 +61,7 @@ class DemoSeeder extends Seeder
         // User::factory()->create();
 
         $this->call([
+            StatusSeeder::class,
             PlanSeeder::class,
             FeatureSeeder::class,
             PlanFeatureSeeder::class,

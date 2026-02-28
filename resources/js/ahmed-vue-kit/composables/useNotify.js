@@ -1,17 +1,15 @@
 // https://vue-toastification.maronato.dev/
 
-import { useToast } from "vue-toastification"
+import { useToast } from 'vue-toastification';
 
-export function useNotify() {
-    const toast = useToast()
+const toast = useToast();
 
-    return {
-        success: (msg) => toast.success(msg),
-        error: (msg) => toast.error(msg),
-        info: (msg) => toast.info(msg),
-        warning: (msg) => toast.warning(msg),
-    }
-}
+export const notify = {
+  success: (msg) => toast.success(msg),
+  error: (msg) => toast.error(msg),
+  info: (msg) => toast.info(msg),
+  warning: (msg) => toast.warning(msg),
+};
 
 //----------------
 // How To Use
@@ -20,16 +18,15 @@ export function useNotify() {
 //---------------------
 // 01
 //---------------------
-// import  { useNotify }  from "@/ahmed-vue-kit/composables/userNotify";
-// const { success, error, info, warning } = useNotify();
-// success("Success Message");
-// error("Error Message");
-// info("Info Message");
-// warning("Warning Message");
+// import { notify } from './useNotify';
+// notify.success('Deleted! The record has been deleted.');
 
 //---------------------
 // 02
 //---------------------
-// import  { useNotify }  from "@/ahmed-vue-kit/composables/userNotify";
-// const toast = useNotify();
-// toast.success("Success Message");
+// import { notify } from './useNotify';
+// const { success, error, info, warning } = notify;
+// success("Success Message");
+// error("Error Message");
+// info("Info Message");
+// warning("Warning Message");

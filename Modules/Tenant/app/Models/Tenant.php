@@ -2,7 +2,8 @@
 
 namespace Modules\Tenant\App\Models;
 
-use App\Models\BaseModel;
+use App\Models\Core\BaseModel;
+use App\Models\Core\Status;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\Subscription\app\Models\Subscription;
@@ -16,7 +17,22 @@ class Tenant extends BaseModel
     /**
      * The attributes that are mass assignable.
      */
-    protected $fillable = [];
+    protected $fillable = [
+        'name',
+        'email',
+        'subdomain',
+        'phone',
+        'address',
+        'city',
+        'country',
+        'created_by',
+        'status_id',
+        'sorting_order'
+    ];
+
+    public function status(){
+        return $this->belongsTo(Status::class, 'status_id');
+    }
 
     // protected static function newFactory(): TenantFactory
     // {

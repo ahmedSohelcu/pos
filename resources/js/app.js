@@ -5,87 +5,77 @@ import router from './router';
 import * as ahmedVueKit from './ahmed-vue-kit';
 import Master from './admin/layouts/Mastere.vue';
 
-
 // important
-import 'bootstrap'
-import 'bootstrap/dist/js/bootstrap.bundle.min.js'
+import 'bootstrap';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 //----------------------------------
 // import vue toastification
 //----------------------------------
-import Toast from "vue-toastification"
-import "vue-toastification/dist/index.css"
-
+import Toast from 'vue-toastification';
+import 'vue-toastification/dist/index.css';
 
 // ===============================
 // jQuery + Select2 (CORRECT ORDER)
 // ===============================
 import $ from 'jquery';
-window.$ = window.jQuery = $
+window.$ = window.jQuery = $;
 
-import select2 from 'select2/dist/js/select2.full.min.js'
-import 'select2/dist/css/select2.min.css'
+import select2 from 'select2/dist/js/select2.full.min.js';
+import 'select2/dist/css/select2.min.css';
 
 // 🔥 FORCE ATTACH select2 to global jQuery
-select2(window.$)
+select2(window.$);
 //----------------------------------------
-
 
 //------------------------------------
 // language support
 //to call in vue {{ $t('welcome') }}
 //in blade {{@lang('welcome')}}
 //------------------------------------
-import { createI18n } from 'vue-i18n'
-import en from './lang/en'
-import bn from './lang/bn'
+import { createI18n } from 'vue-i18n';
+import en from './lang/en';
+import bn from './lang/bn';
 
 const i18n = createI18n({
-    legacy: false,
-    locale: 'en',
-    fallbackLocale: 'en',
-    messages: {
-        en,
-        bn
-    }
+  legacy: false,
+  locale: 'en',
+  fallbackLocale: 'en',
+  messages: {
+    en,
+    bn,
+  },
 });
-
-
-
 
 const app = createApp(Master);
 
 // Register all components globally
 Object.entries(ahmedVueKit).forEach(([name, component]) => {
-    app.component(name, component);
+  app.component(name, component);
 });
 
 //02️⃣ Register all components locally
 // const app = createApp({
 //     components: {
-//         Master,        
+//         Master,
 //     },
 // });
 
 // use vue-toastification
 app.use(Toast, {
-    position: "top-right",
-    timeout: 3000,
-    closeOnClick: true,
-    pauseOnHover: true,
-})
+  position: 'top-right',
+  timeout: 3000,
+  closeOnClick: true,
+  pauseOnHover: true,
+});
 
 app.use(createPinia());
 app.use(router);
 
-app.use(i18n)
+app.use(i18n);
 //------------------------------------
 
 app.mount('#app');
-
-
-
-
 
 //===================================
 //writer module
@@ -104,7 +94,6 @@ app.mount('#app');
 // app.use(moment)
 // app.mount("#app");
 
-
 //==========================
 //method 2
 //==========================
@@ -112,6 +101,3 @@ app.mount('#app');
 // app.component('welcome', Welcome)
 // app.component('assign-service-price', AssignServicePrice)
 // app.mount('#app')
-
-
-
