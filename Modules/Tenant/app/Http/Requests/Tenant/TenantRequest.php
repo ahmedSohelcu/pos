@@ -25,7 +25,8 @@ class TenantRequest extends BaseRequest
                 // Unique check: ignore current tenant on update
                 Rule::unique('tenants', 'email')->ignore($tenantId),
             ],
-            'phone' => ['required', 'string', 'max:15'],
+            // 'phone' => ['required', 'string', 'max:15'],
+            'phone' => ['required', 'regex:/^\+?[0-9]{10,15}$/'],
             'address' => ['nullable', 'string', 'max:50'],
             'status_id' => ['required', 'exists:statuses,id'],
         ];

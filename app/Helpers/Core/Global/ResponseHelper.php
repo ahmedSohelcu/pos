@@ -50,27 +50,27 @@ if (!function_exists('failed_responses')) {
     }
 }
 
-if (!function_exists('attached_response')) {
-    function attached_response($name, $data = [])
-    {
-        return resolve(ResponseHelper::class)->attachedResponse($name, $data);
-    }
-}
+// if (!function_exists('attached_response')) {
+//     function attached_response($name, $data = [])
+//     {
+//         return resolve(ResponseHelper::class)->attachedResponse($name, $data);
+//     }
+// }
 
-if (!function_exists('detached_response')) {
-    function detached_response($name, $data = []) {
-        return resolve(ResponseHelper::class)->detachedResponse($name, $data);
-    }
-}
+// if (!function_exists('detached_response')) {
+//     function detached_response($name, $data = []) {
+//         return resolve(ResponseHelper::class)->detachedResponse($name, $data);
+//     }
+// }
 
-if (!function_exists('duplicated_response')) {
-    function duplicated_response($name, $data = []) {
-        return resolve(ResponseHelper::class)->duplicatedResponse($name, $data);
-    }
-}
+// if (!function_exists('duplicated_response')) {
+//     function duplicated_response($name, $data = []) {
+//         return resolve(ResponseHelper::class)->duplicatedResponse($name, $data);
+//     }
+// }
 
-if (!function_exists('status_response')) {
-    function status_response($name, $status, $data = []) {
-        return resolve(ResponseHelper::class)->statusResponse($name, $status, $data);
-    }
-}
+// if (!function_exists('status_response')) {
+//     function status_response($name, $status, $data = []) {
+//         return resolve(ResponseHelper::class)->statusResponse($name, $status, $data);
+//     }
+// }
