@@ -1,24 +1,6 @@
-import { defineStore } from 'pinia'
-import { UsersApi } from './api.js'
+import { tableCrudStore } from '../../../ahmed-vue-kit/stores/tableCrudStore';
 
-export const useUsersStore = defineStore('users', {
-  state: () => ({
-    items: [],
-    loading: false,
-    selectedItem: null
-  }),
-  actions: {
-    async fetchItems() {
-      this.loading = true
-      const { data } = await UsersApi.all()
-      this.items = data
-      this.loading = false
-    },
-    setSelectedItem(item) {
-      this.selectedItem = item
-    }
-  },
-  getters: {
-    totalItems: state => state.items.length
-  }
-})
+export const useUserStore = tableCrudStore(
+  'userStore',
+  'http://lara-vue-admin.test/api/v1/users'
+);

@@ -1,18 +1,18 @@
 <?php
 
-namespace Modules\Tenant\App\Services;
+namespace App\Services\User;
 
 use App\Services\Core\BaseService;
-use Modules\Tenant\app\Models\Tenant;
+use App\Models\User;
 
-class TenantService extends BaseService
+class UserService extends BaseService
 {
-    public function __construct(Tenant $tenant)
+    public function __construct(User $user)
     {
-        $this->model = $tenant;
+        $this->model = $user;
     }
 
-    public function getSelectableTenants()
+    public function getSelectableusers()
     {
         return $this->model::query()
             ->select('id', 'name')
@@ -50,21 +50,23 @@ class TenantService extends BaseService
     public function create(array $data)
     {
         // dd($data);
-        return $this->model->create($this->tenantRequests($data));
+        return $this->model->create($this->userRequests($data));
     }
 
 
-    private function tenantRequests($data){
+    private function userRequests($data)
+    {
         return [
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'phone' => $data['phone'],
-            'address' => $data['address'],
-            'status_id' => $data['status_id'],
+            'name' => $data['name'] ?? null,
+            'email' => $data['email'] ?? null,
+            'phone' => $data['phone'] ?? null,
+            'password' => $data['password'] ?? null,
+            'tenant_id' => $data['tenant_id'] ?? null,
+            'status_id' => $data['status_id'] ?? null,
         ];
     }
 
-    public function findTenantById($id){
+    public function finduserById($id){
         return $this->model->findOrFail($id);
     }
 
@@ -72,7 +74,7 @@ class TenantService extends BaseService
     public function update(array $data, $id)
     {     
         $this->model =  $this->model->find($id);
-        $this->model->update($this->tenantRequests($data));
+        $this->model->update($this->userRequests($data));
         return $this->model;
     }
 

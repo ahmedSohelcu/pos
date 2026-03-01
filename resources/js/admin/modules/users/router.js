@@ -1,7 +1,5 @@
 import UsersIndex from './views/UsersIndex.vue';
-import RoleIndex from './views/RolesIndex.vue';
-import UserCreate from './views/UsersCreate.vue';
-import UsersEdit from './views/UsersEdit.vue';
+import RoleIndex from '../roles/views/RoleIndex.vue';
 
 export default [
   {
@@ -13,16 +11,6 @@ export default [
       permission: 'users_view',
     },
     component: UsersIndex,
-  },
-  {
-    path: '/users/create',
-    name: 'users.create',
-    meta: {
-      breadcrumb: 'Add Users',
-      // requiresAuth: true,
-      // permission: 'users_create',
-    },
-    component: UserCreate,
   },
   // {
   //   path: '/users/:id/edit',

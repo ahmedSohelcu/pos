@@ -25,8 +25,10 @@ class User extends BaseModel
      protected $fillable = [
         'name',
         'email',
+        'phone',
         'password',
         'tenant_id', // important for multi-tenant
+        'status_id'
     ];
 
     /**

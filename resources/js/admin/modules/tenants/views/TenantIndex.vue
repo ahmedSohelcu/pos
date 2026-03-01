@@ -38,11 +38,9 @@
 import { ref, reactive, computed, onMounted } from 'vue';
 import { tenantFilters } from './tenantFilters';
 import { getTenantActions } from './tenantActions';
-const showModal = ref(false);
 // store
 import { useTenantStore } from '../store';
 import BaseModal from '@kit/components/ui/BaseModal.vue';
-import { error } from 'jquery';
 import { route } from 'ziggy-js';
 import TenantForm from './TenantForm.vue';
 

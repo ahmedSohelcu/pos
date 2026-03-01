@@ -1,28 +1,22 @@
 <?php
 
-namespace Modules\Tenant\App\Services;
-
+namespace Modules\Role\App\Services;
 use App\Services\Core\BaseService;
-use Modules\Tenant\app\Models\Tenant;
+use Modules\Role\app\Models\Role;
 
-class TenantService extends BaseService
+// use Spatie\Permission\Models\Role;
+
+class RoleService extends BaseService
 {
-    public function __construct(Tenant $tenant)
+    public function __construct(Role $role)
     {
-        $this->model = $tenant;
-    }
-
-    public function getSelectableTenants()
-    {
-        return $this->model::query()
-            ->select('id', 'name')
-            ->get();  
+        $this->model = $role;
     }
 
     public function getAll(
         $isPaginated = true,
         $isSorted = true,
-        $relations = ['status'],
+        $relations = [],
         $perPage = 10
     )
     {
@@ -49,22 +43,19 @@ class TenantService extends BaseService
 
     public function create(array $data)
     {
-        // dd($data);
-        return $this->model->create($this->tenantRequests($data));
+        return $this->model->create($this->roleRequests($data));
     }
 
 
-    private function tenantRequests($data){
+    private function roleRequests($data){
         return [
             'name' => $data['name'],
-            'email' => $data['email'],
-            'phone' => $data['phone'],
-            'address' => $data['address'],
-            'status_id' => $data['status_id'],
+            'guard_name' => $data['guard_name'] ?? null,
+            'tenant_id' => $data['tenant_id'],
         ];
     }
 
-    public function findTenantById($id){
+    public function findRoleById($id){
         return $this->model->findOrFail($id);
     }
 
@@ -72,7 +63,7 @@ class TenantService extends BaseService
     public function update(array $data, $id)
     {     
         $this->model =  $this->model->find($id);
-        $this->model->update($this->tenantRequests($data));
+        $this->model->update($this->roleRequests($data));
         return $this->model;
     }
 

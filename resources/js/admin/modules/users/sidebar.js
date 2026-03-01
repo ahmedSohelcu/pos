@@ -11,11 +11,6 @@ export const UsersMenus = [
         permission: 'user_view',
       },
       {
-        name: 'users.create',
-        label: 'Add User',
-        permission: 'user_create',
-      },
-      {
         name: 'roles.index',
         label: 'Roles',
         permission: 'role_view',

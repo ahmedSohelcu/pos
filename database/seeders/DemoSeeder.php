@@ -61,6 +61,7 @@ class DemoSeeder extends Seeder
         // User::factory()->create();
 
         $this->call([
+            UserSeeder::class,
             StatusSeeder::class,
             PlanSeeder::class,
             FeatureSeeder::class,

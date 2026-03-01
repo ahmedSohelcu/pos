@@ -1,32 +1,32 @@
 <?php
 
-namespace Modules\Tenant\App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\User\UserRequest;
+use App\Services\User\UserService;
 use Illuminate\Http\Request;
-use Modules\Tenant\app\Services\TenantService;
-use Modules\Tenant\app\Http\Requests\Tenant\TenantRequest;
 
-class TenantController extends Controller
+class UserController extends Controller
 {   
     protected $service;    
 
-    public function __construct(TenantService $tenantService)
+    public function __construct(UserService $userService)
     {
-        $this->service = $tenantService;
+        $this->service = $userService;
     }
 
     public function selectableTenants()
     {
-        return $this->service->getSelectableTenants();        
+        return $this->service->getSelectableUsers();        
     }
-
 
     public function index()
     {
         try {
-            $tenants = $this->service->getAll(true, true, ['status'], 10);
-            return success_response('Tenant List', $tenants);
+            $users = $this->service->getAll(true, true, [], 10);
+
+            return success_response('User List', $users);
 
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
@@ -36,13 +36,14 @@ class TenantController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(TenantRequest $request) {
+    public function store(UserRequest $request) {
         
         try {
             $this->service->create($request->all());
-            return created_responses('Tenant created successfully', []);
+            return created_responses('User', []);
         } catch (\Exception $e) {
-            return failed_responses('Failed to create tenant', $e->getMessage());
+            dd($e->getMessage());
+            // return failed_responses('Failed to create user', $e->getMessage());
         }
     }
 
@@ -52,11 +53,11 @@ class TenantController extends Controller
     public function show($id)
     {
         try {
-            $tenant = $this->service->findTenantById($id);
-            return success_response('Tenant', $tenant->toArray());
+            $User = $this->service->findUserById($id);
+            return success_response('User', $User->toArray());
 
         } catch (\Exception $e) {
-            return failed_responses('Failed to load tenant', $e->getMessage());
+            return failed_responses('Failed to load user', $e->getMessage());
             // return response()->json(['message' => trans('default.failed_response')], 500);        
         }
     }
@@ -66,22 +67,23 @@ class TenantController extends Controller
      */
     public function edit($id)
     {
-        return view('tenant::edit');
+        return view('User::edit');
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(TenantRequest $request, $id) 
+    public function update(UserRequest $request, $id) 
     {        
         try {
-            $tenants = $this->service
+            $user = $this->service
                 ->update($request->all(), $id);
 
-            return updated_responses('Tenant', $tenants->toArray());
-        } catch (\Exception $e) {        
+            return updated_responses('User', $user->toArray());
+        } catch (\Exception $e) {     
+            dd($e->getMessage());   
             return response()->json(['message' => trans('default.failed_response')], 500);
-            // return failed_responses('Tenant', []);  
+            // return failed_responses('User', []);  
         }
     }
 
@@ -90,11 +92,11 @@ class TenantController extends Controller
      */
     public function destroy($id) {
         try {
-            $tenant = $this->service->delete($id);
-            return deleted_responses('Tenant', $tenant->toArray());
+            $User = $this->service->delete($id);
+            return deleted_responses('User', $User->toArray());
         } catch (\Exception $e) {
             return response()->json(['message' => trans('default.failed_response')], 500);        
-            // return failed_responses('Failed to delete tenant', $e->getMessage());
+            // return failed_responses('Failed to delete User', $e->getMessage());
         }   
     }
 }
