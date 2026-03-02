@@ -15,13 +15,6 @@ class TenantController extends Controller
     {
         $this->service = $tenantService;
     }
-
-    public function selectableTenants()
-    {
-        return $this->service->getSelectableTenants();        
-    }
-
-
     public function index()
     {
         try {
@@ -31,6 +24,11 @@ class TenantController extends Controller
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
+    }
+
+    public function selectableTenants()
+    {
+        return $this->service->getSelectableTenants();        
     }
 
     /**
@@ -79,9 +77,17 @@ class TenantController extends Controller
                 ->update($request->all(), $id);
 
             return updated_responses('Tenant', $tenants->toArray());
+            
         } catch (\Exception $e) {        
             return response()->json(['message' => trans('default.failed_response')], 500);
-            // return failed_responses('Tenant', []);  
+
+            // dd(failed_responses('Failed to create tenant', $e->getMessage(), 500));
+            // dd([
+            //     "status" => false,
+            //     "message" => "Test failed.."
+            // ]);
+            // return failed_responses('Failed to create tenant', $e->getMessage(), 500);
+
         }
     }
 

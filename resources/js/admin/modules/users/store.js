@@ -1,6 +1,6 @@
-import { tableCrudStore } from '../../../ahmed-vue-kit/stores/tableCrudStore';
+import {useResourceStore} from '@kit/stores/useResourceStore';
 
-export const useUserStore = tableCrudStore(
+export const useUserStore = useResourceStore(
   'userStore',
   'http://lara-vue-admin.test/api/v1/users'
 );

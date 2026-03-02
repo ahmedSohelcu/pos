@@ -1,6 +1,6 @@
-import { tableCrudStore } from "../../../ahmed-vue-kit/stores/tableCrudStore";
+import {useResourceStore} from '@kit/stores/useResourceStore';
 
-export const useRoleStore = tableCrudStore(
+export const useRoleStore = useResourceStore(
   'roleStore',
   'http://lara-vue-admin.test/api/v1/roles'
 );

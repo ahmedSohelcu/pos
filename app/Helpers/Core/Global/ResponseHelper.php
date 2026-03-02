@@ -46,7 +46,7 @@ if (!function_exists('failed_responses')) {
             'message' => trans('default.failed_response')
         ];
 
-        // return resolve(ResponseHelper::class)->failedResponse($name, $data);
+        return resolve(ResponseHelper::class)->failedResponse($name, $data);
     }
 }
 
