@@ -26,7 +26,10 @@
       :title="roleStore.mode === 'edit' ? 'Edit Role' : 'Create Role'"
       :confirmText="roleStore.mode === 'edit' ? 'Update' : 'Create'"
     >
-      <RoleForm :model="roleStore.selectedItem" :errors="roleStore.errors" />
+      <RoleForm
+        :model="roleStore.selectedItem ?? {}"
+        :errors="roleStore.errors ?? {}"
+      />
     </BaseModal>
   </div>
 </template>
@@ -39,8 +42,8 @@ const showModal = ref(false);
 // store
 import { useRoleStore } from '../store';
 import BaseModal from '@kit/components/ui/BaseModal.vue';
-import { route } from 'ziggy-js';
 import RoleForm from './RoleForm.vue';
+import { ROLE_ENDPOINTS } from '@/data/endpoint';
 
 const roleStore = useRoleStore();
 
@@ -80,11 +83,11 @@ const createOrUpate = async () => {
   roleStore.errors = {};
   if (roleStore.mode === 'edit') {
     await roleStore.update(
-      route('api.roles.update', roleStore.selectedItem.id),
+      ROLE_ENDPOINTS.update(roleStore.selectedItem.id),
       roleStore.selectedItem
     );
   } else {
-    await roleStore.create(route('api.roles.store'), roleStore.selectedItem);
+    await roleStore.create(ROLE_ENDPOINTS.store, roleStore.selectedItem);
   }
 };
 

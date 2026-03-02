@@ -1,5 +1,7 @@
 // tenantActions.js
 import { confirmDelete } from '@kit/composables/useDelete';
+import api from '@kit/api/api';
+import { ROLE_ENDPOINTS } from '@/data/endpoint';
 
 export const getRoleActions = (roleStore) => [
   {
@@ -19,16 +21,14 @@ export const getRoleActions = (roleStore) => [
       roleStore.showModal = true;
       roleStore.errors = {};
       roleStore.mode = 'edit';
-      await roleStore.show(row.id, 'http://lara-vue-admin.test/api/v1/roles');
-
-      console.log('roleStore.selectedItem', roleStore.selectedItem);
+      const abc = await roleStore.show(ROLE_ENDPOINTS.show(row.id));
     },
   },
   {
     label: '<i class="fas fa-trash text-danger me-2"></i> Delete',
     handler: async (row) => {
       await confirmDelete({
-        apiUrl: `http://lara-vue-admin.test/api/v1/roles/${row.id}`,
+        apiUrl: ROLE_ENDPOINTS.destroy(row.id),
         confirmTitle: `Delete ${row.name}?`,
         onSuccess: () => {
           roleStore.fetchData(); // 🔥 correct refresh

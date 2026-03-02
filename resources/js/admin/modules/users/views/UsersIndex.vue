@@ -26,7 +26,10 @@
       :title="userStore.mode === 'edit' ? '' : 'Create Tenant'"
       :confirmText="userStore.mode === 'edit' ? 'Update' : 'Create'"
     >
-      <UserForm :model="userStore.selectedItem" :errors="userStore.errors" />
+      <UserForm
+        :model="userStore.selectedItem ?? {}"
+        :errors="userStore.errors ?? {}"
+      />
     </BaseModal>
   </div>
 </template>
@@ -38,6 +41,7 @@ import { getUserActions } from './userActions';
 import { userFilters } from './userFilters';
 import BaseModal from '@kit/components/ui/BaseModal.vue';
 import UserForm from './UserForm.vue';
+import { USER_ENDPOINTS } from '@/data/endpoint';
 const userStore = useUserStore();
 
 onMounted(() => {
@@ -94,14 +98,11 @@ const createOrUpate = async () => {
   userStore.errors = {};
   if (userStore.mode === 'edit') {
     await userStore.update(
-      route('api.users.update', userStore.selectedItem.id),
+      USER_ENDPOINTS.update(userStore.selectedItem.id),
       userStore.selectedItem
     );
   } else {
-    await userStore.create(
-      route('api.users.store'),
-      userStore.selectedItem
-    );
+    await userStore.create(USER_ENDPOINTS.store, userStore.selectedItem);
   }
 };
 
@@ -111,7 +112,6 @@ const createFromTableBtn = () => {
   userStore.selectedItem = {};
   userStore.showModal = true;
 };
-
 </script>
 
 <style scoped></style>
