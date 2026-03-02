@@ -17,18 +17,18 @@ class Tenant extends BaseModel
     /**
      * The attributes that are mass assignable.
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'subdomain',
-        'phone',
-        'address',
-        'city',
-        'country',
-        'created_by',
-        'status_id',
-        'sorting_order'
-    ];
+    // protected $fillable = [
+    //     'name',
+    //     'email',
+    //     'subdomain',
+    //     'phone',
+    //     'address',
+    //     'city',
+    //     'country',
+    //     'created_by',
+    //     'status_id',
+    //     'sorting_order'
+    // ];
 
     public function status(){
         return $this->belongsTo(Status::class, 'status_id');

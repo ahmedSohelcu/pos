@@ -19,9 +19,8 @@ const api = axios.create({
 // 🔐 Attach Token Automatically
 api.interceptors.request.use(
   (config) => {
-
     const auth = useAuthStore();
-    
+
     if (auth.token) {
       config.headers.Authorization = `Bearer ${auth.token}`;
     }
@@ -35,7 +34,7 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// // 🌍 Global Error Handling
+// 🌍 Global Error Handling
 api.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -48,13 +47,14 @@ api.interceptors.response.use(
       notify.error('Session expired. Please login again.');
     }
 
-    if (status === 403) {
-      notify.error("You don't have permission.");
-    }
+    // Remove 403 and 500 from here
+    // if (status === 403) {
+    //   notify.error("You don't have permission.");
+    // }
 
-    if (status === 500) {
-      notify.error('Server error occurred.');
-    }
+    // if (status === 500) {
+    //   notify.error('Server error occurred.');
+    // }
 
     if (!error.response) {
       notify.error('Network error. Please check your connection.');

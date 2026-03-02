@@ -1,6 +1,6 @@
-import { tableCrudStore } from '../../../ahmed-vue-kit/stores/tableCrudStore';
+import { useResourceStore } from '@kit/stores/useResourceStore';
 
-export const useTenantStore = tableCrudStore(
+export const useTenantStore = useResourceStore(
   'tenantStore',
   'v1/tenants' // relative to VITE_API_URL
 );

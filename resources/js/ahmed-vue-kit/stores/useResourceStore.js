@@ -1,9 +1,9 @@
-// tableCrudStore.js
+// useResourceStore.js
 import { defineStore } from 'pinia';
 import api from '../api/api';
-import { notify } from '../composables/useNotify';
+import { notify } from '@kit/composables/useNotify';
 
-export function tableCrudStore(name, endpoint) {
+export function useResourceStore(name, endpoint) {
   return defineStore(name, {
     state: () => ({
       rows: [],
@@ -94,22 +94,35 @@ export function tableCrudStore(name, endpoint) {
       },
 
       // ➕ Create
-      async create(data) {
+      async create(url, data) {
         this.saving = true;
         this.errors = {};
+        this.message = null;
+
         try {
-          const res = await api.post(endpoint, data);
-          console.log(`[${name}] create response:`, res.data);
-          await this.fetchData();
+          const res = await api.post(url, data);
+
+          // Show success immediately
+          notify.success(res?.data?.message ?? 'Created successfully.');
+
+          // Try refreshing data separately
+          try {
+            await this.fetchData();
+          } catch (e) {
+            console.warn('Fetch failed after create:', e);
+          }
+
           this.showModal = false;
-          notify.success(res.data.message || 'Created successfully.');
         } catch (error) {
-          console.error(`[${name}] create error:`, error);
-          if (error.response?.status === 422) {
+          if (!error.response) {
+            notify.error('Network error. Please check your connection.');
+          } else if (error.response.status === 422) {
+            // Laravel validation error
             this.errors = error.response.data.errors;
           } else {
-            this.message = error.response?.data?.message || 'Create failed.';
-            notify.error(this.message);
+            // Laravel exception (500, 403, etc.)
+            const message = error.response.data?.message ?? 'Create failed.';
+            notify.error(message);
           }
         } finally {
           this.saving = false;
@@ -117,23 +130,23 @@ export function tableCrudStore(name, endpoint) {
       },
 
       // ✏ Update
-      async update(endpoint, data) {
+      async update(url, data) {
         this.saving = true;
         this.errors = {};
         try {
-          // const res = await api.put(`${endpoint}/${id}`, data);
-          const res = await api.put(endpoint, data);
+          const res = await api.put(url, data);
+
           console.log(`[${name}] update response:`, res.data);
           await this.fetchData();
           this.showModal = false;
+
           notify.success(res.data.message || 'Updated successfully.');
         } catch (error) {
           console.error(`[${name}] update error:`, error);
           if (error.response?.status === 422) {
             this.errors = error.response.data.errors;
           } else {
-            this.message = error.response?.data?.message || 'Update failed.';
-            notify.error(this.message);
+            notify.error(error.response?.data?.message || 'Update failed.');
           }
         } finally {
           this.saving = false;
@@ -141,9 +154,9 @@ export function tableCrudStore(name, endpoint) {
       },
 
       // 🗑 Delete
-      async deleteRow(id) {
+      async deleteRow(url) {
         try {
-          const res = await api.delete(`${endpoint}/${id}`);
+          const res = await api.delete(url);
           console.log(`[${name}] delete response:`, res.data);
           this.rows = this.rows.filter((r) => r.id !== id);
           notify.success(res.data.message || 'Deleted successfully.');
@@ -154,9 +167,17 @@ export function tableCrudStore(name, endpoint) {
       },
 
       // 🔄 Update query and fetch
+      // updateQuery(value) {
+      //   this.query = value;
+      //   this.fetchData();
+      // },
+
       updateQuery(value) {
         this.query = value;
-        this.fetchData();
+        clearTimeout(this._timer);
+        this._timer = setTimeout(() => {
+          this.fetchData();
+        }, 400);
       },
 
       // ♻ Reset state
