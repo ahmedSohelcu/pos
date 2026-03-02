@@ -98,7 +98,8 @@ const createOrUpate = async () => {
   tenantStore.errors = {};
   if (tenantStore.mode === 'edit') {
     await tenantStore.update(
-      TENANT_ENDPOINTS.update(tenantStore.selectedItem.id),tenantStore.selectedItem
+      TENANT_ENDPOINTS.update(tenantStore.selectedItem.id),
+      tenantStore.selectedItem
     );
   } else {
     await tenantStore.create(TENANT_ENDPOINTS.store, tenantStore.selectedItem);

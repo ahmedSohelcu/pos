@@ -3,7 +3,7 @@ import { defineStore } from 'pinia';
 import api from '../api/api';
 import { notify } from '@kit/composables/useNotify';
 
-export function useResourceStore(name, endpoint) {
+export function useResourceStore(name, endpoint, options = {}) {
   return defineStore(name, {
     state: () => ({
       rows: [],
@@ -32,7 +32,16 @@ export function useResourceStore(name, endpoint) {
         sortColumn: null,
         sortDirection: null,
       },
+
+      // ✅ Extra state for specific stores
+      ...options.state || {} , // Extra state from child stores
     }),
+
+    getters: {
+      // Default getter example
+      totalRows: (state) => state.rows.length,
+      ...options.getters, // Extra getters from child stores
+    },
 
     actions: {
       // 📥 Fetch List with debug logs
@@ -187,5 +196,8 @@ export function useResourceStore(name, endpoint) {
         this.errors = {};
       },
     },
+
+    // ✅ Spread extra actions for specific stores
+      ...options.actions,
   });
 }
