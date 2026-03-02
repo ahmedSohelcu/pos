@@ -2,6 +2,7 @@
 import Swal from 'sweetalert2';
 import axios from 'axios';
 import { notify } from './useNotify';
+import api from '../api/api';
 
 /**
  * Reusable delete helper
@@ -33,9 +34,8 @@ export const confirmDelete = async ({
     });
 
     if (!result.isConfirmed) return false;
-
     // 2️⃣ Call delete API
-    const res = await axios.delete(apiUrl);
+    const res = await api.delete(apiUrl);
 
     // 3️⃣ Show success toast
     // Swal.fire('Deleted!', 'The record has been deleted.', 'success');

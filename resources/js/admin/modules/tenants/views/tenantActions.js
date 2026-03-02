@@ -1,5 +1,6 @@
 // tenantActions.js
 import { confirmDelete } from '@kit/composables/useDelete';
+import { TENANT_ENDPOINTS } from '@/data/endpoint';
 
 export const getTenantActions = (tenantStore) => [
   {
@@ -19,19 +20,14 @@ export const getTenantActions = (tenantStore) => [
       tenantStore.showModal = true;
       tenantStore.errors = {};
       tenantStore.mode = 'edit';
-      await tenantStore.show(
-        row.id,
-        'http://lara-vue-admin.test/api/v1/tenants'
-      );
-
-      console.log('tenantStore.selectedItem', tenantStore.selectedItem);
+      await tenantStore.show(TENANT_ENDPOINTS.show(row.id));
     },
   },
   {
     label: '<i class="fas fa-trash text-danger me-2"></i> Delete',
     handler: async (row) => {
       await confirmDelete({
-        apiUrl: `http://lara-vue-admin.test/api/v1/tenants/${row.id}`,
+        apiUrl: TENANT_ENDPOINTS.destroy(row.id),
         confirmTitle: `Delete ${row.name}?`,
         onSuccess: () => {
           tenantStore.fetchData(); // 🔥 correct refresh

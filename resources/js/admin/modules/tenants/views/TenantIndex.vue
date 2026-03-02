@@ -27,8 +27,8 @@
       :confirmText="tenantStore.mode === 'edit' ? 'Update' : 'Create'"
     >
       <TenantForm
-        :model="tenantStore.selectedItem"
-        :errors="tenantStore.errors"
+        :model="tenantStore.selectedItem ?? {}"
+        :errors="tenantStore.errors ?? {}"
       />
     </BaseModal>
   </div>
@@ -41,8 +41,8 @@ import { getTenantActions } from './tenantActions';
 // store
 import { useTenantStore } from '../store';
 import BaseModal from '@kit/components/ui/BaseModal.vue';
-import { route } from 'ziggy-js';
 import TenantForm from './TenantForm.vue';
+import { TENANT_ENDPOINTS } from '@/data/endpoint';
 
 const tenantStore = useTenantStore();
 
@@ -98,14 +98,10 @@ const createOrUpate = async () => {
   tenantStore.errors = {};
   if (tenantStore.mode === 'edit') {
     await tenantStore.update(
-      route('api.tenants.update', tenantStore.selectedItem.id),
-      tenantStore.selectedItem
+      TENANT_ENDPOINTS.update(tenantStore.selectedItem.id),tenantStore.selectedItem
     );
   } else {
-    await tenantStore.create(
-      route('api.tenants.store'),
-      tenantStore.selectedItem
-    );
+    await tenantStore.create(TENANT_ENDPOINTS.store, tenantStore.selectedItem);
   }
 };
 

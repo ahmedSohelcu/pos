@@ -73,8 +73,8 @@
 
 <script setup>
 import { route } from 'ziggy-js';
-import BaseSelect from '../../../../ahmed-vue-kit/components/form/BaseSelect.vue';
-import BaseInput from '../../../../ahmed-vue-kit/components/form/BaseInput.vue';
+import BaseSelect from '@kit/components/form/BaseSelect.vue';
+import BaseInput from '@kit/components/form/BaseInput.vue';
 
 const props = defineProps({
   model: Object, // tenantStore.selectedItem

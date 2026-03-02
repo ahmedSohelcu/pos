@@ -1,5 +1,6 @@
+// tableCrudStore.js
 import { defineStore } from 'pinia';
-import axios from 'axios';
+import api from '../api/api';
 import { notify } from '../composables/useNotify';
 
 export function tableCrudStore(name, endpoint) {
@@ -8,21 +9,11 @@ export function tableCrudStore(name, endpoint) {
       rows: [],
       loading: false,
       saving: false,
-      selectedItem: {},
-      mode: 'create', //create or edit
-      errors: {}, // ✅ validation errors from Laravel
+      selectedItem: null,
+      mode: 'create', // create or edit
+      errors: {},
       showModal: false,
       message: '',
-      countries: [
-        {
-          id: 1,
-          name: 'Egypt',
-        },
-        {
-          id: 2,
-          name: 'Saudi Arabia',
-        },
-      ],
 
       meta: {
         current_page: 1,
@@ -44,11 +35,14 @@ export function tableCrudStore(name, endpoint) {
     }),
 
     actions: {
+      // 📥 Fetch List with debug logs
       async fetchData() {
+        this.loading = true;
         try {
-          this.loading = true;
-
-          const res = await axios.get(endpoint, {
+          console.log(`[${name}] Fetching data from endpoint:`, endpoint);
+          console.log('Query params:', this.query);
+          // alert(endpoint);
+          const res = await api.get(endpoint, {
             params: {
               search: this.query.search,
               page: this.query.page,
@@ -58,8 +52,10 @@ export function tableCrudStore(name, endpoint) {
               sort_direction: this.query.sortDirection,
             },
           });
+          // console.log(`[${name}] API Response:`, res.data);
 
           const apiData = res.data.data;
+
           this.rows = apiData.data;
           this.meta = {
             current_page: apiData.current_page,
@@ -69,55 +65,50 @@ export function tableCrudStore(name, endpoint) {
             from: apiData.from,
             to: apiData.to,
           };
+        } catch (error) {
+          console.error(`[${name}] fetchData error:`, error);
+          notify.error(
+            error.response?.data?.message || 'Failed to fetch data.'
+          );
         } finally {
           this.loading = false;
         }
       },
 
-      async show(id, endpoint) {
+      // 👁 Show Single Item
+      async show(endpoint) {
         this.loading = true;
         try {
-          const res = await axios.get(`${endpoint}/${id}`);
+          const res = await api.get(endpoint);
+          console.log(`[${name}] show response:`, res.data);
           this.selectedItem = res.data.data;
+          return this.selectedItem;
+        } catch (error) {
+          console.error(`[${name}] show error:`, error);
+          notify.error(
+            error.response?.data?.message || 'Failed to fetch item.'
+          );
         } finally {
           this.loading = false;
         }
       },
 
-      async create(endpoint, data) {
-        this.saving = true;
-        this.errors = {}; // clear old errors
-        try {
-          const res = await axios.post(endpoint, data);
-          await this.fetchData();
-          this.showModal = false; // close only on success
-          notify.success(res.data.message);
-        } catch (error) {
-          if (error.response?.status === 422) {
-            this.errors = error.response.data.errors;
-          } else {
-            console.error(error);
-          }
-        } finally {
-          this.saving = false;
-        }
-      },
-
-      async update(endpoint, data) {
+      // ➕ Create
+      async create(data) {
         this.saving = true;
         this.errors = {};
-
         try {
-          const res = await axios.put(endpoint, data);
+          const res = await api.post(endpoint, data);
+          console.log(`[${name}] create response:`, res.data);
           await this.fetchData();
           this.showModal = false;
-          notify.success(res.data.message);
+          notify.success(res.data.message || 'Created successfully.');
         } catch (error) {
+          console.error(`[${name}] create error:`, error);
           if (error.response?.status === 422) {
             this.errors = error.response.data.errors;
-            this.message = String(error.response.data.message);
           } else {
-            this.message = String(error.response.data.message);
+            this.message = error.response?.data?.message || 'Create failed.';
             notify.error(this.message);
           }
         } finally {
@@ -125,19 +116,54 @@ export function tableCrudStore(name, endpoint) {
         }
       },
 
-      async deleteRow(id) {
-        await axios.delete(`${endpoint}/${id}`);
-        this.rows = this.rows.filter((r) => r.id !== id);
+      // ✏ Update
+      async update(endpoint, data) {
+        this.saving = true;
+        this.errors = {};
+        try {
+          // const res = await api.put(`${endpoint}/${id}`, data);
+          const res = await api.put(endpoint, data);
+          console.log(`[${name}] update response:`, res.data);
+          await this.fetchData();
+          this.showModal = false;
+          notify.success(res.data.message || 'Updated successfully.');
+        } catch (error) {
+          console.error(`[${name}] update error:`, error);
+          if (error.response?.status === 422) {
+            this.errors = error.response.data.errors;
+          } else {
+            this.message = error.response?.data?.message || 'Update failed.';
+            notify.error(this.message);
+          }
+        } finally {
+          this.saving = false;
+        }
       },
 
+      // 🗑 Delete
+      async deleteRow(id) {
+        try {
+          const res = await api.delete(`${endpoint}/${id}`);
+          console.log(`[${name}] delete response:`, res.data);
+          this.rows = this.rows.filter((r) => r.id !== id);
+          notify.success(res.data.message || 'Deleted successfully.');
+        } catch (error) {
+          console.error(`[${name}] delete error:`, error);
+          notify.error(error.response?.data?.message || 'Delete failed.');
+        }
+      },
+
+      // 🔄 Update query and fetch
       updateQuery(value) {
         this.query = value;
         this.fetchData();
       },
 
+      // ♻ Reset state
       reset() {
         this.rows = [];
         this.selectedItem = null;
+        this.errors = {};
       },
     },
   });
