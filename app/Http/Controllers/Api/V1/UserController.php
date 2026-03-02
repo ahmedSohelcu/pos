@@ -23,28 +23,17 @@ class UserController extends Controller
 
     public function index()
     {
-        try {
-            $users = $this->service->getAll(true, true, [], 10);
-
-            return success_response('User List', $users);
-
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
-        }
+        $users = $this->service->getAll(true, true, [], 10);
+        return success_response('User List', $users);        
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(UserRequest $request) {
-        
-        try {
-            $this->service->create($request->all());
-            return created_responses('User', []);
-        } catch (\Exception $e) {
-            dd($e->getMessage());
-            // return failed_responses('Failed to create user', $e->getMessage());
-        }
+    public function store(UserRequest $request) 
+    {
+        $user = $this->service->create($request->all());
+        return created_responses('User', $user);
     }
 
     /**
@@ -52,22 +41,8 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        try {
-            $User = $this->service->findUserById($id);
-            return success_response('User', $User->toArray());
-
-        } catch (\Exception $e) {
-            return failed_responses('Failed to load user', $e->getMessage());
-            // return response()->json(['message' => trans('default.failed_response')], 500);        
-        }
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
-    {
-        return view('User::edit');
+        $user = $this->service->findUserById($id);
+        return success_response('User', $user);
     }
 
     /**
@@ -75,28 +50,16 @@ class UserController extends Controller
      */
     public function update(UserRequest $request, $id) 
     {        
-        try {
-            $user = $this->service
-                ->update($request->all(), $id);
-
-            return updated_responses('User', $user->toArray());
-        } catch (\Exception $e) {     
-            dd($e->getMessage());   
-            return response()->json(['message' => trans('default.failed_response')], 500);
-            // return failed_responses('User', []);  
-        }
+        $user = $this->service->update($request->all(), $id);
+        return updated_response('User', $user);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id) {
-        try {
-            $User = $this->service->delete($id);
-            return deleted_responses('User', $User->toArray());
-        } catch (\Exception $e) {
-            return response()->json(['message' => trans('default.failed_response')], 500);        
-            // return failed_responses('Failed to delete User', $e->getMessage());
-        }   
+    public function destroy($id) 
+    {
+        $user = $this->service->delete($id);
+        return deleted_responses('User', $user);
     }
 }

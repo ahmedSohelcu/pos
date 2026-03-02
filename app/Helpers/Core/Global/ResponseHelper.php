@@ -22,9 +22,9 @@ if (!function_exists('success_response')) {
 }
 
 
+if (!function_exists('updated_response')) {
 
-if (!function_exists('updated_responses')) {
-    function updated_responses($name, $data = [])
+    function updated_response($name, $data = [])
     {
         return resolve(ResponseHelper::class)->updatedResponse($name, $data);
     }
@@ -38,17 +38,13 @@ if (!function_exists('deleted_responses')) {
     }
 }
 
-if (!function_exists('failed_responses')) {
-    function failed_responses($name, $data = [])
+if (!function_exists('failed_response')) {
+    function failed_response($name = null, $data = [])
     {
-        return [
-            'status' => false,
-            'message' => trans('default.failed_response')
-        ];
-
         return resolve(ResponseHelper::class)->failedResponse($name, $data);
     }
 }
+
 
 // if (!function_exists('attached_response')) {
 //     function attached_response($name, $data = [])

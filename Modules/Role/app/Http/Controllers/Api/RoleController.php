@@ -17,13 +17,8 @@ class RoleController extends Controller
     }
     public function index()
     {
-        try {
-            $roles = $this->service->getAll(true, true, [], 10);
-            return success_response('Role List', $roles);
-
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
-        }
+        $roles = $this->service->getAll(true, true, [], 10);
+        return success_response('Role List', $roles);
     }
 
     /**
@@ -31,13 +26,8 @@ class RoleController extends Controller
      */
     public function store(RoleRequest $request) {
         
-        try {
-            $this->service->create($request->all());
-            return created_responses('Role created successfully', []);
-        } catch (\Exception $e) {
-            dd($e->getMessage());
-            return failed_responses('Failed to create Role', $e->getMessage());
-        }
+        $role = $this->service->create($request->all());
+        return created_responses('Role created successfully', $role);
     }
 
     /**
@@ -45,14 +35,8 @@ class RoleController extends Controller
      */
     public function show($id)
     {
-        try {
-            $Role = $this->service->findRoleById($id);
-            return success_response('Role', $Role->toArray());
-
-        } catch (\Exception $e) {
-            return failed_responses('Failed to load Role', $e->getMessage());
-            // return response()->json(['message' => trans('default.failed_response')], 500);        
-        }
+        $role = $this->service->findRoleById($id);
+        return success_response('Role', $role);
     }
 
 
@@ -62,27 +46,15 @@ class RoleController extends Controller
      */
     public function update(RoleRequest $request, $id) 
     {        
-        try {
-            $roles = $this->service
-                ->update($request->all(), $id);
-
-            return updated_responses('Role', $roles->toArray());
-        } catch (\Exception $e) {        
-            return response()->json(['message' => trans('default.failed_response')], 500);
-            // return failed_responses('Role', []);  
-        }
+        $role = $this->service->update($request->all(), $id);
+        return updated_response('Role', $role);
     }
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy($id) {
-        try {
-            $role = $this->service->delete($id);
-            return deleted_responses('Role', $role->toArray());
-        } catch (\Exception $e) {
-            return response()->json(['message' => trans('default.failed_response')], 500);        
-            // return failed_responses('Failed to delete Role', $e->getMessage());
-        }   
+        $role = $this->service->delete($id);
+        return deleted_responses('Role', $role);   
     }
 }
