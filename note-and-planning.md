@@ -8,6 +8,8 @@
 
 ### All essential command
 
+      - For production need to set a default error for exception (not to show actual error to user)
+
 - php artisan module:make Feature
 - php artisan module:make Category Brand Customer Unit
 - php artisan module:make-migration create_features_table Feature

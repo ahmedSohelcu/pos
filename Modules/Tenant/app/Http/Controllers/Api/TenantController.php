@@ -17,13 +17,8 @@ class TenantController extends Controller
     }
     public function index()
     {
-        try {
-            $tenants = $this->service->getAll(true, true, ['status'], 10);
-            return success_response('Tenant List', $tenants);
-
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
-        }
+        $tenants = $this->service->getAll(true, true, ['status'], 10);
+        return success_response('Tenant List', $tenants);
     }
 
     public function selectableTenants()
@@ -34,14 +29,9 @@ class TenantController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(TenantRequest $request) {
-        
-        try {
-            $this->service->create($request->all());
-            return created_responses('Tenant created successfully', []);
-        } catch (\Exception $e) {
-            return failed_responses('Failed to create tenant', $e->getMessage());
-        }
+    public function store(TenantRequest $request) {        
+        $this->service->create($request->all());
+        return created_responses('Tenant created successfully', []);
     }
 
     /**
@@ -49,22 +39,8 @@ class TenantController extends Controller
      */
     public function show($id)
     {
-        try {
-            $tenant = $this->service->findTenantById($id);
-            return success_response('Tenant', $tenant->toArray());
-
-        } catch (\Exception $e) {
-            return failed_responses('Failed to load tenant', $e->getMessage());
-            // return response()->json(['message' => trans('default.failed_response')], 500);        
-        }
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
-    {
-        return view('tenant::edit');
+        $tenant = $this->service->findTenantById($id);
+        return success_response('Tenant', $tenant);
     }
 
     /**
@@ -72,35 +48,15 @@ class TenantController extends Controller
      */
     public function update(TenantRequest $request, $id) 
     {        
-        try {
-            $tenants = $this->service
-                ->update($request->all(), $id);
-
-            return updated_responses('Tenant', $tenants->toArray());
-            
-        } catch (\Exception $e) {        
-            return response()->json(['message' => trans('default.failed_response')], 500);
-
-            // dd(failed_responses('Failed to create tenant', $e->getMessage(), 500));
-            // dd([
-            //     "status" => false,
-            //     "message" => "Test failed.."
-            // ]);
-            // return failed_responses('Failed to create tenant', $e->getMessage(), 500);
-
-        }
+        $tenants = $this->service->update($request->all(), $id);
+        return updated_response('Tenant', $tenants);
     }
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy($id) {
-        try {
-            $tenant = $this->service->delete($id);
-            return deleted_responses('Tenant', $tenant->toArray());
-        } catch (\Exception $e) {
-            return response()->json(['message' => trans('default.failed_response')], 500);        
-            // return failed_responses('Failed to delete tenant', $e->getMessage());
-        }   
+        $tenant = $this->service->delete($id);
+        return deleted_responses('Tenant', $tenant);
     }
 }
