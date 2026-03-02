@@ -7,7 +7,7 @@ export const UsersMenus = [
     items: [
       {
         name: 'users.index',
-        label: 'All Users',
+        label: 'Users',
         permission: 'user_view',
       },
       {
