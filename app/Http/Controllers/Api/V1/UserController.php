@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {   
-    protected $service;    
+    // protected $service;    
 
     public function __construct(UserService $userService)
     {

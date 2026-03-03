@@ -5,11 +5,12 @@ namespace Modules\Role\App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Modules\Role\app\Http\Requests\RoleRequest;
+use Modules\Role\App\Models\Role;
 use Modules\Role\app\Services\RoleService;
 
 class RoleController extends Controller
 {
-    protected $service;    
+    // protected $service;    
 
     public function __construct(RoleService $roleService)
     {
@@ -26,35 +27,37 @@ class RoleController extends Controller
      */
     public function store(RoleRequest $request) {
         
-        $role = $this->service->create($request->all());
+        $role = $this->service
+            ->setAttrs($request->all())
+            ->create();
         return created_responses('Role created successfully', $role);
     }
 
     /**
      * Show the specified resource.
      */
-    public function show($id)
+    public function show(Role $role)
     {
-        $role = $this->service->findRoleById($id);
         return success_response('Role', $role);
     }
-
-
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(RoleRequest $request, $id) 
+    public function update(RoleRequest $request, Role $role) 
     {        
-        $role = $this->service->update($request->all(), $id);
+        $role = $this->service
+                ->setModel($role)
+                ->setAttributes($request->all())
+                ->update();
         return updated_response('Role', $role);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id) {
-        $role = $this->service->delete($id);
+    public function destroy(Role $role) {
+        $role->delete();
         return deleted_responses('Role', $role);   
     }
 }

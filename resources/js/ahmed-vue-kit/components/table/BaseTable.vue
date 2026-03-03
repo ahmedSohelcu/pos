@@ -43,7 +43,11 @@
             />
           </div>
 
-          <button class="btn btn-sm btn-primary px-3" @click="$emit('create')">
+          <button
+            v-if="createNewButton === true"
+            class="btn btn-sm btn-primary px-3"
+            @click="$emit('create')"
+          >
             <i class="fas fa-plus me-1"></i> New
           </button>
 
@@ -231,6 +235,7 @@ const props = defineProps({
   actionLabel: { type: String, default: 'Action' },
   loading: { type: Boolean, default: false },
   showSearch: { type: Boolean, default: true },
+  createNewButton: { type: Boolean, default: true },
   meta: {
     type: Object,
     default: () => ({
@@ -387,9 +392,11 @@ const toggleColumn = (col) => {
   color: #9ca3af;
 }
 .table-wrapper {
-  max-height: 500px;
-  overflow: auto;
+  overflow-x: auto; /* only horizontal scroll */
+  overflow-y: visible; /* allow vertical growth */
+  max-height: none;
 }
+
 .modern-table thead th {
   position: sticky;
   top: 0;

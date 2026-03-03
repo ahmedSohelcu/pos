@@ -12,13 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('customers', function (Blueprint $table) {
-            $table->id();            
+            $table->id();                
+            $table->foreignId('user_id')
+                ->nullable()
+                ->constrained()
+                ->cascadeOnDelete();
 
-            // 🔹 Customer info
-            $table->string('name')->comment('Customer full name');
-            $table->string('email')->nullable()->comment('Customer email');
-            $table->string('phone')->nullable()->index()->comment('Customer phone number');
-            $table->string('company')->nullable()->comment('Company name');
+            $table->string('code')->nullable()->unique(); // optional customer code
+
             $table->string('profile_pic')
                 ->nullable()
                 ->comment('Customer profile picture path or URL');
@@ -34,7 +35,16 @@ return new class extends Migration
                 ->constrained('users')
                 ->cascadeOnDelete()
                 ->comment('Which tenant user created this customer');
+    
+            $table->decimal('opening_balance', 15, 2)
+                ->default(0);
 
+            $table->decimal('current_balance', 15, 2)
+                ->default(0);
+                
+            $table->integer('loyalty_points')->default(0);
+            $table->boolean('is_walkin')->default(false);
+    
             // 🔹 Address
             $table->string('address')->nullable();
             $table->string('city')->nullable();

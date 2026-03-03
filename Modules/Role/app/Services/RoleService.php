@@ -35,43 +35,31 @@ class RoleService extends BaseService
         // Pagination or Get
         if ($isPaginated) {
             return $query
-                ->paginate(50000)
+                ->paginate(request('per_page', $perPage))
                 ->withQueryString();
         }
 
         return $query->get();
     }
 
-    public function create(array $data)
+    public function create()
     {
-        return $this->model->create($this->roleRequests($data));
+        return $this->model
+            ->create($this->roleRequests());
     }
 
 
-    private function roleRequests($data){
+    private function roleRequests(){
         return [
-            'name' => $data['name'],
-            'guard_name' => $data['guard_name'] ?? null,
-            'tenant_id' => $data['tenant_id'],
+            'name' => $this->getAttr('name') ?? null,
+            'guard_name' => $this->getAttr('guard_name') ?? null,
+            'tenant_id' => $this->getAttr('tenant_id') ?? null,                   
         ];
     }
 
-    public function findRoleById($id){
-        return $this->model->findOrFail($id);
-    }
-
-
-    public function update(array $data, $id)
+    public function update()
     {     
-        $this->model =  $this->model->find($id);
-        $this->model->update($this->roleRequests($data));
-        return $this->model;
-    }
-
-    
-    public function delete($id)
-    {
-        $this->model->findOrFail($id)->delete();
-        return $this->model;
+        $this->model = $this->model->update($this->roleRequests());
+        return $this;
     }
 }

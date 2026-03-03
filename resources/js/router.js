@@ -8,6 +8,10 @@ import BrandRoutes from './admin/modules/brands/router.js';
 import ProductRoutes from './admin/modules/product/router.js';
 import CategoryRoutes from './admin/modules/categories/router.js';
 import UnitRoutes from './admin/modules/units/router.js';
+import SubscriptionRoutes from './admin/modules/subscriptions/router.js';
+import PlanRoutes from './admin/modules/plans/router.js';
+
+// import SuR
 
 const baseRoutes = [
   {
@@ -129,6 +133,8 @@ const routes = [
   ...CategoryRoutes,
   ...UnitRoutes,
   ...ProductRoutes,
+  ...PlanRoutes,
+  ...SubscriptionRoutes
   
 ];
 

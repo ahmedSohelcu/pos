@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 use App\Models\Core\BaseModel;
+use App\Models\Traits\HasTenant;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
 use Modules\Tenant\App\Models\Tenant;
@@ -15,7 +16,8 @@ class User extends BaseModel
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory,
         HasRoles,
-        Notifiable;
+        Notifiable,
+        HasTenant;
 
     /**
      * The attributes that are mass assignable.
@@ -52,11 +54,6 @@ class User extends BaseModel
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
-    }
-
-    public function tenant()
-    {
-        return $this->belongsTo(Tenant::class);
     }
 
 

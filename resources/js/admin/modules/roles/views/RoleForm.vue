@@ -23,7 +23,7 @@
       icon="fa-envelope"
     />
     <BaseSelect
-      :getApiRoute="STATUS_ENDPOINTS.selectable('common')"
+      :getApiRoute="TENANT_ENDPOINTS.selectable"
       select2
       label="Tenant"
       v-model="model.tenant_id"
@@ -39,6 +39,7 @@ import { route } from 'ziggy-js';
 import BaseSelect from '@kit/components/form/BaseSelect.vue';
 import BaseInput from '@kit/components/form/BaseInput.vue';
 import { STATUS_ENDPOINTS } from '@/data/endpoint';
+import { TENANT_ENDPOINTS } from '../../../../data/endpoint';
 
 const props = defineProps({
   model: Object, // tenantStore.selectedItem

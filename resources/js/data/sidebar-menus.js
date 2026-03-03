@@ -1,6 +1,7 @@
 //Admin sidebar
 
 import { ProductMenus } from '../admin/modules/product/sidebar';
+import { SubscriptionMenus } from '../admin/modules/subscriptions/sidebar';
 import { TenantMenus } from '../admin/modules/tenants/sidebar';
 import { UsersMenus } from '../admin/modules/users/sidebar';
 
@@ -79,30 +80,10 @@ export const AdminMenus = [
       { name: 'component', label: 'Supplier Contacts' },
     ],
   },
-  {
-    key: 'subscription',
-    label: 'Subscription',
-    icon: 'fas fa-file-invoice-dollar', // subscription icon
-    items: [
-      { name: 'component', label: 'Manage Plans', icon: 'fas fa-list' },
-      {
-        name: 'component',
-        label: 'Active Subscriptions',
-        icon: 'fas fa-check-circle',
-      },
-      {
-        name: 'component',
-        label: 'Create Subscription',
-        icon: 'fas fa-plus-circle',
-      },
-      {
-        name: 'component',
-        label: 'Subscription History',
-        icon: 'fas fa-history',
-      },
-      { name: 'component', label: 'Settings', icon: 'fas fa-cog' },
-    ],
-  },
+  //------------------------------------------------
+  // Subscription Module
+  //------------------------------------------------
+  ...SubscriptionMenus,
   // {
   //   key: 'reports',
   //   label: 'Reports',

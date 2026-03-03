@@ -1,7 +1,8 @@
 ----------------------------------
 # 🚀 Grocery SaaS app need to concern about 🚀
 ---
-
+    - Seed walkin custome for each tenant
+    - 
 ---
 
 💡 👉 📊 🧱 🛠 🎨 😎

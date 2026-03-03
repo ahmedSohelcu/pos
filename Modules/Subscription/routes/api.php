@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use Modules\Subscription\app\Http\Controllers\Api\SubscriptionController;
 
-Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
+Route::
+// middleware(['auth:sanctum'])->
+prefix('v1')->group(function () {
     Route::apiResource('subscriptions', SubscriptionController::class)->names('subscription');
 });

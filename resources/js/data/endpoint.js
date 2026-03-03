@@ -68,15 +68,15 @@ export const CUSTOMER_ENDPOINTS = {
 
 /*
 |--------------------------------------------------------------------------
-| Feature
+| Subscription
 |--------------------------------------------------------------------------
 */
-export const FEATURE_ENDPOINTS = {
-  index: route('api.feature.index'),
-  store: route('api.feature.store'),
-  show: (id) => route('api.feature.show', { feature: id }),
-  update: (id) => route('api.feature.update', { feature: id }),
-  destroy: (id) => route('api.feature.destroy', { feature: id }),
+export const SUBSCRIPTION_ENDPOINTS = {
+  index: route('api.subscription.index'),
+  store: route('api.subscription.store'),
+  show: (id) =>route('api.subscription.show', { subscription: id }),
+  update: (id) =>route('api.subscription.update', { subscription: id }),
+  destroy: (id) =>route('api.subscription.destroy', { subscription: id }),
 };
 
 /*
@@ -94,6 +94,19 @@ export const PLAN_ENDPOINTS = {
 
 /*
 |--------------------------------------------------------------------------
+| Feature
+|--------------------------------------------------------------------------
+*/
+export const FEATURE_ENDPOINTS = {
+  index: route('api.feature.index'),
+  store: route('api.feature.store'),
+  show: (id) => route('api.feature.show', { feature: id }),
+  update: (id) => route('api.feature.update', { feature: id }),
+  destroy: (id) => route('api.feature.destroy', { feature: id }),
+};
+
+/*
+|--------------------------------------------------------------------------
 | Role
 |--------------------------------------------------------------------------
 */
@@ -103,19 +116,6 @@ export const ROLE_ENDPOINTS = {
   show: (id) => route('api.role.show', { role: id }),
   update: (id) => route('api.role.update', { role: id }),
   destroy: (id) => route('api.role.destroy', { role: id }),
-};
-
-/*
-|--------------------------------------------------------------------------
-| Subscription
-|--------------------------------------------------------------------------
-*/
-export const SUBSCRIPTION_ENDPOINTS = {
-  index: route('api.subscription.index'),
-  store: route('api.subscription.store'),
-  show: (id) =>route('api.subscription.show', { subscription: id }),
-  update: (id) =>route('api.subscription.update', { subscription: id }),
-  destroy: (id) =>route('api.subscription.destroy', { subscription: id }),
 };
 
 /*

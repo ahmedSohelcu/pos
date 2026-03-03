@@ -1,3 +1,5 @@
+import { STATUS_ENDPOINTS } from '../../../../data/endpoint';
+
 export const tenantFilters = [
   {
     name: 'status_id',
@@ -5,7 +7,7 @@ export const tenantFilters = [
     type: 'select',
     select2: true, // 🔥 enable select2
     multiple: false, // single select
-    getApiRoute: route('selectable_statuses', { type: 'user' }),
+    getApiRoute: STATUS_ENDPOINTS.selectable('user'),
     optionKeyName: 'name',
     // optionValueName: 'label'
   },
