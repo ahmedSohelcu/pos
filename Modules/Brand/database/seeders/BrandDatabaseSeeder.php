@@ -3,8 +3,9 @@
 namespace Modules\Brand\Database\Seeders;
 
 use Modules\Brand\app\Models\Brand;
+use Illuminate\Support\Str;
 use Modules\Tenant\app\Models\Tenant;
-
+use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
 
 class BrandDatabaseSeeder extends Seeder
@@ -14,20 +15,19 @@ class BrandDatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-         // Example brands per tenant
-         $tenant = Tenant::first();
-        // foreach (Tenant::first() as $tenant) {
+        $tenant = Tenant::first();
+        $faker = Faker::create();
 
-            $brands = [
-                ['name' => 'Coca Cola', 'slug' => 'coca-cola', 'tenant_id' => $tenant->id],
-                ['name' => 'Pepsi',      'slug' => 'pepsi',      'tenant_id' => $tenant->id],
-                ['name' => 'Nestle',     'slug' => 'nestle',     'tenant_id' => $tenant->id],
-                ['name' => 'Unilever',   'slug' => 'unilever',   'tenant_id' => $tenant->id],
-            ];
+        for ($i = 1; $i <= 50; $i++) {
+            $name = $faker->unique()->company;
 
-            foreach ($brands as $brand) {
-                Brand::firstOrCreate($brand);
-            }
-        // }
+            Brand::create([
+                'name' => $name,
+                'tenant_id' => $tenant->id,
+                // 'status_id' => $status_id,
+                'slug' => Str::slug($name)  // optional if trait handles
+            ]);
+        }
+        
     }
 }

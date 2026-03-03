@@ -4,6 +4,10 @@ import { createWebHistory, createRouter } from 'vue-router';
 // Import tenant module routes
 import TenantRoutes from './admin/modules/tenants/router.js';
 import UserRoutes from './admin/modules/users/router.js';
+import BrandRoutes from './admin/modules/brands/router.js';
+import ProductRoutes from './admin/modules/product/router.js';
+import CategoryRoutes from './admin/modules/categories/router.js';
+import UnitRoutes from './admin/modules/units/router.js';
 
 const baseRoutes = [
   {
@@ -117,7 +121,16 @@ const baseRoutes = [
 ];
 
 // Merge all routes dynamically
-const routes = [...baseRoutes, ...TenantRoutes, ...UserRoutes];
+const routes = [
+  ...baseRoutes,
+  ...TenantRoutes,
+  ...UserRoutes,
+  ...BrandRoutes,
+  ...CategoryRoutes,
+  ...UnitRoutes,
+  ...ProductRoutes,
+  
+];
 
 const router = createRouter({
   history: createWebHistory(),

@@ -4,53 +4,56 @@ namespace Modules\Category\App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Modules\Brand\app\Http\Requests\BrandRequest;
+use Modules\Category\app\Http\Requests\CategoryRequest;
+use Modules\Category\app\Services\CategoryService;
 
 class CategoryController extends Controller
-{
-    /**
-     * Display a listing of the resource.
-     */
+{   
+    protected $service;    
+
+    public function __construct(CategoryService $categoryService)
+    {
+        $this->service = $categoryService;
+    }
     public function index()
     {
-        return view('category::index');
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('category::create');
+        $categories = $this->service->getAll(true, true, ['tenant'], 10);
+        return success_response('Category List', $categories);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request) {}
+    public function store(CategoryRequest $request) 
+    {        
+        $this->service->create($request->all());
+        return created_responses('Category created successfully', []);
+    }
 
     /**
      * Show the specified resource.
      */
     public function show($id)
     {
-        return view('category::show');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
-    {
-        return view('category::edit');
+        $Category = $this->service->findCategoryById($id);
+        return success_response('Category', $Category);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id) {}
+    public function update(CategoryRequest $request, $id) 
+    {        
+        $brands = $this->service->update($request->all(), $id);
+        return updated_response('Category', $brands);
+    }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id) {}
+    public function destroy($id) {
+        $category = $this->service->delete($id);
+        return deleted_responses('Category', $category);
+    }
 }

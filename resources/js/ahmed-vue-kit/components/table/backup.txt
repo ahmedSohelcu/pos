@@ -1,388 +1,264 @@
-<script setup>
-import {
-  ref,
-  computed,
-  onMounted,
-  onBeforeUnmount,
-  nextTick,
-  watch,
-} from 'vue';
-
-import api from '../../api/api';
-
-const props = defineProps({
-  modelValue: { type: [String, Number, Array], default: '' },
-  label: String,
-  name: String,
-  options: { type: Array, default: () => [] },
-  getApiRoute: String,
-  optionKeyName: { type: String, default: 'name' },
-  placeholder: { type: String, default: 'Select an option' },
-  error: String,
-  disabled: Boolean,
-  select2: Boolean,
-  multiple: Boolean,
-  customClass: String,
-  visible: { type: Boolean, default: true },
-  infinite: { type: Boolean, default: false }, // ✅ enable infinite scroll
-});
-
-const emit = defineEmits(['update:modelValue']);
-
-const selectRef = ref(null);
-const optionsRef = ref([]);
-const loadingRef = ref(false);
-let selectInstance = null;
-
-const finalOptions = computed(() =>
-  props.options.length ? props.options : optionsRef.value
-);
-
-// ==========================
-// Load all options (non-infinite)
-// ==========================
-const loadOptions = async () => {
-  if (!props.getApiRoute || props.infinite) return;
-  loadingRef.value = true;
-  try {
-    const res = await api.get(props.getApiRoute);
-    optionsRef.value = res.data;
-  } finally {
-    loadingRef.value = false;
-  }
-};
-
-// ==========================
-// Init Select2
-// ==========================
-const initSelect2 = async () => {
-  if (!props.select2 || !selectRef.value) return;
-  await nextTick();
-
-  const $select = window.$(selectRef.value);
-  const $modalParent = $select.closest('.modal');
-
-  if ($select.hasClass('select2-hidden-accessible')) $select.select2('destroy');
-
-  const select2Options = {
-    placeholder: props.placeholder,
-    allowClear: !props.multiple,
-    width: '100%',
-    closeOnSelect: !props.multiple,
-    dropdownParent: $modalParent.length ? $modalParent : undefined,
-  };
-
-  // ==========================
-  // Infinite scroll configuration
-  // ==========================
-  if (props.infinite && props.getApiRoute) {
-    select2Options.ajax = {
-      url: props.getApiRoute,
-      dataType: 'json',
-      delay: 250,
-      data: (params) => ({ q: params.term, page: params.page || 1 }),
-      processResults: (data, params) => {
-        params.page = params.page || 1;
-        return {
-          results: data.data.map((item) => ({
-            id: item.id,
-            text: item[props.optionKeyName],
-          })),
-          pagination: { more: params.page < data.meta.last_page },
-        };
-      },
-      cache: true,
-    };
-    select2Options.minimumInputLength = 1;
-  }
-
-  selectInstance = $select.select2(select2Options);
-
-  // Set initial value safely
-  if (props.infinite) {
-    $select.val(props.modelValue).trigger('change');
-  } else {
-    $select.val(props.modelValue).trigger('change.select2');
-  }
-
-  // Sync with v-model
-  $select.on('change.select2', function () {
-    const value = props.multiple ? $(this).val() || [] : $(this).val();
-    if (JSON.stringify(value) !== JSON.stringify(props.modelValue)) {
-      emit('update:modelValue', value);
-    }
-  });
-};
-
-// ==========================
-// Destroy Select2
-// ==========================
-const destroySelect2 = () => {
-  if (!props.select2 || !selectRef.value) return;
-  const $select = window.$(selectRef.value);
-  if ($select.hasClass('select2-hidden-accessible')) {
-    $select.off('change.select2');
-    $select.select2('destroy');
-  }
-  selectInstance = null;
-};
-
-// ==========================
-// Watchers
-// ==========================
-watch(
-  () => props.modelValue,
-  (val) => {
-    if (!props.select2 || !selectRef.value) return;
-    const $select = window.$(selectRef.value);
-    const currentVal = $select.val();
-    if (JSON.stringify(currentVal) !== JSON.stringify(val))
-      $select.val(val).trigger('change.select2');
-  }
-);
-
-watch(
-  () => JSON.stringify(finalOptions.value),
-  async () => {
-    if (!props.select2 || props.infinite) return;
-    destroySelect2();
-    await nextTick();
-    initSelect2();
-  }
-);
-
-watch(
-  () => props.visible,
-  async (val) => {
-    if (!props.select2 || !selectRef.value) return;
-    if (val) {
-      await nextTick();
-      initSelect2();
-    } else {
-      destroySelect2();
-    }
-  }
-);
-
-// ==========================
-// Lifecycle
-// ==========================
-onMounted(async () => {
-  await loadOptions();
-  await nextTick();
-  if (props.select2) initSelect2();
-});
-
-onBeforeUnmount(() => {
-  destroySelect2();
-});
-</script>
-
 <template>
-  <div class="mb-2 me-2 justify-content-between">
-    <label v-if="label" class="form-label">{{ label }}</label>
-
-    <select
-      ref="selectRef"
-      :name="name"
-      :multiple="multiple"
-      :disabled="disabled"
-      :class="['form-selects', customClass, { 'is-invalid': error }]"
-      @change="
-        !select2 &&
-        emit(
-          'update:modelValue',
-          multiple
-            ? Array.from($event.target.selectedOptions).map((o) => o.value)
-            : $event.target.value
-        )
-      "
-    >
-      <option v-if="!multiple" value="" disabled>
-        {{ loadingRef ? 'Loading...' : placeholder }}
-      </option>
-
-      <option
-        v-for="option in finalOptions ?? []"
-        :key="option.id"
-        :value="option.id"
-      >
-        {{ option[optionKeyName] }}
-      </option>
-    </select>
-
-    <small v-if="error" class="text-danger">{{ error }}</small>
-  </div>
-</template>
-
-<style>
-/* Base professional styling for Select2 */
-.select2-container--default .select2-selection--single {
-  background-color: #fff;
-  border: 1px solid #ced4da;
-  border-radius: 8px;
-  height: 40px !important;
-  padding: 5px 12px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
-}
-
-.select2-container--default .select2-selection--single:focus,
-.select2-container--default .select2-selection--single:hover {
-  border-color: #86b7fe;
-  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
-}
-
-.select2-container--default
-  .select2-selection--single
-  .select2-selection__rendered {
-  line-height: 30px !important;
-  font-size: 0.95rem;
-  color: #495057;
-}
-
-.select2-container--default
-  .select2-selection--single
-  .select2-selection__arrow {
-  height: 40px !important;
-  right: 10px;
-}
-
-/* Multiple select look */
-.select2-container--default .select2-selection--multiple {
-  min-height: 40px !important;
-  border-radius: 8px;
-  padding: 5px 8px;
-  border: 1px solid #ced4da;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-.select2-container--default
-  .select2-selection--multiple
-  .select2-selection__choice {
-  background-color: #0d6efd;
-  border: none;
-  color: #fff;
-  padding: 3px 10px;
-  font-size: 0.85rem;
-  border-radius: 6px;
-  margin-top: 3px;
-}
-
-.select2-container--default
-  .select2-selection--multiple
-  .select2-selection__choice__remove {
-  color: #fff;
-  margin-right: 4px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.select2-container--default
-  .select2-selection--multiple
-  .select2-selection__choice__remove:hover {
-  color: #ffc107;
-}
-
-/* Dropdown menu */
-.select2-container--default .select2-dropdown {
-  border-radius: 8px;
-  border: 1px solid #ced4da;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-.select2-container--default .select2-results__option--highlighted {
-  background-color: #0d6efd;
-  color: white;
-}
-
-/* Multiple select look with black text */
-.select2-container--default
-  .select2-selection--multiple
-  .select2-selection__choice {
-  background-color: #0d6efd; /* keep blue background */
-  border: none;
-  color: #000; /* black font */
-  padding: 3px 10px;
-  font-size: 0.85rem;
-  border-radius: 6px;
-  margin-top: 3px;
-}
-
-.select2-container--default
-  .select2-selection--multiple
-  .select2-selection__choice__remove {
-  color: #000; /* black remove icon */
-  margin-right: 4px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.select2-container .select2-search--inline .select2-search__field {
-  height: 22px !important;
-}
-
-/* Multiple Select height */
-.select2-container .select2-selection--multiple {
-  min-height: 35px !important;
-  /* padding: 5px; */
-}
-
-.form-label {
-  color: #6c757d;
-  text-transform: uppercase;
-  font-size: 14px;
-  font-weight: 600;
-  color: #344767;
-  margin-bottom: 6px;
-  letter-spacing: 0.3px;
-}
-</style>
-<!-- 
-    ---------------
-    How to use
-    ---------------
-    <div class="col">
-    //options through api call
-        <BaseSelect
-            v-model="form.category_id"
-            name="category_id"
-            :getApiRoute="route('selectable_statuses')" //or :optinons="categories"
-            label="Category"
-            placeholder="Choose category"                          
+  <aside class="app-sidebar">
+    
+    <!-- Sidebar Brand -->
+    <div class="sidebar-brand">
+      <a href="#" class="brand-link">
+        <img
+          src="admin/v1/assets/img/AdminLTELogo.png"
+          alt="Logo"
+          class="brand-image"
         />
-        <div class="me-2">{{ form.category }}</div>
+        <span class="brand-text">GroceryPharma Admin</span>
+      </a>
     </div>
 
-    //options through and options array
-    //pass select2 for single and select2 multiple for multiple
-    <div class="col">
-        <BaseSelect
-        class="me-2"
-        v-model="form.category_id"
-        name="category_id"
-        :options="categories"
-        label="Country"
-        select2
-        multiple
-        placeholder="Choose category"                                    
-    />
-    <div class="me-2">{{ form.category }}</div>              
-</div>      
+    <!-- Sidebar Wrapper -->
+    <div class="sidebar-wrapper">
+      <nav>
+        <ul class="sidebar-menu">
 
-Supports
----------
+          <li
+            v-for="menu in AdminMenus"
+            :key="menu.key"
+            class="menu-item"
+          >
+            <!-- Parent Menu -->
+            <div
+              class="menu-link"
+              :class="{ active: isMenuActive(menu) }"
+              @click="toggleSidebar(menu.key)"
+            >
+              <div class="menu-left">
+                <i :class="menu.icon"></i>
+                <span>{{ menu.label }}</span>
+              </div>
+              <i
+                class="bi chevron"
+                :class="openMenu === menu.key
+                  ? 'bi-chevron-down'
+                  : 'bi-chevron-right'"
+              ></i>
+            </div>
 
-    1. label
-    2. name
-    3. options array to build options (first priority)
-    4. getApiRoute to call api for options (if optinos not provided)
-    5. optionKeyName -- by default its name, some times may be type others
-    6. placeholder
-    7. error
-    8. disabled
+            <!-- Submenu -->
+            <transition name="slide">
+              <ul
+                v-show="openMenu === menu.key"
+                class="submenu"
+              >
+                <li
+                  v-for="item in menu.items"
+                  :key="item.name"
+                >
+                  <router-link
+                    :to="{ name: item.name }"
+                    class="submenu-link"
+                    active-class="active-child"
+                  >
+                    <i class="bi bi-dot"></i>
+                    {{ item.label }}
+                  </router-link>
+                </li>
+              </ul>
+            </transition>
 
+          </li>
 
--->
+        </ul>
+      </nav>
+    </div>
+  </aside>
+</template>
+
+<script setup>
+import { ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
+import { AdminMenus } from '../../data/sidebar-menus'
+
+const route = useRoute()
+const openMenu = ref(null)
+
+const isMenuActive = (menu) => {
+  return menu.items.some(item => item.name === route.name)
+}
+
+const toggleSidebar = (key) => {
+  openMenu.value = openMenu.value === key ? null : key
+}
+
+watch(
+  () => route.name,
+  () => {
+    const activeMenu = AdminMenus.find(menu =>
+      menu.items.some(item => item.name === route.name)
+    )
+    openMenu.value = activeMenu ? activeMenu.key : null
+  },
+  { immediate: true }
+)
+</script>
+
+<style scoped>
+
+/* ===========================
+   Sidebar Base (Slim)
+=========================== */
+.app-sidebar {
+  width: 240px;
+  height: 100vh;
+  background: #111827;
+  color: #d1d5db;
+  display: flex;
+  flex-direction: column;
+  padding: 12px 10px;
+  font-family: 'Source Sans 3', sans-serif;
+  border-right: 1px solid #1f2937;
+}
+
+/* ===========================
+   Sidebar Brand
+=========================== */
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  padding: 8px 6px 16px 6px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.brand-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.brand-image {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: #4f46e5;
+  padding: 4px;
+}
+
+.brand-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: #f9fafb;
+}
+
+/* ===========================
+   Menu
+=========================== */
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+  margin: 16px 0 0 0;
+}
+
+.menu-item {
+  margin-top: 6px;
+}
+
+.menu-link {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  border-radius: 8px;
+  color: #cbd5e1;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  font-size: 14px;
+  letter-spacing: 0.2px;
+}
+
+.menu-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.menu-link i {
+  font-size: 15px;
+  width: 18px;
+}
+
+/* Hover & Active (Minimal SaaS Style) */
+.menu-link:hover {
+  background: rgba(99, 102, 241, 0.15);
+  color: #ffffff;
+}
+
+.menu-link.active {
+  background: rgba(99, 102, 241, 0.25);
+  color: #ffffff;
+}
+
+/* Left Accent Line */
+.menu-link::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 6px;
+  width: 3px;
+  height: 70%;
+  background: transparent;
+  border-radius: 3px;
+  transition: all 0.2s ease;
+}
+
+.menu-link.active::before {
+  background: #6366f1;
+}
+
+/* ===========================
+   Submenu
+=========================== */
+.submenu {
+  padding-left: 8px;
+  margin-top: 4px;
+}
+
+.submenu-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  color: #9ca3af;
+  font-size: 13px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.submenu-link i {
+  font-size: 10px;
+}
+
+.submenu-link:hover {
+  background: rgba(99, 102, 241, 0.15);
+  color: #ffffff;
+}
+
+.active-child {
+  background: rgba(99, 102, 241, 0.25);
+  color: #ffffff !important;
+}
+
+/* ===========================
+   Animation (Smooth & Soft)
+=========================== */
+.slide-enter-active,
+.slide-leave-active {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.slide-enter-from,
+.slide-leave-to {
+  opacity: 0;
+  transform: translateY(-4px);
+}
+
+</style>

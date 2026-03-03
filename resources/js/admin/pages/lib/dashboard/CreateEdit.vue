@@ -147,12 +147,12 @@
 import { useForm } from '@kit/composables/useForm';
 import BaseRichTextEditor from '@kit/components/form/BaseRichTextEditor.vue';
 
-import { useNotify } from '@/ahmed-vue-kit/composables/useNotify';
+import { notify } from '@kit/composables/useNotify';
 import BaseFileUpload from '@kit/components/form/BaseFileUpload.vue';
 import BaseShimmer from '@kit/components/ui/BaseShimmer.vue';
 import { onMounted, reactive } from 'vue';
 
-const toast = useNotify();
+const toast = notify;
 toast.success('Success Message');
 
 const { ref, form, errors, submit, loading } = useForm({

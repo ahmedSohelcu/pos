@@ -4,53 +4,54 @@ namespace Modules\Unit\App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Modules\Unit\app\Http\Requests\UnitRequest;
+use Modules\Unit\app\Services\UnitService;
 
 class UnitController extends Controller
-{
-    /**
-     * Display a listing of the resource.
-     */
+{   
+    protected $service;    
+
+    public function __construct(UnitService $unitService)
+    {
+        $this->service = $unitService;
+    }
     public function index()
     {
-        return view('unit::index');
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('unit::create');
+        $units = $this->service->getAll(true, true, ['status', 'tenant'], 10);
+        return success_response('Unit List', $units);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request) {}
+    public function store(UnitRequest $request) {        
+        $this->service->create($request->all());
+        return created_responses('Unit created successfully', []);
+    }
 
     /**
      * Show the specified resource.
      */
     public function show($id)
     {
-        return view('unit::show');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
-    {
-        return view('unit::edit');
+        $tenant = $this->service->findUnitById($id);
+        return success_response('Unit', $tenant);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id) {}
+    public function update(UnitRequest $request, $id) 
+    {        
+        $tenants = $this->service->update($request->all(), $id);
+        return updated_response('Unit', $tenants);
+    }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id) {}
+    public function destroy($id) {
+        $tenant = $this->service->delete($id);
+        return deleted_responses('Unit', $tenant);
+    }
 }

@@ -1,5 +1,6 @@
 //Admin sidebar
 
+import { ProductMenus } from '../admin/modules/product/sidebar';
 import { TenantMenus } from '../admin/modules/tenants/sidebar';
 import { UsersMenus } from '../admin/modules/users/sidebar';
 
@@ -7,35 +8,29 @@ export const AdminMenus = [
   // Tenants module
   ...TenantMenus,
 
-  {
-    key: 'dashboard',
-    label: 'Dashboard',
-    icon: 'fas fa-tachometer-alt',
-    items: [
-      { name: 'component', label: 'Manage Data' },
-      { name: 'create-edit', label: 'Create / Update' },
-      { name: 'select2', label: 'Select2' },
-      { name: 'dashboard', label: 'Dashboard' },
-      { name: 'dashboard-2', label: 'Dashboard 2' },
-      { name: 'dashboard-3', label: 'Dashboard 3' },
-      // { name: 'dashboard', label: 'Overview' },
-      // { name: 'dashboard-2', label: 'Sales Summary' },
-      // { name: 'dashboard', label: 'Stock Overview' },
-      // { name: 'dashboard-2', label: 'Customer Insights' },
-    ],
-  },
   // {
-  //   key: 'products',
-  //   label: 'Products',
-  //   icon: 'bi bi-box-seam-fill',
+  //   key: 'dashboard',
+  //   label: 'Dashboard',
+  //   icon: 'fas fa-tachometer-alt',
   //   items: [
-  //     { name: 'component', label: 'Grocery Products' },
-  //     { name: 'component', label: 'Medicine Products' },
-  //     { name: 'component', label: 'Add New Product' },
-  //     { name: 'component', label: 'Categories' },
-  //     { name: 'component', label: 'Brands' }
-  //   ]
+  //     { name: 'component', label: 'Manage Data' },
+  //     { name: 'create-edit', label: 'Create / Update' },
+  //     { name: 'select2', label: 'Select2' },
+  //     { name: 'dashboard', label: 'Dashboard' },
+  //     { name: 'dashboard-2', label: 'Dashboard 2' },
+  //     { name: 'dashboard-3', label: 'Dashboard 3' },
+  //     // { name: 'dashboard', label: 'Overview' },
+  //     // { name: 'dashboard-2', label: 'Sales Summary' },
+  //     // { name: 'dashboard', label: 'Stock Overview' },
+  //     // { name: 'dashboard-2', label: 'Customer Insights' },
+  //   ],
   // },
+
+  //------------------------------------------------
+  // Product Module (product, brand, unit, category)
+  //------------------------------------------------
+  ...ProductMenus,
+
   // {
   //   key: 'inventory',
   //   label: 'Inventory',
@@ -57,31 +52,57 @@ export const AdminMenus = [
   //     { name: 'component', label: 'Cancelled Orders' }
   //   ]
   // },
-  // {
-  //   key: 'customers',
-  //   label: 'Customers',
-  //   icon: 'bi bi-people-fill',
-  //   items: [
-  //     { name: 'component', label: 'All Customers' },
-  //     { name: 'component', label: 'Add Customer' },
-  //     { name: 'component', label: 'Customer Groups' },
-  //     { name: 'component', label: 'Loyalty Points' }
-  //   ]
-  // },
+  {
+    key: 'customers',
+    label: 'Customers',
+    icon: 'bi bi-people-fill',
+    items: [
+      { name: 'component', label: 'All Customers' },
+      { name: 'component', label: 'Add Customer' },
+      { name: 'component', label: 'Customer Groups' },
+      { name: 'component', label: 'Loyalty Points' },
+    ],
+  },
 
+  //------------------------------------------------
   // User Module
+  //------------------------------------------------
   ...UsersMenus,
 
-  // {
-  //   key: 'suppliers',
-  //   label: 'Suppliers',
-  //   icon: 'bi bi-truck',
-  //   items: [
-  //     { name: 'component', label: 'All Suppliers' },
-  //     { name: 'component', label: 'Add Supplier' },
-  //     { name: 'component', label: 'Supplier Contacts' }
-  //   ]
-  // },
+  {
+    key: 'suppliers',
+    label: 'Suppliers',
+    icon: 'bi bi-truck',
+    items: [
+      { name: 'component', label: 'All Suppliers' },
+      { name: 'component', label: 'Add Supplier' },
+      { name: 'component', label: 'Supplier Contacts' },
+    ],
+  },
+  {
+    key: 'subscription',
+    label: 'Subscription',
+    icon: 'fas fa-file-invoice-dollar', // subscription icon
+    items: [
+      { name: 'component', label: 'Manage Plans', icon: 'fas fa-list' },
+      {
+        name: 'component',
+        label: 'Active Subscriptions',
+        icon: 'fas fa-check-circle',
+      },
+      {
+        name: 'component',
+        label: 'Create Subscription',
+        icon: 'fas fa-plus-circle',
+      },
+      {
+        name: 'component',
+        label: 'Subscription History',
+        icon: 'fas fa-history',
+      },
+      { name: 'component', label: 'Settings', icon: 'fas fa-cog' },
+    ],
+  },
   // {
   //   key: 'reports',
   //   label: 'Reports',

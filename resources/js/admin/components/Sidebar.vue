@@ -1,6 +1,5 @@
 <template>
   <aside class="app-sidebar">
-    
     <!-- Sidebar Brand -->
     <div class="sidebar-brand">
       <a href="#" class="brand-link">
@@ -17,12 +16,7 @@
     <div class="sidebar-wrapper">
       <nav>
         <ul class="sidebar-menu">
-
-          <li
-            v-for="menu in AdminMenus"
-            :key="menu.key"
-            class="menu-item"
-          >
+          <li v-for="menu in AdminMenus" :key="menu.key" class="menu-item">
             <!-- Parent Menu -->
             <div
               class="menu-link"
@@ -35,22 +29,16 @@
               </div>
               <i
                 class="bi"
-                :class="openMenu === menu.key
-                  ? 'bi-chevron-down'
-                  : 'bi-chevron-right'"
+                :class="
+                  openMenu === menu.key ? 'bi-chevron-down' : 'bi-chevron-right'
+                "
               ></i>
             </div>
 
             <!-- Submenu -->
             <transition name="slide">
-              <ul
-                v-show="openMenu === menu.key"
-                class="submenu"
-              >
-                <li
-                  v-for="item in menu.items"
-                  :key="item.name"
-                >
+              <ul v-show="openMenu === menu.key" class="submenu">
+                <li v-for="item in menu.items" :key="item.name">
                   <router-link
                     :to="{ name: item.name }"
                     class="submenu-link"
@@ -62,9 +50,7 @@
                 </li>
               </ul>
             </transition>
-
           </li>
-
         </ul>
       </nav>
     </div>
@@ -72,35 +58,35 @@
 </template>
 
 <script setup>
-  import { ref, watch } from 'vue'
-  import { useRoute } from 'vue-router'
-  import { AdminMenus } from '../../data/sidebar-menus'
+import { ref, watch } from 'vue';
+import { useRoute } from 'vue-router';
+import { AdminMenus } from '../../data/sidebar-menus';
 
-  const route = useRoute()
-  const openMenu = ref(null)
+const route = useRoute();
+const openMenu = ref(null);
 
-  // ------------------
-  // Helpers
-  // ------------------
-  const isMenuActive = (menu) => {
-    return menu.items.some(item => item.name === route.name)
-  }
+// ------------------
+// Helpers
+// ------------------
+const isMenuActive = (menu) => {
+  return menu.items.some((item) => item.name === route.name);
+};
 
-  const toggleSidebar = (key) => {
-    openMenu.value = openMenu.value === key ? null : key
-  }
+const toggleSidebar = (key) => {
+  openMenu.value = openMenu.value === key ? null : key;
+};
 
-  // Auto open active menu
-  watch(
-    () => route.name,
-    () => {
-      const activeMenu = AdminMenus.find(menu =>
-        menu.items.some(item => item.name === route.name)
-      )
-      openMenu.value = activeMenu ? activeMenu.key : null
-    },
-    { immediate: true }
-  )
+// Auto open active menu
+watch(
+  () => route.name,
+  () => {
+    const activeMenu = AdminMenus.find((menu) =>
+      menu.items.some((item) => item.name === route.name)
+    );
+    openMenu.value = activeMenu ? activeMenu.key : null;
+  },
+  { immediate: true }
+);
 </script>
 
 <style scoped>
@@ -116,7 +102,7 @@
   flex-direction: column;
   padding: 16px 12px;
   font-family: 'Source Sans 3', sans-serif;
-  box-shadow: 3px 0 8px rgba(0,0,0,0.3);
+  box-shadow: 3px 0 8px rgba(0, 0, 0, 0.3);
   border-right: 1px solid #2c2f3a;
 }
 
@@ -128,7 +114,7 @@
   align-items: center;
   gap: 12px;
   padding: 12px 8px 20px 8px;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .brand-link {
@@ -190,12 +176,17 @@
 
 /* Hover and Active */
 .menu-link:hover {
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  /* background: linear-gradient(135deg, #797ac4, #8b5cf6); */
+  background: linear-gradient(135deg, #4f46e5, #2c2439);
   color: #fff;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
 }
-.menu-link.active {
+/* .menu-link.active {
   background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  color: #fff;
+} */
+.menu-link.active[data-v-66a6233b] {
+  background: linear-gradient(135deg, #4f46e5, #2c2439);
   color: #fff;
 }
 

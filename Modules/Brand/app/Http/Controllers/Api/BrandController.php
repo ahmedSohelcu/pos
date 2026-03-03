@@ -4,53 +4,54 @@ namespace Modules\Brand\App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Modules\Brand\app\Http\Requests\BrandRequest;
+use Modules\Brand\app\Services\BrandService;
 
 class BrandController extends Controller
-{
-    /**
-     * Display a listing of the resource.
-     */
+{   
+    protected $service;    
+
+    public function __construct(BrandService $brandService)
+    {
+        $this->service = $brandService;
+    }
     public function index()
     {
-        return view('brand::index');
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('brand::create');
+        $units = $this->service->getAll(true, true, ['status', 'tenant'], 10);
+        return success_response('Brand List', $units);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request) {}
+    public function store(BrandRequest $request) {        
+        $this->service->create($request->all());
+        return created_responses('Brand created successfully', []);
+    }
 
     /**
      * Show the specified resource.
      */
     public function show($id)
     {
-        return view('brand::show');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
-    {
-        return view('brand::edit');
+        $brand = $this->service->findBrandById($id);
+        return success_response('Brand', $brand);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id) {}
+    public function update(BrandRequest $request, $id) 
+    {        
+        $brands = $this->service->update($request->all(), $id);
+        return updated_response('Brand', $brands);
+    }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id) {}
+    public function destroy($id) {
+        $brand = $this->service->delete($id);
+        return deleted_responses('Brand', $brand);
+    }
 }

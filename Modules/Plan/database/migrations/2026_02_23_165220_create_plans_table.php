@@ -24,7 +24,7 @@ return new class extends Migration
 
             // 🔁 Billing Logic
             $table->enum('billing_interval', ['month', 'year'])->comment('month, year');
-            $table->integer('billing_count')->default(1)->comment('1 = monthly, 2 = 2 months, 6 = 6 months');            
+            $table->integer('billing_duration')->default(1)->comment('number of billing intervals');            
 
             $table->integer('trial_days')->default(0);
 

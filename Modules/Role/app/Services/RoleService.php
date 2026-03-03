@@ -14,31 +14,32 @@ class RoleService extends BaseService
     }
 
     public function getAll(
-        $isPaginated = true,
-        $isSorted = true,
-        $relations = [],
-        $perPage = 10
-    )
-    {
-        $query =  $this->model
+        bool $isPaginated = true,
+        bool $isSorted = true,
+        array $relations = ['status'],
+        int $perPage = 10
+    ) {
+        $query = $this->model
             ->filters(request()->filters ?? []);
 
-             if (!empty($relations)) {
-                $query->with($relations);
-            }
+        // Relations
+        if (!empty($relations)) {
+            $query->with($relations);
+        }
 
-            if ($isSorted) {
-                $query->sort();
-            }
+        // Sorting
+        if ($isSorted) {
+            $query->sort();
+        }
 
-            if ($isPaginated) {
-                return $query->paginate(request('per_page', 10));
-            }
+        // Pagination or Get
+        if ($isPaginated) {
+            return $query
+                ->paginate(50000)
+                ->withQueryString();
+        }
 
-            // 🔹 Pagination
-        return $isPaginated
-        ? $query->paginate($perPage)->withQueryString()
-        : $query->get(); 
+        return $query->get();
     }
 
     public function create(array $data)

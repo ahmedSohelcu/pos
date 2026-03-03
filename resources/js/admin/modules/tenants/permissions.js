@@ -4,6 +4,4 @@ export const TenantPermissions = [
   'tenant_create',       // Create tenants
   'tenant_edit',         // Edit tenants
   'tenant_delete',       // Delete tenants
-  'subscription_view',   // View subscriptions
-  'plan_view'            // View plans
 ]

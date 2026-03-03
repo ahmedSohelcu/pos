@@ -3,6 +3,7 @@
 namespace App\Filters;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Schema;
 
 class FilterBuilder
 {
@@ -27,9 +28,14 @@ class FilterBuilder
 
         // Generic search filter (across multiple fields)
         if (!empty(request()->search)) {
-            $query->where(function ($q) {
-                foreach (['name', 'email', 'phone'] as $field) { // default fields, can override in child
-                    $q->orWhere($field, 'like', '%' . request()->search . '%');
+            $query->where(function ($q) use ($query) {
+                $table = $query->getModel()->getTable(); // get current table name
+
+                foreach (['name', 'email', 'phone'] as $field) {
+                    // Check if column exists in table
+                    if (Schema::hasColumn($table, $field)) {
+                        $q->orWhere($field, 'like', '%' . request()->search . '%');
+                    }
                 }
             });
         }

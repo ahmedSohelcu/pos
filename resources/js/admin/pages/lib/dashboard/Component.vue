@@ -78,7 +78,7 @@ const selectedCategory = ref(2); // pre-selected by id
 
 // const popup = swalpopup();
 // popup.warning('Try again later');
-deleteWarning();
+// deleteWarning();
 // const confirmed = deleteWarning()
 // if (confirmed) {
 //     console.log(confirmed)

@@ -130,19 +130,5 @@ class TenantSeeder extends Seeder
         ];
 
         $tenant = Tenant::insert($tenants);
-
-        // foreach ($tenants as $tenantData) {           
-
-            // Optional: create trial subscription
-            // if ($basicPlan) {
-            //     $tenant->subscriptions()->create([
-            //         'plan_id' => $basicPlan->id,
-            //         'starts_at' => now(),
-            //         'ends_at' => now()->addDays($basicPlan->trial_days ?? 7),
-            //         'status' => 'trial',
-            //         'is_current' => true,
-            //     ]);
-            // }
-        // }
     }
 }
