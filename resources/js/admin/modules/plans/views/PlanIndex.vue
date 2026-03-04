@@ -23,7 +23,7 @@
       :centered="true"
       @confirm="createOrUpate"
       @close="closeModal"
-      :title="planStore.mode === 'edit' ? '' : 'Create Plan'"
+      :title="planStore.mode === 'edit' ? '' : ''"
       :confirmText="planStore.mode === 'edit' ? 'Update' : 'Create'"
     >
       <PlanForm
@@ -43,6 +43,7 @@ import PlanForm from './PlanForm.vue';
 import { PLAN_ENDPOINTS } from '@/data/endpoint';
 import { planFilters } from './planFilters';
 import { getPlanActions } from './planActions';
+import { formatDate } from '../../../../ahmed-vue-kit/utils/helpers';
 
 const planStore = usePlanStore();
 
@@ -63,25 +64,48 @@ const columns = [
   { name: 'id', label: 'ID', sortable: true },
   {
     name: 'name',
-    label: 'Shop Name',
+    label: 'Plan Name',
     sortable: true,
     custom: (row) => `<span class="badge bg-success">${row.name}</span>`,
   },
   {
-    name: 'email',
-    label: 'Email',
+    name: 'slug',
+    label: 'Slug',
     sortable: true,
     custom: (row) =>
-      `<button class='btn btn-sm btn-outline-successs'>${row.email}</button>`,
+      `<button class='btn btn-sm btn-outline-warning'>${row.slug}</button>`,
   },
-  { name: 'phone', label: 'Phone', sortable: true },
-  { name: 'address', label: 'Address', sortable: true },
+  {
+    name: 'price',
+    label: 'Price',
+    sortable: true,
+  },
+  {
+    name: 'trial_days',
+    label: 'Trial Days',
+    sortable: true,
+  },
+  {
+    name: 'max_products',
+    label: 'Max Products',
+    sortable: true,
+  },
+  {
+    name: 'max_users',
+    label: 'Max Users',
+    sortable: true,
+  },
+  {
+    name: 'is_active',
+    label: 'Is Active',
+    sortable: true,
+  },
   {
     name: 'created_at',
     label: 'Created At',
     sortable: true,
     custom: (row) => {
-      return new Date(row.created_at).toLocaleString();
+      return formatDate(row.created_at);
     },
   },
   {

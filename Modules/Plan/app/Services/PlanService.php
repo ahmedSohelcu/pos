@@ -41,27 +41,29 @@ class PlanService extends BaseService
         return $query->get();
     }
 
-    public function create(array $data)
-    {
-        return $this->model->create($this->planRequests($data));
+    public function create()
+    {       
+        // dd($this->planRequests());
+        return $this->model
+            ->create($this->planRequests());
     }
 
 
-    private function planRequests($data){
+    private function planRequests(){
         return [
-            'name'              => $data['name'],
-            'slug'              => $data['slug'],
-            'price'             => $data['price'],
-            'currency'          => $data['currency'],
-            'billing_interval'  => $data['billing_interval'],
-            'billing_duration'  => $data['billing_duration'],
-            'trial_days'        => $data['trial_days'],
-            'max_users'         => $data['max_users'],
-            'max_products'      => $data['max_products'],
-            'max_branches'      => $data['max_branches'],
-            'is_active'         => $data['is_active'],
-            'description'       => $data['description'],
-            'sorting_order'     => $data['sorting_order'],
+            'name'              => $this->getAttr('name') ?? null,
+            'slug'              => $this->getAttr('slug') ?? null,
+            'price'             => $this->getAttr('price') ?? null,
+            'currency'          => $this->getAttr('currency') ?? null,
+            'billing_interval'  => $this->getAttr('billing_interval') ?? null,
+            'billing_duration'  => $this->getAttr('billing_duration') ?? null,
+            'trial_days'        => $this->getAttr('trial_days') ?? null,
+            'max_users'         => $this->getAttr('max_users') ?? null,
+            'max_products'      => $this->getAttr('max_products') ?? null,
+            'max_branches'      => $this->getAttr('max_branches') ?? null,
+            'is_active'         => $this->getAttr('is_active') ?? null,
+            'description'       => $this->getAttr('description') ?? null,
+            'sorting_order'     => $this->getAttr('sorting_order') ?? null,
         ];
     }
 
@@ -70,11 +72,10 @@ class PlanService extends BaseService
     }
 
 
-    public function update(array $data, $id)
-    {     
-        $this->model =  $this->model->find($id);
-        $this->model->update($this->planRequests($data));
-        return $this->model;
+    public function update()
+    {   
+        $this->model = $this->model->update($this->planRequests());
+        return $this;
     }
 
     

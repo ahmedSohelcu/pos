@@ -2,20 +2,20 @@
   <form @submit.prevent>
     <!-- Header -->
     <div class="mb-4">
-      <h5 class="fw-bold mb-1">Shop Information</h5>
-      <small class="text-muted">Enter shop basic details below</small>
+      <h5 class="fw-bold mb-1">Plan Information</h5>
+      <small class="text-muted">Enter Plan basic details below</small>
       <hr />
     </div>
 
     <div class="row g-3">
-      <!-- Shop Name -->
+      <!-- Plan Name -->
       <div class="col-md-6">
         <BaseInput
           v-model="model.name"
-          label="Shop Name"
+          label="Name"
           type="text"
           :error="errors.name"
-          placeholder="Enter shop name"
+          placeholder="Enter name"
           icon="fa-store"
         />
       </div>
@@ -23,47 +23,89 @@
       <!-- Shop Email -->
       <div class="col-md-6">
         <BaseInput
-          v-model="model.email"
-          label="Shop Email"
-          type="email"
-          :error="errors.email"
-          placeholder="Enter shop email"
+          v-model="model.price"
+          label="Price"
+          type="number"
+          :error="errors.price"
+          placeholder="Enter price"
           icon="fa-envelope"
+        />
+      </div>
+
+      <div class="col-md-6">
+        <BaseSelect
+          select2
+          :options="[
+            { id: 'monthly', name: 'Monthly' },
+            { id: 'yearly', name: 'Yearly' },
+          ]"
+          label="Billing Interval"
+          v-model="model.billing_interval"
+          :error="errors.billing_interval"
+          name="billing_interval"
+          placeholder="Choose Status"
         />
       </div>
 
       <!-- Phone -->
       <div class="col-md-6">
         <BaseInput
-          v-model="model.phone"
-          label="Shop Phone"
-          type="text"
-          :error="errors.phone"
-          placeholder="Enter phone number"
+          v-model="model.trial_days"
+          label="Trial days"
+          type="number"
+          :error="errors.trial_days"
+          placeholder="Enter trial days"
           icon="fa-phone"
         />
       </div>
 
-      <!-- Status -->
+      <!-- max_users -->
       <div class="col-md-6">
-        <BaseSelect
-          :getApiRoute="route('selectable_statuses', { type: 'user' })"
-          select2
-          label="Status"
-          v-model="model.status_id"
-          :error="errors.status_id"
-          name="status_id"
-          placeholder="Choose Status"
+        <BaseInput
+          v-model="model.max_users"
+          label="Max Users"
+          type="number"
+          :error="errors.max_users"
+          placeholder="Enter max_users"
+          icon="fa-phone"
         />
       </div>
 
-      <!-- Address -->
-      <div class="col-md-12">
+      <!-- max_users -->
+      <!-- <div class="col-md-6">
         <BaseInput
-          v-model="model.address"
-          label="Shop Address"
-          :error="errors.address"
-          placeholder="Enter shop address"
+          v-model="model.max_branches"
+          label="Max Branches"
+          type="number"
+          :error="errors.max_branches"
+          placeholder="Enter max branches"
+          icon="fa-phone"
+        />
+      </div> -->
+
+      <!-- Is Active -->
+      <!-- <div class="col-md-6">
+        <BaseSelect
+          :options="[
+            { id: 1, name: 'Active'  },
+            { id: 0, name: 'Inactive' },
+          ]"
+          select2
+          label="Is Active"
+          v-model="model.is_active"
+          :error="errors.is_active"
+          name="is_active"
+          placeholder="Choose Status"
+        />
+      </div> -->
+
+      <!-- description -->
+      <div class="col-md-12">
+        <BaseTextarea
+          v-model="model.description"
+          label="Description"
+          :error="errors.description"
+          placeholder="Enter details"
           icon="fa-location-dot"
         />
       </div>
@@ -75,7 +117,8 @@
 import { route } from 'ziggy-js';
 import BaseSelect from '@kit/components/form/BaseSelect.vue';
 import BaseInput from '@kit/components/form/BaseInput.vue';
-
+import { reactive } from 'vue';
+const billing_intervals = reactive(['monthly', 'yearly']);
 const props = defineProps({
   model: Object, // tenantStore.selectedItem
   errors: Object, // tenantStore.errors

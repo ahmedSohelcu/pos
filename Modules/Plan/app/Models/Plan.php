@@ -5,6 +5,7 @@ namespace Modules\Plan\App\Models;
 use App\Models\Core\BaseModel;
 use App\Models\Core\Status;
 use App\Models\Traits\HasStatus;
+use App\Traits\HasSlug;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\Feature\App\Models\Feature;
@@ -15,7 +16,8 @@ use Modules\Feature\App\Models\PlanFeature;
 class Plan extends BaseModel
 {
     use HasFactory,
-        HasStatus;
+        HasStatus,
+        HasSlug;
 
     /**
      * The attributes that are mass assignable.
@@ -25,8 +27,7 @@ class Plan extends BaseModel
         'slug',
         'price',
         'currency',
-        'billing_interval',
-        'billing_duration',
+        'billing_interval', //monthly, yearly
         'trial_days',
         'max_users',
         'max_products',

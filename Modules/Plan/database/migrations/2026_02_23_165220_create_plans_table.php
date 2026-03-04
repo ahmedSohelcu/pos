@@ -20,10 +20,10 @@ return new class extends Migration
 
             // 💰 Pricing
             $table->decimal('price', 10, 2);
-            $table->string('currency')->default('BDT');
+            $table->string('currency')->nullable()->default('BDT');
 
             // 🔁 Billing Logic
-            $table->enum('billing_interval', ['month', 'year'])->comment('month, year');
+            $table->enum('billing_interval', ['monthly', 'yearly'])->comment('month, year');
             $table->integer('billing_duration')->default(1)->comment('number of billing intervals');            
 
             $table->integer('trial_days')->default(0);
@@ -33,7 +33,7 @@ return new class extends Migration
             $table->integer('max_products')->nullable();
             $table->integer('max_branches')->nullable();
 
-            $table->boolean('is_active')->default(true);
+            $table->boolean('is_active')->nullable()->default(true);
             $table->text('description')->nullable();
             
             $table->integer('sorting_order')->nullable();

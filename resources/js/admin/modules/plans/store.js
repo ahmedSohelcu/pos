@@ -8,10 +8,8 @@ export const usePlanStore = useResourceStore(
   PLAN_ENDPOINTS.index,
   {
     // state: {
-    //   tenantSettings: {
-    //     country: 'ahmed', //{{ tenantStore.tenantSettings ?? '' }}
-    //   },
-    //   name: 'ahmed', //{{ tenantStore.tenantSettings ?? '' }}
+    //   billing_interval: 'monthly', //{{billing_interval}}
+    //   name: 'ahmed', //{{ name}}
     // },
     // getters: {
     //   tenantCount: (state) => state.rows.length,
