@@ -34,6 +34,8 @@ class Plan extends BaseModel
         'max_branches',
         'is_active',
         'description',
+        'created_at',
+        'updated_at',
         'sorting_order',
     ];
 

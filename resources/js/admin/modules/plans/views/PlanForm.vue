@@ -42,8 +42,7 @@
           label="Billing Interval"
           v-model="model.billing_interval"
           :error="errors.billing_interval"
-          name="billing_interval"
-          placeholder="Choose Status"
+          placeholder="Choose Interval"
         />
       </div>
 
@@ -66,8 +65,35 @@
           label="Max Users"
           type="number"
           :error="errors.max_users"
-          placeholder="Enter max_users"
+          placeholder="Enter max users"
           icon="fa-phone"
+        />
+      </div>
+
+      <!-- max_products -->
+      <div class="col-md-6">
+        <BaseInput
+          v-model="model.max_products"
+          label="Max Products"
+          type="number"
+          :error="errors.max_products"
+          placeholder="Enter max products"
+          icon="fa-phone"
+        />
+      </div>
+
+      <div class="offset-md-6 col-md-6">
+        <BaseSwitch
+          v-model="model.is_active"
+          size="md"
+          name="is_active"
+          activeColor="#198754"
+          inactiveColor="#dc3545"
+          activeText="ACTIVE"
+          inactiveText="INACTIVE"
+          label="Current Plan"
+          :error="errors.is_active"
+          description="Mark this plan as active or inactive"
         />
       </div>
 

@@ -15,17 +15,17 @@ class PlanRequest extends BaseRequest
         $plan_id = $this->id ?? null; // null for create          
 
         return [
-            'name' => ['nullable','string','max:255', Rule::unique('plans','name')->ignore($plan_id)],
+            'name' => ['required','string','max:255', Rule::unique('plans','name')->ignore($plan_id)],
             'slug' => ['nullable','string','max:255', Rule::unique('plans','slug')->ignore($plan_id)],
             'price' => 'required|numeric|min:0',
             'currency' => 'nullable|string|size:3',
             'billing_interval' => ['required', Rule::in(['monthly','yearly'])],
-            'trial_days' => 'nullable|integer|min:0',
+            'trial_days' => 'required|integer|min:0',
             'max_users' => 'nullable|integer|min:1',
-            'max_products' => 'nullable|integer|min:1',
+            'max_products' => 'required|integer|min:1',
             'max_branches' => 'nullable|integer|min:1',
-            'is_active' => 'nullable',
             'description' => 'nullable|string',
+            'is_active' => ['nullable', 'boolean'],
             'sorting_order' => 'nullable|integer|min:0',
         ];        
     }
@@ -64,8 +64,8 @@ class PlanRequest extends BaseRequest
             'max_branches.integer' => 'Max branches must be a valid number.',
             'max_branches.min' => 'Max branches must be at least 1.',
 
-            'is_active.required' => 'Status field is required.',
-            'is_active.boolean' => 'Status must be true or false.',
+            'is_active.required' => 'Plan active inactive field is required.',
+            'is_active.boolean' => 'Plan active inactive field must be true or false.',
 
             'sorting_order.integer' => 'Sorting order must be a valid number.',
             'sorting_order.min' => 'Sorting order cannot be negative.',

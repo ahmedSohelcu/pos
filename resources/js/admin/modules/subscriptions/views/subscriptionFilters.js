@@ -1,13 +1,23 @@
-import { STATUS_ENDPOINTS } from "../../../../data/endpoint"
+import { STATUS_ENDPOINTS, TENANT_ENDPOINTS } from '../../../../data/endpoint';
 
 export const subscriptionFilters = [
+  {
+    name: 'tenant_id',
+    label: 'Tenant',
+    type: 'select',
+    select2: true, // 🔥 enable select2
+    multiple: false, // single select
+    getApiRoute: TENANT_ENDPOINTS.selectable,
+    optionKeyName: 'name',
+    // optionValueName: 'label'
+  },
   {
     name: 'status_id',
     label: 'Status',
     type: 'select',
     select2: true, // 🔥 enable select2
     multiple: false, // single select
-    getApiRoute: STATUS_ENDPOINTS.selectable('common'),
+    getApiRoute: STATUS_ENDPOINTS.selectable('subscription'),
     optionKeyName: 'name',
     // optionValueName: 'label'
   },

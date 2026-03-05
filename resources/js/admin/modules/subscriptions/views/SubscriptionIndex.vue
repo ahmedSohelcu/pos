@@ -23,11 +23,7 @@
       :centered="true"
       @confirm="createOrUpate"
       @close="closeModal"
-      :title="
-        subscriptionStore.mode === 'edit'
-          ? 'Edit Subscription'
-          : 'Create Tenant'
-      "
+      :title="subscriptionStore.mode === 'edit' ? '' : ''"
       :confirmText="
         subscriptionStore.mode === 'edit' ? 'Update Subscription' : 'Create'
       "
@@ -49,6 +45,7 @@ import { useSubscriptionStore } from '../store';
 import BaseModal from '@kit/components/ui/BaseModal.vue';
 import SubscriptionForm from './SubscriptionForm.vue';
 import { SUBSCRIPTION_ENDPOINTS } from '@/data/endpoint';
+import { formatDate } from '../../../../ahmed-vue-kit/utils/helpers';
 
 const subscriptionStore = useSubscriptionStore();
 
@@ -68,26 +65,56 @@ const subscriptionActions = getSubscriptionActions(subscriptionStore);
 const columns = [
   { name: 'id', label: 'ID', sortable: true },
   {
-    name: 'name',
-    label: 'Shop Name',
-    sortable: true,
-    custom: (row) => `<span class="badge bg-success">${row.name}</span>`,
-  },
-  {
-    name: 'email',
-    label: 'Email',
+    name: 'tenant_id',
+    label: 'Tenant Name',
     sortable: true,
     custom: (row) =>
-      `<button class='btn btn-sm btn-outline-successs'>${row.email}</button>`,
+      `<span class="badge bg-success">${row.tenant?.name}</span>`,
   },
-  { name: 'phone', label: 'Phone', sortable: true },
-  { name: 'address', label: 'Address', sortable: true },
+  {
+    name: 'plan_id',
+    label: 'Plane Name',
+    sortable: true,
+    custom: (row) => 
+      `<span class="badge bg-secondary">${row.plan?.name}</span>`,
+  },
+  {
+    name: 'is_current',
+    label: 'Is Current',
+    sortable: true,
+    custom: (row) =>
+      `<span class="badge ${row.is_current ? 'bg-success' : 'bg-danger'}">${row.is_current ? 'ACTIVE' : 'INACTIVE'}</span>`,
+  },
+  {
+    name: 'start_date',
+    label: 'Start Date',
+    sortable: true,
+    custom: (row) =>
+      `<button class='btn btn-sm btn-outline-successs'>${row.starts_at}</button>`,
+  },
+  {
+    name: 'end_date',
+    label: 'End Date',
+    sortable: true,
+    custom: (row) =>
+      `<button class='btn btn-sm btn-outline-successs'>${row.ends_at}</button>`,
+  },
+
+  {
+    name: 'subscription_status',
+    label: 'subscription_status',
+    sortable: true,
+    custom: (row) => {
+      return `<span class="badge bg-${row.subscription_status === 'active' ? 'success' : 'danger'}">${row.subscription_status ?? ''}</span>`;
+    },
+  },
+
   {
     name: 'created_at',
     label: 'Created At',
     sortable: true,
     custom: (row) => {
-      return new Date(row.created_at).toLocaleString();
+      return formatDate(row?.created_at);
     },
   },
   {

@@ -71,7 +71,7 @@ const columns = [
     label: 'Short Name',
     sortable: true,
     custom: (row) =>
-      `<span class="badge bg-warning">${row.short_name ?? ''}</span>`,
+      `<span class="badge bg-secondary">${row.short_name ?? ''}</span>`,
   },
   {
     name: 'tenant_id',

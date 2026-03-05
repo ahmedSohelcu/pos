@@ -1,4 +1,5 @@
 <script setup>
+import { type } from 'jquery';
 import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
 
 const props = defineProps({
@@ -13,6 +14,10 @@ const props = defineProps({
   confirmText: { type: String, default: 'Confirm' },
   cancelText: { type: String, default: 'Cancel' },
   centered: { type: Boolean, default: true },
+  bodyClass: {
+    type: String,
+    default: '',
+  },
 });
 
 const emit = defineEmits(['update:modelValue', 'confirm']);
@@ -81,7 +86,7 @@ const confirm = () => {
           </div>
 
           <!-- Body -->
-          <div class="modal-body pro-body">
+          <div :class="bodyClass" class="modal-body pro-body">
             <slot />
           </div>
 
@@ -174,6 +179,7 @@ const confirm = () => {
       :centered="true"
       @confirm="deleteTenant"
       @close="closeModal" // function  trigger after modal close
+      :bodyClass="'p-3 bg-light rounded-3 border h-100'"
 
 
         ---------------------------------

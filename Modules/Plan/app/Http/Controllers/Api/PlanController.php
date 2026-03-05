@@ -22,6 +22,11 @@ class PlanController extends Controller
         return success_response('Plan List', $tenants);
     }
 
+    public function selectablePlans()
+    {
+        return $this->service->getSelectablePlans();        
+    }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -32,8 +37,7 @@ class PlanController extends Controller
 
         return created_responses('Plan created successfully', []);
     }
-
-    
+   
 
     /**
      * Show the specified resource.

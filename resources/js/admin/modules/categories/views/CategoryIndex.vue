@@ -73,8 +73,7 @@ const columns = [
     name: 'slug',
     label: 'Slug',
     sortable: true,
-    custom: (row) =>
-      `<button class='btn btn-sm btn-outline-warning'>${row.slug}</button>`,
+    custom: (row) => row.slug ?? '',
   },
   {
     name: 'tenant_id',

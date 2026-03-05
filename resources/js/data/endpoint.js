@@ -90,6 +90,7 @@ export const PLAN_ENDPOINTS = {
   show: (id) => route('api.plan.show', { plan: id }),
   update: (id) => route('api.plan.update', { plan: id }),
   destroy: (id) => route('api.plan.destroy', { plan: id }),
+  selectable: route('api.selectable_plans'),
 };
 
 /*
@@ -129,7 +130,7 @@ export const TENANT_ENDPOINTS = {
   show: (id) => route('api.tenant.show', { tenant: id }),
   update: (id) => route('api.tenant.update', { tenant: id }),
   destroy: (id) => route('api.tenant.destroy', { tenant: id }),
-  selectable: route('api.selectable-tenants'),
+  selectable: route('api.selectable_tenants'),
 };
 
 /*

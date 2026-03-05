@@ -41,40 +41,25 @@ class SubscriptionService extends BaseService
         return $query->get();
     }
 
-    public function create(array $data)
+    public function create()
     {
-        return $this->model->create($this->subscriptionRequests($data));
+        return $this->model->create($this->subscriptionRequests());
     }
 
-
-    private function subscriptionRequests($data){
+    private function subscriptionRequests(){
         return [
-            'tenant_id'     => $data['tenant_id'] ?? null,
-            'plan_id'       => $data['plan_id'] ?? null,
-            'starts_at'     => $data['starts_at'] ?? null,
-            'ends_at'       => $data['ends_at'] ?? null,
-            'address'       => $data['address'] ?? null,
-            'status_id'     => $data['status_id'] ?? null,
-            'is_current'    => $data['is_current'] ?? null,
+            'tenant_id'     => $this->getAttr('tenant_id') ?? null,
+            'plan_id'       => $this->getAttr('plan_id') ?? null,
+            'starts_at'     => $this->getAttr('starts_at') ?? null,
+            'ends_at'       => $this->getAttr('ends_at') ?? null,
+            'status_id'     => $this->getAttr('status_id') ?? null,
+            'is_current'    => $this->getAttr('is_current') ?? null,
         ];
     }
 
-    public function findSubscriptionById($id){
-        return $this->model->findOrFail($id);
-    }
-
-
-    public function update(array $data, $id)
+    public function update()
     {     
-        $this->model =  $this->model->find($id);
-        $this->model->update($this->subscriptionRequests($data));
-        return $this->model;
-    }
-
-    
-    public function delete($id)
-    {
-        $this->model->findOrFail($id)->delete();
-        return $this->model;
+        $this->model->update($this->subscriptionRequests());
+        return $this;
     }
 }

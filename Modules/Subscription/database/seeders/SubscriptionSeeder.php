@@ -27,7 +27,6 @@ class SubscriptionSeeder extends Seeder
                     'plan_id' => $basicPlan->id,
                     'starts_at' => now(),
                     'ends_at' => now()->addDays($basicPlan->trial_days ?? 7),
-                    'status' => 'trial',
                     'is_current' => true,
                 ]);
             }

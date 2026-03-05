@@ -12,6 +12,10 @@ class PlanService extends BaseService
         $this->model = $plan;
     }
 
+    public function getSelectablePlans(){
+        return $this->model->select('id', 'name')->get();
+    }
+
     public function getAll(
         bool $isPaginated = true,
         bool $isSorted = true,

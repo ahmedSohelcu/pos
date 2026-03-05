@@ -12,7 +12,7 @@ class TenantRequest extends BaseRequest
     /**
      * Get the validation rules that apply to the request.
      */
-     public function rules(): array
+    public function rules(): array
     {
         $tenantId = $this->id ?? null; // null for create
 

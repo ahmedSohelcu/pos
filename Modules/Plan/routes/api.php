@@ -7,4 +7,7 @@ Route::
 // middleware(['auth:sanctum'])->
 prefix('v1')->group(function () {
     Route::apiResource('plans', PlanController::class)->names('plan');
+
+    Route::get('selectable-plans', [PlanController::class, 'selectablePlans'])
+        ->name('selectable_plans');
 });

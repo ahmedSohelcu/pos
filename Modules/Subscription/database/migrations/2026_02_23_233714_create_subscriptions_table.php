@@ -22,17 +22,10 @@ return new class extends Migration
             $table->date('starts_at');
             $table->date('ends_at');
 
-            // 🔹 Status (trial, active, expired, cancelled)
-            $table->enum('status', [
-                'trial',
-                'active',
-                'expired',
-                'cancelled',
-                'pending'
-            ])->default('pending');
-
             // 🔹 Control Current Subscription
             $table->boolean('is_current')->default(true);
+            
+            // 🔹 Status (trial, active, expired, cancelled)  
             $table->foreignId('status_id')->nullable()->constrained()->restrictOnDelete();
             
             $table->timestamps();

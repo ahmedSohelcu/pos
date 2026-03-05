@@ -16,6 +16,8 @@ export default {
   status_delivered: 'Delivered',
   status_completed: 'Completed',
   status_inprogress: 'Inprogress',
+  status_trial: 'Trial',
+  status_expired: 'Expired',
 
   // Permission
   user_create: 'User Create',

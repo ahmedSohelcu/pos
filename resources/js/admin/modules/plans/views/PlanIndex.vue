@@ -17,6 +17,7 @@
     <BaseModal
       v-model="planStore.showModal"
       size="lg"
+      :bodyClass="'p-3 bg-light rounded-3 border h-100'"
       :loading="planStore.loading"
       confirmVariant="outline-success"
       cancelVariant="outline-danger"
@@ -68,13 +69,13 @@ const columns = [
     sortable: true,
     custom: (row) => `<span class="badge bg-success">${row.name}</span>`,
   },
-  {
-    name: 'slug',
-    label: 'Slug',
-    sortable: true,
-    custom: (row) =>
-      `<button class='btn btn-sm btn-outline-warning'>${row.slug}</button>`,
-  },
+  // {
+  //   name: 'slug',
+  //   label: 'Slug',
+  //   sortable: true,
+  //   custom: (row) =>
+  //     `<button class='btn btn-sm btn-outline-warning'>${row.slug}</button>`,
+  // },
   {
     name: 'price',
     label: 'Price',
@@ -97,8 +98,10 @@ const columns = [
   },
   {
     name: 'is_active',
-    label: 'Is Active',
+    label: 'Status',
     sortable: true,
+    custom: (row) =>
+      `<span class="badge ${row.is_active ? 'bg-success' : 'bg-danger'}">${row.is_active ? 'Active' : 'Inactive'}</span>`,
   },
   {
     name: 'created_at',

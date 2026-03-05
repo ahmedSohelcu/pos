@@ -8,5 +8,5 @@ Route::middleware([''])->prefix('v1')->group(function () {
     Route::apiResource('tenants', TenantController::class)->names('tenant');
 
     Route::get('selectable-tenants', [TenantController::class, 'selectableTenants'])
-        ->name('selectable-tenants');
+        ->name('selectable_tenants');
 });

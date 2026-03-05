@@ -109,8 +109,10 @@
       </div>
 
       <div class="table-responsive table-wrapper">
-        <table class="table table-hover align-middle mb-0 modern-table">
-          <thead>
+        <table
+          class="table table-bordered stable-striped table-hover align-middle mb-0 modern-table"
+        >
+          <thead class="table-success">
             <tr>
               <th style="width: 40px">
                 <input
@@ -402,10 +404,11 @@ const toggleColumn = (col) => {
   top: 0;
   background: #fff;
   z-index: 5;
-  font-size: 12px;
+  font-size: 14px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   color: #6b7280;
+  /* text-align: center; */
 }
 .empty-state {
   font-size: 13px;

@@ -19,37 +19,8 @@ class StatusSeeder extends Seeder
         Schema::disableForeignKeyConstraints();
         Status::query()->truncate();
 
-        $statuses = [          
-            [
-                'name' => 'status_active',
-                'type' => 'user',
-                'class' => 'success'
-            ],
-            [
-                'name' => 'status_inactive',
-                'type' => 'user',
-                'class' => 'danger'
-            ],
-            [
-                'name' => 'status_pending',
-                'type' => 'user',
-                'class' => 'warning'
-            ],
-            [
-                'name' => 'role_active',
-                'type' => 'role',
-                'class' => 'success'
-            ],
-            [
-                'name' => 'status_inactive',
-                'type' => 'role',
-                'class' => 'danger'
-            ],
-            [
-                'name' => 'status_pending',
-                'type' => 'role',
-                'class' => 'warning'
-            ],           
+        $statuses = [            
+            //======================================        
             //common  use
             [
                 'name' => 'status_active',
@@ -66,6 +37,36 @@ class StatusSeeder extends Seeder
                 'type' => 'common',
                 'class' => 'danger'
             ],          
+
+            //======================================
+            // subscription_status
+            //======================================
+            [
+                'name' => 'status_trial',
+                'type' => 'subscription',
+                'class' => 'warning'
+            ],
+            [
+                'name' => 'status_active',
+                'type' => 'subscription',
+                'class' => 'success'
+            ],             
+            [
+                'name' => 'status_expired',
+                'type' => 'subscription',
+                'class' => 'danger'
+            ],   
+            [
+                'name' => 'status_cancelled',
+                'type' => 'subscription',
+                'class' => 'danger'
+            ],
+            [
+                'name' => 'status_pending',
+                'type' => 'subscription',
+                'class' => 'secondary'
+            ],   
+
             //======================================
             //order status
             //======================================
@@ -124,8 +125,6 @@ class StatusSeeder extends Seeder
                 'type' => 'transaction',
                 'class' => 'success'
             ],
-
-            // for order
             [
                 'name' => 'status_refunded',
                 'type' => 'order',
