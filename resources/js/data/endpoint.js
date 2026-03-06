@@ -121,7 +121,32 @@ export const ROLE_ENDPOINTS = {
 };
 
 
-  
+/*
+|--------------------------------------------------------------------------
+| Expense Category
+|--------------------------------------------------------------------------
+*/
+export const EXPENSE_CATEGORY_ENDPOINTS = {
+  index: route('api.expense_category.index'),
+  store: route('api.expense_category.store'),
+  show: (id) => route('api.expense_category.show', { expense_category: id }),
+  update: (id) => route('api.expense_category.update', { expense_category: id }),
+  destroy: (id) => route('api.expense_category.destroy', { expense_category: id }),
+  selectable: (tenant_id)=> route('api.selectable_expense_categories', {tenant_id: tenant_id}),
+};
+
+/*
+|--------------------------------------------------------------------------
+| Expense
+|--------------------------------------------------------------------------
+*/
+export const EXPENSE_ENDPOINTS = {
+  index: route('api.expense.index'),
+  store: route('api.expense.store'),
+  show: (id) => route('api.expense.show', { expense: id }),
+  update: (id) => route('api.expense.update', { expense: id }),
+  destroy: (id) => route('api.expense.destroy', { expense: id }),
+};
 
 
 /*

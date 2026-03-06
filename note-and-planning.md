@@ -14,6 +14,7 @@
 - php artisan module:make Feature
 - php artisan module:make Category Brand Customer Unit
 - php artisan module:make-migration create_features_table Feature
+- php artisan make:service Tenant --module=Tenant
 - pa module:make-model Feature Feature
 - php artisan module:make-migration create_plan_features_table Feature
 - php artisan module:make-migration add_tenant_id_to_user_table Tenant

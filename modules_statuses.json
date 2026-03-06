@@ -8,5 +8,6 @@
     "Payment": true,
     "Role": true,
     "Customer": true,
-    "Unit": true
+    "Unit": true,
+    "Expense": true
 }
