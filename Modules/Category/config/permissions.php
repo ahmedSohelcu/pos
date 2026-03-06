@@ -2,22 +2,22 @@
 
 return [
     [
-        'name'       => 'category_create',
+        'name'       => 'category.create',
         'guard_name' => 'api',
         'tenant_id'  => null
     ],
     [
-        'name' => 'category_edit',
+        'name' => 'category.edit',
         'guard_name' => 'api',
         'tenant_id'  => null
     ],
     [
-        'name' => 'category_delete',
+        'name' => 'category.delete',
         'guard_name' => 'api',
         'tenant_id'  => null
     ],
     [
-        'name' => 'category_view',
+        'name' => 'category.view',
         'guard_name' => 'api',
         'tenant_id'  => null
     ],

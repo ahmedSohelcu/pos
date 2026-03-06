@@ -5,17 +5,17 @@ export const TenantMenus = [
     key: 'tenants',
     label: 'Tenants',
     icon: 'bi bi-building',
-    permission: 'tenant_access',
+    permission: 'tenant.access',
     items: [
       {
         name: 'tenants.index',
         label: 'Manage Tenants',
-        permission: 'tenant_view',
+        permission: 'tenant.view',
       },
       // {
       //   name: 'tenants.create',
       //   label: 'Create Tenant',
-      //   permission: 'tenant_create'
+      //   permission: 'tenant.create'
       // },
       // {
       //   name: 'tenants.subscriptions',

@@ -34,7 +34,7 @@ export function useResourceStore(name, endpoint, options = {}) {
       },
 
       // ✅ Extra state for specific stores
-      ...options.state || {} , // Extra state from child stores
+      ...(options.state || {}), // Extra state from child stores
     }),
 
     getters: {
@@ -195,9 +195,9 @@ export function useResourceStore(name, endpoint, options = {}) {
         this.selectedItem = null;
         this.errors = {};
       },
-    },
 
-    // ✅ Spread extra actions for specific stores
-      ...options.actions,
+      // ✅ Spread extra actions for specific stores
+      ...(options.actions || {}), // ⭐ IMPORTANT
+    },
   });
 }

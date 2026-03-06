@@ -2,22 +2,22 @@
 
 return [
     [
-        'name'       => 'customer_create',
+        'name'       => 'customer.create',
         'guard_name' => 'api',
         'tenant_id'  => null
     ],
     [
-        'name' => 'customer_edit',
+        'name' => 'customer.edit',
         'guard_name' => 'api',
         'tenant_id'  => null
     ],
     [
-        'name' => 'customer_delete',
+        'name' => 'customer.delete',
         'guard_name' => 'api',
         'tenant_id'  => null
     ],
     [
-        'name' => 'customer_view',
+        'name' => 'customer.view',
         'guard_name' => 'api',
         'tenant_id'  => null
     ],

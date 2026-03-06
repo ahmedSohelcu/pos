@@ -19,10 +19,10 @@ class PermissioSeeder extends Seeder
 
         // 1️⃣ Base permissions (system level)
         $basePermissions = [
-            ['name' => 'user_create', 'guard_name' => 'api', 'tenant_id' => null],
-            ['name' => 'user_edit',   'guard_name' => 'api', 'tenant_id' => null],
-            ['name' => 'user_delete', 'guard_name' => 'api', 'tenant_id' => null],
-            ['name' => 'user_view',   'guard_name' => 'api', 'tenant_id' => null],
+            ['name' => 'user.create', 'guard_name' => 'api', 'tenant_id' => null],
+            ['name' => 'user.edit',   'guard_name' => 'api', 'tenant_id' => null],
+            ['name' => 'user.delete', 'guard_name' => 'api', 'tenant_id' => null],
+            ['name' => 'user.view',   'guard_name' => 'api', 'tenant_id' => null],
             //full user modules permission need to add
         ];
 

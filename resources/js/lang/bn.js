@@ -53,32 +53,32 @@ export default {
     'order_view'   : 'অর্ডার দেখা',
 
     // Payment
-    'payment_create' : 'পেমেন্ট তৈরি',
-    'payment_edit'   : 'পেমেন্ট সম্পাদনা',
-    'payment_delete' : 'পেমেন্ট মুছে ফেলা',
-    'payment_view'   : 'পেমেন্ট দেখা',
+    'payment.create' : 'পেমেন্ট তৈরি',
+    'payment.edit'   : 'পেমেন্ট সম্পাদনা',
+    'payment.delete' : 'পেমেন্ট মুছে ফেলা',
+    'payment.view'   : 'পেমেন্ট দেখা',
 
     // Subscription
-    'subscription_create' : 'সাবস্ক্রিপশন তৈরি',
-    'subscription_edit'   : 'সাবস্ক্রিপশন সম্পাদনা',
-    'subscription_delete' : 'সাবস্ক্রিপশন মুছে ফেলা',
-    'subscription_view'   : 'সাবস্ক্রিপশন দেখা',
+    'subscription.create' : 'সাবস্ক্রিপশন তৈরি',
+    'subscription.edit'   : 'সাবস্ক্রিপশন সম্পাদনা',
+    'subscription.delete' : 'সাবস্ক্রিপশন মুছে ফেলা',
+    'subscription.view'   : 'সাবস্ক্রিপশন দেখা',
 
     // Tenant
-    'tenant_create' : 'টেন্যান্ট তৈরি',
-    'tenant_edit'   : 'টেন্যান্ট সম্পাদনা',
-    'tenant_delete' : 'টেন্যান্ট মুছে ফেলা',
-    'tenant_view'   : 'টেন্যান্ট দেখা',
+    'tenant.create' : 'টেন্যান্ট তৈরি',
+    'tenant.edit'   : 'টেন্যান্ট সম্পাদনা',
+    'tenant.delete' : 'টেন্যান্ট মুছে ফেলা',
+    'tenant.view'   : 'টেন্যান্ট দেখা',
 
     // Plan
-    'plan_create' : 'প্ল্যান তৈরি',
-    'plan_edit'   : 'প্ল্যান সম্পাদনা',
-    'plan_delete' : 'প্ল্যান মুছে ফেলা',
-    'plan_view'   : 'প্ল্যান দেখা',
+    'plan.create' : 'প্ল্যান তৈরি',
+    'plan.edit'   : 'প্ল্যান সম্পাদনা',
+    'plan.delete' : 'প্ল্যান মুছে ফেলা',
+    'plan.view'   : 'প্ল্যান দেখা',
 
     // Feature
-    'feature_create' : 'ফিচার তৈরি',
-    'feature_edit'   : 'ফিচার সম্পাদনা',
-    'feature_delete' : 'ফিচার মুছে ফেলা',
-    'feature_view'   : 'ফিচার দেখা',  
+    'feature.create' : 'ফিচার তৈরি',
+    'feature.edit'   : 'ফিচার সম্পাদনা',
+    'feature.delete' : 'ফিচার মুছে ফেলা',
+    'feature.view'   : 'ফিচার দেখা',  
 }

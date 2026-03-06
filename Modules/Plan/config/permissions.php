@@ -2,22 +2,22 @@
 
 return [
     [
-        'name'       => 'plan_create',
+        'name'       => 'plan.create',
         'guard_name' => 'api',
         'tenant_id'  => null
     ],
     [
-        'name' => 'plan_edit',
+        'name' => 'plan.edit',
         'guard_name' => 'api',
         'tenant_id'  => null
     ],
     [
-        'name' => 'plan_delete',
+        'name' => 'plan.delete',
         'guard_name' => 'api',
         'tenant_id'  => null
     ],
     [
-        'name' => 'plan_view',
+        'name' => 'plan.view',
         'guard_name' => 'api',
         'tenant_id'  => null
     ],

@@ -5,18 +5,17 @@ import { ROLE_ENDPOINTS } from '@/data/endpoint';
 
 export const getRoleActions = (roleStore) => [
   {
-    label: (row) => {
-      return `<i class="fas fa-plus-circle text-success me-2"></i>Create`;
-    },
+    label: '<i class="fas fa-key text-warning p-2"></i> Permission',
     handler: (row) => {
-      roleStore.mode = 'create';
-      roleStore.errors = {};
-      roleStore.selectedItem = {}; // reset form
-      roleStore.showModal = true;
+      // roleStore.errors = {};
+      // roleStore.selectedItem = {}; // reset form
+      // roleStore.fetchPermissions(row.id);
+      roleStore.fetchPermissions(row.id);
+      roleStore.permissionModal = true;
     },
   },
   {
-    label: '<i class="fas fa-edit text-warning me-2"></i> Edit',
+    label: '<i class="fas fa-edit text-warning me-2"></i> Edit Role',
     handler: async (row) => {
       roleStore.showModal = true;
       roleStore.errors = {};

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Modules\Role\app\Http\Requests\RoleRequest;
 use Modules\Role\App\Models\Role;
 use Modules\Role\app\Services\RoleService;
+use Spatie\Permission\Models\Role as ModelsRole;
 
 class RoleController extends Controller
 {
@@ -21,6 +22,16 @@ class RoleController extends Controller
         $roles = $this->service->getAll(true, true, [], 10);
         return success_response('Role List', $roles);
     }
+
+    public function permissions(ModelsRole $role) {
+        
+        $permissions = $this->service
+            ->setModel($role)
+            ->getRolePermissions();
+
+        return success_response('Role Permissions', $permissions);
+    }
+
 
     /**
      * Store a newly created resource in storage.

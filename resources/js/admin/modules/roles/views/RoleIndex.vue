@@ -7,13 +7,42 @@
       :loading="roleStore.loading"
       :meta="roleStore.meta"
       :filters="roleFilters"
-      :actions="tenantActions"
+      :actions="roleActions"
       @query-change="roleStore.updateQuery"
       @create="createFromTableBtn"
       @refresh="roleStore.fetchData"
       @bulk-delete="roleStore.bulkDelete"
     />
 
+    <!-- ------------------------------------
+    Start Permissions
+    ------------------------------------- -->
+    <BaseModal
+      size="lg"
+      v-model="roleStore.permissionModal"
+      :loading="roleStore.loading"
+      confirmVariant="outline-success"
+      cancelVariant="outline-danger"
+      :centered="true"
+      @confirm="createOrUpate"
+      @close="closeModal"
+      :title="'Permissions'"
+      :confirmText="'save'"
+    >
+      <PermissionsForm
+        :permissions="roleStore.permissions"
+        :modelValue="roleStore.form.permissions ?? {}"
+        @update:modelValue="roleStore.form.permissions = $event"
+        :errors="roleStore.errors ?? {}"
+      />
+    </BaseModal>
+    <!-- ------------------------------------
+    End Permissions
+    ------------------------------------- -->
+
+    <!-- ------------------------------------
+    Start Create Modal
+    ------------------------------------- -->
     <BaseModal
       v-model="roleStore.showModal"
       size="md"
@@ -31,6 +60,9 @@
         :errors="roleStore.errors ?? {}"
       />
     </BaseModal>
+    <!-- ------------------------------------
+    End Create Modal
+    ------------------------------------- -->
   </div>
 </template>
 
@@ -43,6 +75,7 @@ const showModal = ref(false);
 import { useRoleStore } from '../store';
 import BaseModal from '@kit/components/ui/BaseModal.vue';
 import RoleForm from './RoleForm.vue';
+import PermissionsForm from './PermissionsForm.vue';
 import { ROLE_ENDPOINTS } from '@/data/endpoint';
 
 const roleStore = useRoleStore();
@@ -58,7 +91,7 @@ onMounted(() => {
 //-------------------------
 //load table actions button
 //-------------------------
-const tenantActions = getRoleActions(roleStore);
+const roleActions = getRoleActions(roleStore);
 
 const columns = [
   { name: 'id', label: 'ID', sortable: true },

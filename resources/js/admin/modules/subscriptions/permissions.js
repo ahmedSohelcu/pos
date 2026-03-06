@@ -1,7 +1,7 @@
 export const TenantPermissions = [
-  'tenant_access',       // Top-level module permission
-  'tenant_view',         // View tenants
-  'tenant_create',       // Create tenants
-  'tenant_edit',         // Edit tenants
-  'tenant_delete',       // Delete tenants
+  'tenant.access',       // Top-level module permission
+  'tenant.view',         // View tenants
+  'tenant.create',       // Create tenants
+  'tenant.edit',         // Edit tenants
+  'tenant.delete',       // Delete tenants
 ]

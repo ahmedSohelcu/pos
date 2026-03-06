@@ -3,6 +3,7 @@
 namespace Modules\Role\App\Services;
 use App\Services\Core\BaseService;
 use Modules\Role\app\Models\Role;
+use Spatie\Permission\Models\Role as ModelsRole;
 
 // use Spatie\Permission\Models\Role;
 
@@ -61,5 +62,35 @@ class RoleService extends BaseService
     {     
         $this->model = $this->model->update($this->roleRequests());
         return $this;
+    }
+
+    public function getRolePermissions(){
+        // 1️⃣ Get all permissions of the role
+        $permissions = $this->model->permissions;
+        
+        // 2️⃣ Transform to include module and action
+        $permissionsMapped = $permissions->map(function($perm){
+            // Example: 'user.create' => ['module'=>'User', 'action'=>'create']
+            $parts = explode('.', $perm->name);
+            return [
+                'id' => $perm->id,
+                'name' => $perm->name,
+                'module' => ucfirst($parts[0]),
+                'action' => $parts[1] ?? null,
+            ];
+        });
+
+        // 3️⃣ Group by module
+        $grouped = $permissionsMapped->groupBy('module')->map(function($items, $module){
+            return [
+                'module' => $module,
+                'permissions' => $items->map(fn($p)=>[
+                    'id' => $p['id'],
+                    'name' => $p['name'],
+                ])->values()
+            ];
+        })->values(); // ->values() to reset array keys
+
+        return $grouped;
     }
 }

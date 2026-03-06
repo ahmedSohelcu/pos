@@ -2,22 +2,22 @@
 
 return [
     [
-        'name'       => 'unit_create',
+        'name'       => 'unit.create',
         'guard_name' => 'api',
         'tenant_id'  => null
     ],
     [
-        'name' => 'unit_edit',
+        'name' => 'unit.edit',
         'guard_name' => 'api',
         'tenant_id'  => null
     ],
     [
-        'name' => 'unit_delete',
+        'name' => 'unit.delete',
         'guard_name' => 'api',
         'tenant_id'  => null
     ],
     [
-        'name' => 'unit_view',
+        'name' => 'unit.view',
         'guard_name' => 'api',
         'tenant_id'  => null
     ],

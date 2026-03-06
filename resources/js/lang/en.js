@@ -70,15 +70,15 @@ export default {
   subscription_delete: 'Subscription Delete',
   subscription_view: 'View Subscription',
 
-  tenant_create: 'Tenant Create',
-  tenant_edit: 'Tenant Edit',
-  tenant_delete: 'Tenant Delete',
-  tenant_view: 'View Tenant',
+  // 'tenant.create': 'Tenant Create',
+  // tenant.edit: 'Tenant Edit',
+  // tenant.delete: 'Tenant Delete',
+  // tenant.view: 'View Tenant',
 
-  plan_create: 'Plan Create',
-  plan_edit: 'Plan Edit',
-  plan_delete: 'Plan Delete',
-  plan_view: 'View Plan',
+  // plan.create: 'Plan Create',
+  // plan.edit: 'Plan Edit',
+  // plan.delete: 'Plan Delete',
+  // plan.view: 'View Plan',
 
   feature_create: 'Feature Create',
   feature_edit: 'Feature Edit',

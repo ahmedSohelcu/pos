@@ -2,22 +2,22 @@
 
 return [
     [
-        'name'       => 'subscription_create',
+        'name'       => 'subscription.create',
         'guard_name' => 'api',
         'tenant_id'  => null
     ],
     [
-        'name' => 'subscription_edit',
+        'name' => 'subscription.edit',
         'guard_name' => 'api',
         'tenant_id'  => null
     ],
     [
-        'name' => 'subscription_delete',
+        'name' => 'subscription.delete',
         'guard_name' => 'api',
         'tenant_id'  => null
     ],
     [
-        'name' => 'subscription_view',
+        'name' => 'subscription.view',
         'guard_name' => 'api',
         'tenant_id'  => null
     ],

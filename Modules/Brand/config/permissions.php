@@ -2,22 +2,22 @@
 
 return [
     [
-        'name'       => 'brand_create',
+        'name'       => 'brand.create',
         'guard_name' => 'api',
         'tenant_id'  => null
     ],
     [
-        'name' => 'brand_edit',
+        'name' => 'brand.edit',
         'guard_name' => 'api',
         'tenant_id'  => null
     ],
     [
-        'name' => 'brand_delete',
+        'name' => 'brand.delete',
         'guard_name' => 'api',
         'tenant_id'  => null
     ],
     [
-        'name' => 'brand_view',
+        'name' => 'brand.view',
         'guard_name' => 'api',
         'tenant_id'  => null
     ],

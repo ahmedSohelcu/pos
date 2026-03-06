@@ -2,22 +2,22 @@
 
 return [
     [
-        'name'       => 'role_create',
+        'name'       => 'role.create',
         'guard_name' => 'api',
         'tenant_id'  => null
     ],
     [
-        'name' => 'role_edit',
+        'name' => 'role.edit',
         'guard_name' => 'api',
         'tenant_id'  => null
     ],
     [
-        'name' => 'role_delete',
+        'name' => 'role.delete',
         'guard_name' => 'api',
         'tenant_id'  => null
     ],
     [
-        'name' => 'role_view',
+        'name' => 'role.view',
         'guard_name' => 'api',
         'tenant_id'  => null
     ],

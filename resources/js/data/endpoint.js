@@ -116,8 +116,13 @@ export const ROLE_ENDPOINTS = {
   store: route('api.role.store'),
   show: (id) => route('api.role.show', { role: id }),
   update: (id) => route('api.role.update', { role: id }),
-  destroy: (id) => route('api.role.destroy', { role: id }),
+  destroy: (id) => route('api.role.destroy', { role: id }),  
+  permissions: (role_id) => route('api.role.permissions', { role: role_id }),
 };
+
+
+  
+
 
 /*
 |--------------------------------------------------------------------------

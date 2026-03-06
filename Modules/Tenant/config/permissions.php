@@ -2,23 +2,23 @@
 
 return [
     [
-        'name'       => 'tenant_create',
+        'name'       => 'tenant.create',
         'guard_name' => 'api',
-        'tenant_id'  => null
+        'tenant.id'  => null
     ],
     [
-        'name' => 'tenant_edit',
+        'name' => 'tenant.edit',
         'guard_name' => 'api',
-        'tenant_id'  => null
+        'tenant.id'  => null
     ],
     [
-        'name' => 'tenant_delete',
+        'name' => 'tenant.delete',
         'guard_name' => 'api',
-        'tenant_id'  => null
+        'tenant.id'  => null
     ],
     [
-        'name' => 'tenant_view',
+        'name' => 'tenant.view',
         'guard_name' => 'api',
-        'tenant_id'  => null
+        'tenant.id'  => null
     ],
 ];
