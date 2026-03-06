@@ -10,6 +10,7 @@ import CategoryRoutes from './admin/modules/categories/router.js';
 import UnitRoutes from './admin/modules/units/router.js';
 import SubscriptionRoutes from './admin/modules/subscriptions/router.js';
 import PlanRoutes from './admin/modules/plans/router.js';
+import CustomerRoutes from './admin/modules/customers/router.js';
 
 // import SuR
 
@@ -134,7 +135,8 @@ const routes = [
   ...UnitRoutes,
   ...ProductRoutes,
   ...PlanRoutes,
-  ...SubscriptionRoutes
+  ...SubscriptionRoutes,
+  ...CustomerRoutes
   
 ];
 

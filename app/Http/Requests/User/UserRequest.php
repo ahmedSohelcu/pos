@@ -22,7 +22,7 @@ class UserRequest extends BaseRequest
             ],
             // 'phone' => ['required', 'string', 'max:15'],
             'phone' => ['required', 'regex:/^\+?[0-9]{10,15}$/'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'password' => ['nullable', 'string', 'min:8', 'confirmed'],
             'tenant_id' => ['nullable', 'exists:tenants,id'],
             'status_id' => ['required', 'exists:statuses,id'],
         ];

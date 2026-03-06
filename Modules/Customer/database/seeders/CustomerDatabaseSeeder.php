@@ -13,7 +13,8 @@ class CustomerDatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $users = User::query()->where('user_type', 'tenant_customer')->get();
+        $users = User::query()->where('user_type', 'tenant_customer')
+            ->get();
 
         foreach ($users as $user) {
 
@@ -46,3 +47,24 @@ class CustomerDatabaseSeeder extends Seeder
     
     }
 }
+
+
+
+        // 'user_id',
+        // 'code',
+        // 'profile_pic',
+        // 'tenant_id',
+        // 'created_by',
+        // 'opening_balance',
+        // 'current_balance',
+        // 'loyalty_points',
+        // 'is_walkin',
+
+        // 'address',
+        // 'city',
+        // 'state',
+        // 'country',
+        // 'zip_code',
+
+        // 'status_id',
+        // 'sorting_order',

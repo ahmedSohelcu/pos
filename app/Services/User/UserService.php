@@ -48,41 +48,33 @@ class UserService extends BaseService
         return $query->get();
     }
 
-    public function create(array $data)
+    public function create()
     {
-        // dd($data);
-        return $this->model->create($this->userRequests($data));
+        return $this->model->create($this->userRequests());
     }
 
 
-    private function userRequests($data)
-    {
-        return [
-            'name' => $data['name'] ?? null,
-            'email' => $data['email'] ?? null,
-            'phone' => $data['phone'] ?? null,
-            'password' => $data['password'] ?? null,
-            'tenant_id' => $data['tenant_id'] ?? null,
-            'status_id' => $data['status_id'] ?? null,
-        ];
-    }
-
-    public function finduserById($id){
+    public function findById($id){
         return $this->model->findOrFail($id);
     }
 
 
-    public function update(array $data, $id)
-    {     
-        $this->model =  $this->model->find($id);
-        $this->model->update($this->userRequests($data));
-        return $this->model;
+    private function userRequests()
+    {
+        return [
+            'name'      => $this->getAttr('name') ?? null,
+            'email'     => $this->getAttr('email') ?? null,
+            'phone'     => $this->getAttr('phone') ?? null,
+            'user_type' => $this->getAttr('user_type') ?? null,
+            'password'  => $this->getAttr('password') ?? null,
+            'tenant_id' => $this->getAttr('tenant_id') ?? null, //should be auto filled
+            'status_id' => $this->getAttr('status_id') ?? null,
+        ];
     }
 
-    
-    public function delete($id)
+    public function update()
     {
-        $this->model->findOrFail($id)->delete();
-        return $this->model;
+        $this->model->update($this->userRequests());
+        return $this;
     }
 }

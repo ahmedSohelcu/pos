@@ -29,8 +29,11 @@ class TenantController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(TenantRequest $request) {        
-        $this->service->create($request->all());
+    public function store(TenantRequest $request) {      
+        $this->service
+        ->create($request->all())
+        // ->createWalkinCustomer()
+        ;
         return created_responses('Tenant created successfully', []);
     }
 

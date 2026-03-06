@@ -156,7 +156,7 @@
               <!-- Data cells -->
               <td v-for="(col, i) in visibleColumns" :key="i">
                 <!-- 🔥 custom function support -->
-                <span v-if="col.custom" v-html="col.custom(row)"></span>
+                <span v-if="col.custom" v-html="col.custom(row, rowIndex)"></span>
 
                 <!-- 🔥 legacy row function support -->
                 <span

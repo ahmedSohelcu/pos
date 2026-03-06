@@ -23,7 +23,7 @@
       :centered="true"
       @confirm="createOrUpate"
       @close="closeModal"
-      :title="userStore.mode === 'edit' ? '' : 'Create Tenant'"
+      :title="userStore.mode === 'edit' ? '' : ''"
       :confirmText="userStore.mode === 'edit' ? 'Update' : 'Create'"
     >
       <UserForm

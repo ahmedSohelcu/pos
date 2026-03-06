@@ -1,21 +1,22 @@
 <template>
-  <form @submit.prevent>
+  <model @submit.prevent>
     <!-- Header -->
     <div class="mb-4">
-      <h5 class="fw-bold mb-1">Shop Information</h5>
-      <small class="text-muted">Enter shop basic details below</small>
+      <h5 class="fw-bold mb-1">Customer Inmodelation</h5>
+      <small class="text-muted">Enter customer basic details below</small>
       <hr />
     </div>
+
 
     <div class="row g-3">
       <!-- Shop Name -->
       <div class="col-md-6">
         <BaseInput
           v-model="model.name"
-          label="Shop Name"
+          label="User Name"
           type="text"
           :error="errors.name"
-          placeholder="Enter shop name"
+          placeholder="User name"
           icon="fa-store"
         />
       </div>
@@ -24,10 +25,10 @@
       <div class="col-md-6">
         <BaseInput
           v-model="model.email"
-          label="Shop Email"
+          label="Email"
           type="email"
           :error="errors.email"
-          placeholder="Enter shop email"
+          placeholder="Enter email"
           icon="fa-envelope"
         />
       </div>
@@ -36,7 +37,7 @@
       <div class="col-md-6">
         <BaseInput
           v-model="model.phone"
-          label="Shop Phone"
+          label="Phone"
           type="text"
           :error="errors.phone"
           placeholder="Enter phone number"
@@ -52,22 +53,23 @@
           label="Status"
           v-model="model.status_id"
           :error="errors.status_id"
+          name="status_id"
           placeholder="Choose Status"
         />
       </div>
 
       <!-- Address -->
       <div class="col-md-12">
-        <BaseInput
+        <BaseTextarea
           v-model="model.address"
-          label="Shop Address"
+          label="Customer Address"
           :error="errors.address"
-          placeholder="Enter shop address"
+          placeholder="Enter customer address"
           icon="fa-location-dot"
         />
       </div>
     </div>
-  </form>
+  </model>
 </template>
 
 <script setup>
@@ -77,7 +79,7 @@ import BaseInput from '@kit/components/form/BaseInput.vue';
 import { STATUS_ENDPOINTS } from '../../../../data/endpoint';
 
 const props = defineProps({
-  model: Object, // tenantStore.selectedItem
-  errors: Object, // tenantStore.errors
+  model: Object, // userStore.selectedItem
+  errors: Object, // userStore.errors
 });
 </script>

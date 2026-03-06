@@ -1,20 +1,20 @@
 <?php
 
-namespace Modules\Tenant\App\Services;
+namespace Modules\Customer\App\Services;
 
 use App\Models\User;
 use App\Services\Core\BaseService;
+use App\Services\User\UserService;
 use Modules\Customer\app\Models\Customer;
-use Modules\Tenant\app\Models\Tenant;
 
-class TenantService extends BaseService
+class CustomerService extends BaseService
 {
-    public function __construct(Tenant $tenant)
+    public function __construct(Customer $customer)
     {
-        $this->model = $tenant;
+        $this->model = $customer;
     }
 
-    public function getSelectableTenants()
+    public function getSelectablecustomers()
     {
         return $this->model::query()
             ->select('id', 'name')
@@ -24,7 +24,7 @@ class TenantService extends BaseService
     public function getAll(
         bool $isPaginated = true,
         bool $isSorted = true,
-        array $relations = ['status'],
+        array $relations = ['status', 'customer', 'tenant'],
         int $perPage = 10
     ) {
         $query = $this->model
@@ -50,40 +50,40 @@ class TenantService extends BaseService
         return $query->get();
     }
 
-    public function create(array $data)
+
+    public function createCustomer()
     {
-        $this->model = $this->model->create($this->tenantRequests($data));
+        $this->model->create($this->customerRequests());
         return $this;
     }
 
-    public function createWalkinCustomer(){
-        dd($this->model);
-        $user = User::create([
-           'name' => 'Walk-in Customer',
-           'email' => 'walkin_customer@test.com',
-           'tenant_id' => $this->model->id,
-           'user_type' => 'tenant_customer',
-        ]);
 
-        Customer::create([
-            'opening_balance' => 0,
-            'current_balance' => 0,
-            'loyalty_points'  => 0,
-            'is_walkin' => true,
-        ]);
-
-        return $this;        
+    public function createUser()
+    { 
+        $user = User::query()->create($this->userRequests());
+        $this->setAttr('user_id', $user->id);
+        return $this;
     }
 
 
-    private function tenantRequests($data){
+    private function customerRequests(){
         return [
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'phone' => $data['phone'],
-            'address' => $data['address'],
-            'status_id' => $data['status_id'],
+            'user_id'   => $this->getAttr('user_id') ?? null,
+            'status_id' => $this->getAttr('status_id') ?? null,
         ];
+    }
+
+
+    private function userRequests(){
+        return [
+            'name'      => $this->getAttr('name') ?? null,
+            'email'     => $this->getAttr('email') ?? null,
+            'phone'     => $this->getAttr('phone') ?? null,
+            'tenant_id' => $this->getAttr('tenant_id') ?? null,
+            'status_id' => $this->getAttr('status_id') ?? null,
+            'user_type' => 'tenant_customer',
+        ];
+        
     }
 
     public function findTenantById($id){

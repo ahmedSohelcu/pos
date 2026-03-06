@@ -1,5 +1,6 @@
 //Admin sidebar
 
+import { CustomerMenus } from '../admin/modules/customers/sidebar';
 import { ProductMenus } from '../admin/modules/product/sidebar';
 import { SubscriptionMenus } from '../admin/modules/subscriptions/sidebar';
 import { TenantMenus } from '../admin/modules/tenants/sidebar';
@@ -53,17 +54,13 @@ export const AdminMenus = [
   //     { name: 'component', label: 'Cancelled Orders' }
   //   ]
   // },
-  {
-    key: 'customers',
-    label: 'Customers',
-    icon: 'bi bi-people-fill',
-    items: [
-      { name: 'component', label: 'All Customers' },
-      { name: 'component', label: 'Add Customer' },
-      { name: 'component', label: 'Customer Groups' },
-      { name: 'component', label: 'Loyalty Points' },
-    ],
-  },
+
+
+  //------------------------------------------------
+  // customers
+  //------------------------------------------------
+  ...CustomerMenus,
+
 
   //------------------------------------------------
   // User Module

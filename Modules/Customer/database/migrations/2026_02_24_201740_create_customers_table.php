@@ -22,13 +22,7 @@ return new class extends Migration
 
             $table->string('profile_pic')
                 ->nullable()
-                ->comment('Customer profile picture path or URL');
-
-                // 🔹 Tenant relation (multi-tenant)
-            $table->foreignId('tenant_id')
-                ->nullable() // nullable if global customers
-                ->constrained()
-                ->cascadeOnDelete();            
+                ->comment('Customer profile picture path or URL');          
 
             $table->foreignId('created_by')
                 ->nullable()

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\UserRequest;
+use App\Models\User;
 use App\Services\User\UserService;
 use Illuminate\Http\Request;
 
@@ -32,34 +33,40 @@ class UserController extends Controller
      */
     public function store(UserRequest $request) 
     {
-        $user = $this->service->create($request->all());
+        $user = $this->service
+            ->setAttrs($request->all())
+            ->create();
+
         return created_responses('User', $user);
     }
 
     /**
      * Show the specified resource.
      */
-    public function show($id)
+    public function show(User $user)
     {
-        $user = $this->service->findUserById($id);
         return success_response('User', $user);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UserRequest $request, $id) 
+    public function update(UserRequest $request, User $user) 
     {        
-        $user = $this->service->update($request->all(), $id);
+        $user = $this->service
+            ->setModel($user)
+            ->setAttrs($request->all())
+            ->update();
+
         return updated_response('User', $user);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id) 
+    public function destroy(User $user) 
     {
-        $user = $this->service->delete($id);
+        $user->delete();
         return deleted_responses('User', $user);
     }
 }
