@@ -12,8 +12,53 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('expenses', function (Blueprint $table) {
-            $table->id();
-            
+             $table->id();
+
+            // 🔹 Tenant (for SaaS)
+            $table->foreignId('tenant_id')
+                ->constrained()
+                ->cascadeOnDelete();
+
+            // 🔹 Category
+            $table->foreignId('expense_category_id')
+                ->constrained()
+                ->cascadeOnDelete();
+
+            // 🔹 Expense info
+            $table->decimal('amount', 12, 2);
+            $table->date('expense_date');
+
+            $table->string('reference')->nullable()->comment('Invoice or reference number');
+
+            $table->text('note')->nullable();
+
+            // 🔹 Payment method (optional)
+            // $table->foreignId('payment_method_id')
+            //     ->nullable()
+            //     ->constrained()
+            //     ->nullOnDelete();
+
+            // 🔹 Attachment (receipt image/pdf)
+            $table->string('attachment')->nullable();
+
+            // 🔹 Status
+            // 'pending','approved','rejected','draft'
+            $table->foreignId('status_id')
+                ->nullable()
+                ->constrained('statuses')
+                ->nullOnDelete();
+
+            // 🔹 User tracking
+            $table->foreignId('created_by')
+                ->nullable()
+                ->constrained('users')
+                ->nullOnDelete();
+
+            $table->foreignId('updated_by')
+                ->nullable()
+                ->constrained('users')
+                ->nullOnDelete();
+
             $table->timestamps();
         });
     }

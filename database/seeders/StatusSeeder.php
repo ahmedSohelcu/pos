@@ -68,6 +68,29 @@ class StatusSeeder extends Seeder
             ],   
 
             //======================================
+            //expense status 'pending','approved','rejected','draft'
+            //======================================
+            [
+                'name' => 'status_pending',
+                'type' => 'expense',
+                'class' => 'warning'
+            ],
+            [
+                'name' => 'status_approved',
+                'type' => 'expense',
+                'class' => 'success'
+            ],
+            [
+                'name' => 'status_rejected',
+                'type' => 'expense',
+                'class' => 'danger'
+            ],
+            [
+                'name' => 'status_draft',
+                'type' => 'expense',
+                'class' => 'secondary'
+            ],
+            //======================================
             //order status
             //======================================
             [

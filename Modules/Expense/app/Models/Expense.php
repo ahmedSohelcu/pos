@@ -14,7 +14,19 @@ class Expense extends BaseModel
     /**
      * The attributes that are mass assignable.
      */
-    protected $fillable = [];
+    protected $fillable = [
+        'tenant_id',
+        'expense_category_id',
+        'amount',
+        'expense_date',
+        'reference',
+        'note',
+        'attachment',
+        'created_by',
+        'updated_by'
+    ];
+
+            // 'pending','approved','rejected','draft'
 
     // protected static function newFactory(): ExpenseFactory
     // {

@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\DB;
 use Modules\Brand\database\seeders\BrandDatabaseSeeder;
 use Modules\Category\database\seeders\CategoryDatabaseSeeder;
 use Modules\Customer\database\seeders\CustomerDatabaseSeeder;
+use Modules\Expense\database\seeders\ExpenseCatetorySeeder;
+use Modules\Expense\database\seeders\ExpenseDatabaseSeeder;
 use Modules\Payment\database\seeders\PaymentSeeder;
 use Modules\Plan\database\seeders\PlanSeeder;
 use Modules\Role\database\seeders\RoleDatabaseSeeder;
@@ -74,7 +76,9 @@ class DemoSeeder extends Seeder
             CategoryDatabaseSeeder::class,
             BrandDatabaseSeeder::class,
             UnitDatabaseSeeder::class,
-            CustomerDatabaseSeeder::class
+            CustomerDatabaseSeeder::class,
+            ExpenseCatetorySeeder::class,
+            ExpenseDatabaseSeeder::class
         ]);
     }
 }

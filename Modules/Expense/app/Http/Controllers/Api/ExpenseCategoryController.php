@@ -29,8 +29,8 @@ class ExpenseCategoryController extends Controller
      */
     public function store(ExpenseCategoryRequest $request) {      
         $this->service
-        ->setAttrs($request->all())
-        ->create();
+            ->setAttrs($request->all())
+            ->create();
 
         return created_responses('Expense created successfully', []);
     }

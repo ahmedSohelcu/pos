@@ -4,6 +4,8 @@ namespace Modules\Category\App\Models;
 
 use App\Models\Core\BaseModel;
 use App\Models\Core\Status;
+use App\Models\Traits\HasStatus;
+use App\Models\Traits\HasTenant;
 use App\Traits\HasSlug;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,6 +16,8 @@ use Modules\Tenant\app\Models\Tenant;
 class Category extends BaseModel
 {
     use HasFactory,
+        HasStatus,
+        HasTenant,
         HasSlug;
 
         // protected static $slugFrom = 'name';
@@ -30,19 +34,5 @@ class Category extends BaseModel
         'updated_by',
 
     ];
-
-    // protected static function newFactory(): CategoryFactory
-    // {
-    //     // return CategoryFactory::new();
-    // }
-
-    public function status(){
-        return $this->belongsTo(Status::class, 'status_id');
-    }
-
-    public function tenant(){
-        return $this->belongsTo(Tenant::class, 'tenant_id');
-    }
-
 
 }
