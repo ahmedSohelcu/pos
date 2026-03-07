@@ -12,8 +12,7 @@ import { route } from 'ziggy-js';
 // };
 
 export const STATUS_ENDPOINTS = {
-  selectable: (type = 'common') =>
-    route('selectable_statuses', { type }),
+  selectable: (type = 'common') => route('selectable_statuses', { type }),
 };
 /*
 // use 
@@ -74,9 +73,9 @@ export const CUSTOMER_ENDPOINTS = {
 export const SUBSCRIPTION_ENDPOINTS = {
   index: route('api.subscription.index'),
   store: route('api.subscription.store'),
-  show: (id) =>route('api.subscription.show', { subscription: id }),
-  update: (id) =>route('api.subscription.update', { subscription: id }),
-  destroy: (id) =>route('api.subscription.destroy', { subscription: id }),
+  show: (id) => route('api.subscription.show', { subscription: id }),
+  update: (id) => route('api.subscription.update', { subscription: id }),
+  destroy: (id) => route('api.subscription.destroy', { subscription: id }),
 };
 
 /*
@@ -116,10 +115,13 @@ export const ROLE_ENDPOINTS = {
   store: route('api.role.store'),
   show: (id) => route('api.role.show', { role: id }),
   update: (id) => route('api.role.update', { role: id }),
-  destroy: (id) => route('api.role.destroy', { role: id }),  
-  permissions: (role_id) => route('api.role.permissions', { role: role_id }),
+  destroy: (id) => route('api.role.destroy', { role: id }),
+  permissions: route('api.permissions'),
+  permissionsByRole: (role_id) =>
+    route('api.role.permissions', { role: role_id }),
+  updatePermissionsByRole: (role_id) =>
+    route('api.role.permissions.update', { role: role_id }),
 };
-
 
 /*
 |--------------------------------------------------------------------------
@@ -130,9 +132,12 @@ export const EXPENSE_CATEGORY_ENDPOINTS = {
   index: route('api.expense_category.index'),
   store: route('api.expense_category.store'),
   show: (id) => route('api.expense_category.show', { expense_category: id }),
-  update: (id) => route('api.expense_category.update', { expense_category: id }),
-  destroy: (id) => route('api.expense_category.destroy', { expense_category: id }),
-  selectable: (tenant_id)=> route('api.selectable_expense_categories', {tenant_id: tenant_id}),
+  update: (id) =>
+    route('api.expense_category.update', { expense_category: id }),
+  destroy: (id) =>
+    route('api.expense_category.destroy', { expense_category: id }),
+  selectable: (tenant_id) =>
+    route('api.selectable_expense_categories', { tenant_id: tenant_id }),
 };
 
 /*
@@ -147,7 +152,6 @@ export const EXPENSE_ENDPOINTS = {
   update: (id) => route('api.expense.update', { expense: id }),
   destroy: (id) => route('api.expense.destroy', { expense: id }),
 };
-
 
 /*
 |--------------------------------------------------------------------------

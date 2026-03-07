@@ -7,7 +7,7 @@ return [
         'tenant_id'  => null
     ],
     [
-        'name' => 'subscription.edit',
+        'name' => 'subscription.update',
         'guard_name' => 'api',
         'tenant_id'  => null
     ],

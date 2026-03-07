@@ -14,7 +14,7 @@ export default [
   },
   // {
   //   path: '/users/:id/edit',
-  //   name: 'users.edit',
+  //   name: 'users.update',
   //   meta: {
   //     breadcrumb: 'Edit Users',
   //     requiresAuth: true,

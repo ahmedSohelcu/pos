@@ -60,7 +60,10 @@ const userActions = getUserActions(userStore);
 //Table Column
 //-----------------------
 const columns = [
-  { name: 'id', label: 'ID', sortable: true },
+  {
+    label: '#',
+    custom: (row, index) => index + 1,
+  },
   {
     name: 'name',
     label: 'Shop Name',

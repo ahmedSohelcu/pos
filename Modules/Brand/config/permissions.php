@@ -7,7 +7,7 @@ return [
         'tenant_id'  => null
     ],
     [
-        'name' => 'brand.edit',
+        'name' => 'brand.update',
         'guard_name' => 'api',
         'tenant_id'  => null
     ],

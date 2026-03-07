@@ -7,7 +7,7 @@ return [
         'tenant_id'  => null
     ],
     [
-        'name' => 'role.edit',
+        'name' => 'role.update',
         'guard_name' => 'api',
         'tenant_id'  => null
     ],

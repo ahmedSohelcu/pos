@@ -1,17 +1,15 @@
 // tenantActions.js
 import { confirmDelete } from '@kit/composables/useDelete';
-import api from '@kit/api/api';
 import { ROLE_ENDPOINTS } from '@/data/endpoint';
 
 export const getRoleActions = (roleStore) => [
   {
     label: '<i class="fas fa-key text-warning p-2"></i> Permission',
     handler: (row) => {
-      // roleStore.errors = {};
-      // roleStore.selectedItem = {}; // reset form
-      // roleStore.fetchPermissions(row.id);
-      roleStore.fetchPermissions(row.id);
       roleStore.permissionModal = true;
+      roleStore.form.role_id = row.id;
+      roleStore.fetchPermissions();
+      roleStore.fetchPermissionsByRole(row.id);
     },
   },
   {

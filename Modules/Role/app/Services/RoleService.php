@@ -3,9 +3,7 @@
 namespace Modules\Role\App\Services;
 use App\Services\Core\BaseService;
 use Modules\Role\app\Models\Role;
-use Spatie\Permission\Models\Role as ModelsRole;
-
-// use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class RoleService extends BaseService
 {
@@ -64,9 +62,9 @@ class RoleService extends BaseService
         return $this;
     }
 
-    public function getRolePermissions(){
+    public function getPermissions(){
         // 1️⃣ Get all permissions of the role
-        $permissions = $this->model->permissions;
+        $permissions = Permission::all();
         
         // 2️⃣ Transform to include module and action
         $permissionsMapped = $permissions->map(function($perm){
@@ -81,16 +79,24 @@ class RoleService extends BaseService
         });
 
         // 3️⃣ Group by module
-        $grouped = $permissionsMapped->groupBy('module')->map(function($items, $module){
-            return [
-                'module' => $module,
-                'permissions' => $items->map(fn($p)=>[
-                    'id' => $p['id'],
-                    'name' => $p['name'],
-                ])->values()
-            ];
-        })->values(); // ->values() to reset array keys
+        $grouped = $permissionsMapped->groupBy('module')
+            ->map(function($items, $module){
+                return [
+                    'module' => $module,
+                    'permissions' => $items->map(fn($p)=>[
+                        'id' => $p['id'],
+                        'name' => $p['name'],
+                    ])->values()
+                ];
+            })
+            ->sortBy(fn($group) => $group['module'])
+            ->values(); // ->values() to reset array keys
+        
 
         return $grouped;
+    }
+
+    public function getPermissionsByRole(){
+        return $this->model->permissions;
     }
 }

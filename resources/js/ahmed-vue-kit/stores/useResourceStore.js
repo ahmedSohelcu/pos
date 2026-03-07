@@ -48,8 +48,8 @@ export function useResourceStore(name, endpoint, options = {}) {
       async fetchData() {
         this.loading = true;
         try {
-          console.log(`[${name}] Fetching data from endpoint:`, endpoint);
-          console.log('Query params:', this.query);
+          // console.log(`[${name}] Fetching data from endpoint:`, endpoint);
+          // console.log('Query params:', this.query);
           // alert(endpoint);
           const res = await api.get(endpoint, {
             params: {

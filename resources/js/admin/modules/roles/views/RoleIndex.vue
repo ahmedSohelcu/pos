@@ -1,5 +1,6 @@
 <template>
   <div class="container-fluid">
+
     <BaseTable
       label="Role Management"
       :columns="columns"
@@ -24,18 +25,19 @@
       confirmVariant="outline-success"
       cancelVariant="outline-danger"
       :centered="true"
-      @confirm="createOrUpate"
+      @confirm="updateRolePermissions"
       @close="closeModal"
       :title="'Permissions'"
       :confirmText="'save'"
     >
       <PermissionsForm
         :permissions="roleStore.permissions"
-        :modelValue="roleStore.form.permissions ?? {}"
+        :modelValue="roleStore.form.permissions ?? []"
         @update:modelValue="roleStore.form.permissions = $event"
         :errors="roleStore.errors ?? {}"
       />
     </BaseModal>
+
     <!-- ------------------------------------
     End Permissions
     ------------------------------------- -->
@@ -82,6 +84,9 @@ const roleStore = useRoleStore();
 
 const closeModal = () => {
   roleStore.loading = false;
+  roleStore.form.permissions = [];
+  roleStore.showModal = false;
+  roleStore.permissionModal = false;
 };
 // fetch data
 onMounted(() => {
@@ -129,6 +134,14 @@ const createFromTableBtn = () => {
   roleStore.errors = {};
   roleStore.selectedItem = {};
   roleStore.showModal = true;
+};
+
+// permissions
+const updateRolePermissions = () => {
+  roleStore.updatePermissionByRole(
+    roleStore.form.role_id,
+    roleStore.form.permissions
+  );
 };
 </script>
 

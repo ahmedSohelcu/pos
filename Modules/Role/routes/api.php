@@ -7,5 +7,11 @@ Route::
 // middleware(['auth:sanctumd'])
 prefix('v1')->group(function () {
     Route::apiResource('roles', RoleController::class)->names('role');
-    Route::get('roles/{role}/permissions', [RoleController::class, 'permissions'])->name('role.permissions');
+    Route::get('permissions', [RoleController::class, 'permissions'])->name('permissions');
+
+    Route::get('roles/{role}/permissions', [RoleController::class, 'permissionsByRole'])
+        ->name('role.permissions');
+        
+    Route::post('roles/{role}/permissions', [RoleController::class, 'updatePermissionsByRole'])
+        ->name('role.permissions.update');
 });

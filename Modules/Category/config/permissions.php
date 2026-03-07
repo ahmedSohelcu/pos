@@ -7,7 +7,7 @@ return [
         'tenant_id'  => null
     ],
     [
-        'name' => 'category.edit',
+        'name' => 'category.update',
         'guard_name' => 'api',
         'tenant_id'  => null
     ],

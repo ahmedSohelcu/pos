@@ -2,22 +2,22 @@
 
 return [
     [
-        'name'       => 'payment_create',
+        'name'       => 'payment.create',
         'guard_name' => 'api',
         'tenant_id'  => null
     ],
     [
-        'name' => 'payment_edit',
+        'name' => 'payment.update',
         'guard_name' => 'api',
         'tenant_id'  => null
     ],
     [
-        'name' => 'payment_delete',
+        'name' => 'payment.delete',
         'guard_name' => 'api',
         'tenant_id'  => null
     ],
     [
-        'name' => 'payment_view',
+        'name' => 'payment.view',
         'guard_name' => 'api',
         'tenant_id'  => null
     ],

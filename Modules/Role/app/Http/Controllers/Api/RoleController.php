@@ -5,14 +5,12 @@ namespace Modules\Role\App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Modules\Role\app\Http\Requests\RoleRequest;
-use Modules\Role\App\Models\Role;
+use Modules\Role\app\Models\Role;
 use Modules\Role\app\Services\RoleService;
 use Spatie\Permission\Models\Role as ModelsRole;
 
 class RoleController extends Controller
 {
-    // protected $service;    
-
     public function __construct(RoleService $roleService)
     {
         $this->service = $roleService;
@@ -23,15 +21,31 @@ class RoleController extends Controller
         return success_response('Role List', $roles);
     }
 
-    public function permissions(ModelsRole $role) {
-        
+    public function permissions() 
+    {
         $permissions = $this->service
-            ->setModel($role)
-            ->getRolePermissions();
+            ->getPermissions();
 
-        return success_response('Role Permissions', $permissions);
+        return success_response('Permissions', $permissions);
     }
 
+    public function updatePermissionsByRole(Request $request, ModelsRole $role) 
+    {   // Sync permissions
+        $role->syncPermissions($request->permissions);
+        $permissionIds = $role->permissions->pluck('id')->toArray();
+        return updated_response('Permissions', $permissionIds);
+    }
+
+    public function permissionsByRole(ModelsRole $role) 
+    {
+        $permissions = $this->service
+            ->setModel($role)
+            ->getPermissionsByRole($role->id);
+
+        $permissions = $permissions->pluck('id')->toArray();
+
+        return success_response('Permissions by Role', $permissions);
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -61,6 +75,7 @@ class RoleController extends Controller
                 ->setModel($role)
                 ->setAttributes($request->all())
                 ->update();
+
         return updated_response('Role', $role);
     }
 

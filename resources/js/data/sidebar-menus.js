@@ -55,12 +55,10 @@ export const AdminMenus = [
   //   ]
   // },
 
-
   //------------------------------------------------
   // customers
   //------------------------------------------------
   ...CustomerMenus,
-
 
   //------------------------------------------------
   // User Module
@@ -81,6 +79,18 @@ export const AdminMenus = [
   // Subscription Module
   //------------------------------------------------
   ...SubscriptionMenus,
+
+  {
+    key: 'expenses',
+    label: 'Expenses',
+    icon: 'fas fa-wallet',
+    items: [
+      { name: 'component', label: 'Manage Expenses' },
+      { name: 'component', label: 'Expense Categories' },
+
+      // { name: 'expenses.report', label: 'Expense Report' },
+    ],
+  },
   // {
   //   key: 'reports',
   //   label: 'Reports',

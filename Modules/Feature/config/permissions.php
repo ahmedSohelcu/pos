@@ -2,22 +2,22 @@
 
 return [
     [
-        'name'       => 'feature_create',
+        'name'       => 'feature.create',
         'guard_name' => 'api',
         'tenant_id'  => null
     ],
     [
-        'name' => 'feature_edit',
+        'name' => 'feature.update',
         'guard_name' => 'api',
         'tenant_id'  => null
     ],
     [
-        'name' => 'feature_delete',
+        'name' => 'feature.delete',
         'guard_name' => 'api',
         'tenant_id'  => null
     ],
     [
-        'name' => 'feature_view',
+        'name' => 'feature.view',
         'guard_name' => 'api',
         'tenant_id'  => null
     ],
