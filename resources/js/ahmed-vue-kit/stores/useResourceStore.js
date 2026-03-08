@@ -50,7 +50,6 @@ export function useResourceStore(name, endpoint, options = {}) {
         try {
           // console.log(`[${name}] Fetching data from endpoint:`, endpoint);
           // console.log('Query params:', this.query);
-          // alert(endpoint);
           const res = await api.get(endpoint, {
             params: {
               search: this.query.search,

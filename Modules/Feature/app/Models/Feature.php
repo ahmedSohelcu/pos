@@ -18,7 +18,7 @@ class Feature extends Model
      */
     
     protected $fillable = [
-        'name', 'label','status_id', 'description', 'sorting_order'
+        'name', 'label','is_active', 'description', 'sorting_order'
     ];
 
     // protected static function newFactory(): FeatureFactory

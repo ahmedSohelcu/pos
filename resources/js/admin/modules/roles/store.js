@@ -28,7 +28,7 @@ export const useRoleStore = useResourceStore(
       async fetchPermissions() {
         const { data } = await api.get(ROLE_ENDPOINTS.permissions);
         this.permissions = data.data;
-        console.log('this permissions  test', this.permissions);
+        // console.log('this permissions  test', this.permissions);
       },
 
       async fetchPermissionsByRole(roleId) {

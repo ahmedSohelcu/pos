@@ -8,8 +8,8 @@ use App\Models\Traits\HasStatus;
 use App\Traits\HasSlug;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Modules\Feature\App\Models\Feature;
-use Modules\Feature\App\Models\PlanFeature;
+use Modules\Feature\app\Models\Feature;
+use Modules\Feature\app\Models\PlanFeature;
 
 // use Modules\Plan\Database\Factories\PlanFactory;
 

@@ -37,7 +37,10 @@
               <div>
                 <i class="fas fa-layer-group text-primary me-2"></i>
                 <strong>{{ module.module }}</strong>
-                <span class="badge bg-info text-dark ms-2">
+                <span
+                  class="badge ms-2"
+                  :class="moduleBadgeClass(module)"
+                >
                   {{ enabledCount(module) }}/{{ module.features.length }}
                 </span>
               </div>
@@ -74,7 +77,9 @@
                     {{ formatFeatureName(feature.name) }}
                     <span
                       class="badge ms-2"
-                      :class="selectedFeaturesArray.includes(feature.id) ? 'bg-success' : 'bg-secondary'"
+                      :class="selectedFeaturesArray.includes(feature.id)
+                        ? 'bg-success'
+                        : 'bg-secondary'"
                     >
                       {{ selectedFeaturesArray.includes(feature.id) ? 'Enabled' : 'Disabled' }}
                     </span>
@@ -115,6 +120,7 @@ const selectedFeaturesArray = computed({
   set: (val) => emit('update:modelValue', [...new Set(val)]),
 })
 
+// Format feature name: user.create -> Create User
 const formatFeatureName = (name) => {
   return name
     .split('.')
@@ -161,7 +167,15 @@ const toggleAllFeatures = () => {
     : [...new Set([...val, ...allIds])]
 }
 
-// Helper: count enabled features in module
+// Module badge color: green if all enabled, warning if partially enabled, gray if none
+const moduleBadgeClass = (module) => {
+  const enabled = enabledCount(module)
+  if (enabled === 0) return 'bg-secondary'
+  if (enabled === module.features.length) return 'bg-success'
+  return 'bg-warning text-dark'
+}
+
+// Count enabled features in module
 const enabledCount = (module) => {
   return module.features.filter((f) => selectedFeaturesArray.value.includes(f.id))
     .length

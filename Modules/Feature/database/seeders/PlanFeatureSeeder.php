@@ -5,7 +5,7 @@ namespace Modules\Feature\Database\Seeders;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Seeder;
 use Modules\Plan\App\Models\Plan;
-use Modules\Feature\App\Models\Feature;
+use Modules\Feature\app\Models\Feature;
 
 class PlanFeatureSeeder extends Seeder
 {

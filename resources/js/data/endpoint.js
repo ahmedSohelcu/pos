@@ -90,19 +90,11 @@ export const PLAN_ENDPOINTS = {
   update: (id) => route('api.plan.update', { plan: id }),
   destroy: (id) => route('api.plan.destroy', { plan: id }),
   selectable: route('api.selectable_plans'),
-};
 
-/*
-|--------------------------------------------------------------------------
-| Feature
-|--------------------------------------------------------------------------
-*/
-export const FEATURE_ENDPOINTS = {
-  index: route('api.feature.index'),
-  store: route('api.feature.store'),
-  show: (id) => route('api.feature.show', { feature: id }),
-  update: (id) => route('api.feature.update', { feature: id }),
-  destroy: (id) => route('api.feature.destroy', { feature: id }),
+  features: route('api.features'),
+  featuresByPlan: (plan_id) => route('api.plan.features', { plan: plan_id }),
+  updateFeaturesByPlan: (plan_id) =>
+    route('api.plan.features.update', { plan: plan_id }),
 };
 
 /*

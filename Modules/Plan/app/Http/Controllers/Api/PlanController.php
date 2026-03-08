@@ -10,6 +10,7 @@ use Modules\Plan\App\Models\Plan;
 
 class PlanController extends Controller
 {   
+
     public function __construct(PlanService $planService)
     {
         $this->service = $planService;
@@ -68,4 +69,33 @@ class PlanController extends Controller
         $tenant = $this->service->delete($id);
         return deleted_responses('Plan', $tenant);
     }
+
+
+    // Plan Features 
+     public function features() 
+    {
+        $features = $this->service
+            ->getFeatures();
+
+        return success_response('Features', $features);
+    }
+    public function featuresByPlan(Plan $plan) 
+    {
+        $features = $this->service
+            ->setModel($plan)
+            ->getFeaturesByPlan();
+
+        $features = $features->pluck('id')->toArray();
+
+        return success_response('Features by Plan', $features);
+    }
+
+    public function updateFeaturesByPlan(Request $request, Plan $plan) 
+    {
+         // Sync features
+        $plan->features()->sync($request->currentFeatures);
+        $featuresIds = $plan->features->pluck('id')->toArray();
+        return updated_response('Features', $featuresIds);
+    }
+
 }

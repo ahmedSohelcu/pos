@@ -1,15 +1,26 @@
-----------------------------------
-# 🚀 Grocery SaaS app need to concern about 🚀
----
-    - Seed walkin custome for each tenant
-    - 
----
+## 🚀 Grocery SaaS app need to concern about 🚀
 
-💡 👉 📊 🧱 🛠 🎨 😎
+# Todo
 
-### All essential command
+- assign Role & Permissions to Users
+- Protect Routes / API
+- Optional: Tie Features to Permissions
+- laravel response handler
+- Everything Tenant Based
+- Role Permission
+- Seed walkin custome for each tenant
+- For production need to set a default error for exception (not to show actual error to user)
 
-      - For production need to set a default error for exception (not to show actual error to user)
+## pos page
+
+💡 👉 📊 🧱 🛠 🎨 😎 👍️✔️
+
+https://demo.workdo.io/pos-saas/pos
+
+## 👉 All essential command
+
+- php artisan featues : sync
+  - to update plan featues from permissions
 
 - php artisan module:make Feature
 - php artisan module:make Category Brand Customer Unit
@@ -35,13 +46,18 @@
 
 - pa module:make-request TenantRequest Tenant
 
+### Update permissions and features
+
+- pa db:seed --class=PermissionSeeder
+- pa features:sync
+
 ### Laravel make auto index for unique, foreign key
 
-# $payment->invoice_no = 'INV-' . now()->format('Ymd') . '-' . str_pad($payment->id, 5, '0', STR_PAD_LEFT);
+$payment->invoice_no = 'INV-' . now()->format('Ymd') . '-' . str_pad($payment->id, 5, '0', STR_PAD_LEFT);
 
 # Index
 
-- Todo \*
+- Todo
 - Frontend Technologies
 - Backend Technologies
 - Grocery Demo Link
@@ -53,35 +69,92 @@
 - Command List
 - Controller return response Example
 - Table / crud list
-
-# Todo
-
-- assign Role & Permissions to Users
-- Protect Routes / API
-- Optional: Tie Features to Permissions
-- laravel response handler
-- Everything Tenant Based
-- Role Permission
 -
 
 # Crud List
 
-- Tenants
-- User
-- Role
-- Permission
-- 
-- Category
-- Brand
-- unit
-- 
-- Feature
-- Plan
-- Subscription
+- Tenants ✔️
+- User ✔️
+- Role ✔️
+- Permission ✔️
+-
+- Category ✔️
+- Brand ✔️
+- unit ✔️
+-
+- Feature ✔️
+- Plan ✔️
+- Subscription ✔️
 - Customer
+- Sales / order
+- purchase
+- language
+- Tax
+- POS
+- Discount
+- Currency
+- Notifications
+- Mobile app support
 - expense category
 - expense
 - supplier
+- Products
+
+## Product & Inventory
+- Product create/edit/delete/view
+- Product categories, brands, units
+- Batch management (for medicine expiration)
+- Stock tracking & alerts for low stock
+- Inventory view by branch/warehouse
+- Barcode / QR code support
+
+
+## Branch & Outlet Management
+
+- Branch create/edit/delete/view
+- Assign products & stock per branch
+- Branch-wise sales & inventory reporting
+-
+
+## Customer & Supplier Management
+
+- Customer create/edit/delete/view
+- Supplier create/edit/delete/view
+- Customer loyalty / reward points (optional)
+- Supplier purchase history & orders
+
+## Sales & Billing
+
+- POS billing (quick invoice generation)
+- Support multiple payment methods (cash, card, mobile)
+- Apply discounts, taxes, promo codes
+- Invoice / receipt printing and emailing
+- Split bill / partial payments
+- Refunds / returns handling
+
+## Purchase & Stock In
+
+- Purchase order create/edit/receive
+- Track incoming stock and supplier invoices
+- Expiry date tracking for medicine
+- Batch-wise stock management
+
+## Settings & Configurations
+
+- Tax settings (VAT, GST)
+- Discount rules
+- Currency / store info
+- POS receipt templates
+- Barcode format settings
+
+## Reports
+
+- Sales reports (daily, weekly, monthly)
+- Inventory reports (current stock, low stock)
+- Product-wise sales report
+- Customer purchase report
+- Branch-wise performance report
+- Tax reports
 
 ---
 
@@ -155,9 +228,15 @@
 ### Grocery Demo Link
 
 ```php
+
+    https://demo.workdo.io/pos-saas/pos
+    https://demo.workdo.io/pos-saas/settings
+
     https://grocery.acnoo.xyz/business/sales/create
 
     https://readypos.razinsoft.com/purchase/list
+
+    https://zaisub.zainikthemes.com/admin/profile
 
 ```
 
@@ -336,7 +415,7 @@ $tenant->save();
 
     <br/>
 
-```php
+`````php
 Schema::create('units', function (Blueprint $table) {
     $table->id();
     $table->string('name');// Kilogram, Gram, Sack, Liter, Piece
@@ -344,13 +423,13 @@ Schema::create('units', function (Blueprint $table) {
     $table->decimal('conversion_to_base', 10, 4)->default(1);//conversion to base unit
     $table->timestamps();
 });
-```
+
 
 <br/>
 
-\*\* Examples:
+Examples:
 
-```sql
+````sql
 ---------------------------------------
 name	    symbol	conversion_to_base
 ---------------------------------------
@@ -359,7 +438,7 @@ Gram	    g	    0.0010
 Sack	    sack	50.0000
 Liter	    l	    1.0000
 Piece	    pc	    1.0000
-```
+
 
 💡 👉 📊 🧱 🛠 🎨 😎
 
@@ -371,7 +450,7 @@ Schema::create('units', function (Blueprint $table) {
     $table->decimal('conversion_to_base', 10, 4)->default(1);//conversion to base unit
     $table->timestamps();
 });
-```
+`````
 
 <br/>
 

@@ -67,12 +67,13 @@ class DemoSeeder extends Seeder
             UserSeeder::class,
             StatusSeeder::class,
             PlanSeeder::class,
+            PermissionSeeder::class,
+            //feature seeder should after permission seeder
             FeatureSeeder::class,
             PlanFeatureSeeder::class,
             SubscriptionSeeder::class,
             PaymentSeeder::class,
             RoleDatabaseSeeder::class,
-            PermissioSeeder::class,
             CategoryDatabaseSeeder::class,
             BrandDatabaseSeeder::class,
             UnitDatabaseSeeder::class,
@@ -85,3 +86,7 @@ class DemoSeeder extends Seeder
 
 // seed specific class
 // php artisan db:seed --class=DemoSeeder
+
+// update permission and features
+//  pa db:seed --class=PermissionSeeder
+//  pa features:sync

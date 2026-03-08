@@ -3,6 +3,7 @@
 namespace Modules\Plan\App\Services;
 
 use App\Services\Core\BaseService;
+use Modules\Feature\app\Models\Feature;
 use Modules\Plan\app\Models\Plan;
 
 class PlanService extends BaseService
@@ -87,6 +88,48 @@ class PlanService extends BaseService
     {
         $this->model->findOrFail($id)->delete();
         return $this->model;
+    }
+
+
+
+    // Features
+
+    public function getFeatures(){
+        // 1️⃣ Get all features of the role
+        $features = Feature::all();
+        
+        // 2️⃣ Transform to include module and action
+        $featuresMapped = $features->map(function($perm){
+            // Example: 'user.create' => ['module'=>'User', 'action'=>'create']
+            $parts = explode('.', $perm->name);
+            return [
+                'id' => $perm->id,
+                'name' => $perm->name,
+                'module' => ucfirst($parts[0]),
+                'action' => $parts[1] ?? null,
+            ];
+        });
+
+        // 3️⃣ Group by module
+        $grouped = $featuresMapped->groupBy('module')
+            ->map(function($items, $module){
+                return [
+                    'module' => $module,
+                    'features' => $items->map(fn($p)=>[
+                        'id' => $p['id'],
+                        'name' => $p['name'],
+                    ])->values()
+                ];
+            })
+            ->sortBy(fn($group) => $group['module'])
+            ->values(); // ->values() to reset array keys
+        
+
+        return $grouped;
+    }
+
+    public function getfeaturesByPlan(){
+        return $this->model->features;
     }
 }
 

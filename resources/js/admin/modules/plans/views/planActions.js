@@ -4,6 +4,16 @@ import { PLAN_ENDPOINTS } from '@/data/endpoint';
 
 export const getPlanActions = (planStore) => [
   {
+    label: '<i class="fas fa-layer-group text-primary"></i> Features',
+    handler: (row) => {
+      planStore.featuresModal = true;
+      planStore.planId = row.id;
+      planStore.fetchFeatures();
+      planStore.fetchFeaturesByPlan(row.id);
+      planStore.planName = row.name ?? '';
+    },
+  },
+  {
     label: (row) => {
       return `<i class="fas fa-plus-circle text-success me-2"></i>Create`;
     },

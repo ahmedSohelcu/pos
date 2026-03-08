@@ -3,8 +3,8 @@
 namespace Modules\Feature\App\Models;
 
 use Illuminate\Database\Eloquent\Relations\Pivot;
-use Modules\Plan\App\Models\Plan;
-use Modules\Feature\App\Models\Feature;
+use Modules\Plan\app\Models\Plan;
+use Modules\Feature\app\Models\Feature;
 
 class PlanFeature extends Pivot
 {

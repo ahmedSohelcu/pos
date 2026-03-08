@@ -14,6 +14,42 @@
       @bulk-delete="planStore.bulkDelete"
     />
 
+    <!-- ------------------------------------
+    Start Features Modal
+    ------------------------------------- -->
+    <BaseModal
+      size="lg"
+      :loading="planStore.loading || !planStore.features.length"
+      v-model="planStore.featuresModal"
+      confirmVariant="outline-success"
+      cancelVariant="outline-danger"
+      :centered="true"
+      @confirm="updatePlanFeatures"
+      @close="closeModal"
+      :title="'Features'"
+      :confirmText="'Update'"
+    >
+      <!-- Show loader if features not loaded -->
+      <template v-if="!planStore.features.length">
+        <BaseShimmer
+          width="100%"
+          height="40px"
+          v-if="planStore.features.length"
+        />
+      </template>
+
+      <FeaturesForm
+        :features="planStore.features"
+        :planName="planStore.planName ?? ''"
+        :modelValue="planStore.currentFeatures ?? []"
+        @update:modelValue="planStore.currentFeatures = $event"
+      />
+    </BaseModal>
+
+    <!-- ------------------------------------
+    End Features
+    ------------------------------------- -->
+
     <BaseModal
       v-model="planStore.showModal"
       size="lg"
@@ -45,6 +81,7 @@ import { PLAN_ENDPOINTS } from '@/data/endpoint';
 import { planFilters } from './planFilters';
 import { getPlanActions } from './planActions';
 import { formatDate } from '../../../../ahmed-vue-kit/utils/helpers';
+import FeaturesForm from './FeaturesForm.vue';
 
 const planStore = usePlanStore();
 
@@ -138,6 +175,11 @@ const createFromTableBtn = () => {
   planStore.errors = {};
   planStore.selectedItem = {};
   planStore.showModal = true;
+};
+
+// featurs
+const updatePlanFeatures = () => {
+  planStore.updateFeaturesByPlan(planStore.planId, planStore.currentFeatures);
 };
 </script>
 

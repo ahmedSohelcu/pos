@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name')->unique();        // internal key, e.g. product_create
             $table->string('label');                 // human readable
             $table->text('description')->nullable();
-            $table->foreignId('status_id')->nullable()->constrained();
+            $table->boolean('is_active')->nullable()->default(true);
             $table->integer('sorting_order')->nullable();
             $table->timestamps();
         });

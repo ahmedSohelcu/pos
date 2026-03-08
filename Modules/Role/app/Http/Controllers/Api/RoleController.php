@@ -40,7 +40,7 @@ class RoleController extends Controller
     {
         $permissions = $this->service
             ->setModel($role)
-            ->getPermissionsByRole($role->id);
+            ->getPermissionsByRole();
 
         $permissions = $permissions->pluck('id')->toArray();
 
