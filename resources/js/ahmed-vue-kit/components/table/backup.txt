@@ -1,95 +1,68 @@
 <template>
-  <div class="permission-card p-3">
-    <!-- Select All Toggle -->
+  <div class="permissions-dashboard p-3">
+    <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
-      <div>
-        <strong class="h5 mb-0">Plan Features</strong>
-        <small class="text-muted ms-2">for: {{ planName ?? '' }}</small>
+      <div class="d-flex align-items-center gap-2">
+        <i class="fas fa-user-shield text-primary fa-lg"></i>
+        <h5 class="mb-0">Role Permissions</h5>
       </div>
 
-      <div class="form-check form-switch">
-        <input
-          type="checkbox"
-          class="form-check-input"
-          id="selectAllFeatures"
-          :checked="allFeaturesSelected"
-          @change="toggleAllFeatures"
-        />
-        <label class="form-check-label" for="selectAllFeatures">
-          Select All
-        </label>
+      <div class="d-flex align-items-center gap-3">
+        <span class="badge bg-primary px-3 py-1">{{ selectedPermissions.length }} Selected</span>
+        <div class="form-check form-switch m-0">
+          <input
+            type="checkbox"
+            class="form-check-input"
+            :checked="allPermissionsSelected"
+            @change="toggleAllPermissions"
+          />
+          <label class="form-check-label small">Select All</label>
+        </div>
       </div>
     </div>
 
-    <div class="accordion" id="featuresAccordion">
-      <template v-for="(module, index) in features" :key="module.module">
-        <div class="accordion-item mb-3 shadow-sm rounded">
-          <!-- Module Header -->
-          <h2 class="accordion-header" :id="'heading' + index">
-            <button
-              class="accordion-button collapsed d-flex justify-content-between align-items-center"
-              type="button"
-              data-bs-toggle="collapse"
-              :data-bs-target="'#collapse' + index"
-              aria-expanded="false"
-              :aria-controls="'collapse' + index"
-            >
-              <div>
-                <i class="fas fa-layer-group text-primary me-2"></i>
-                <strong>{{ module.module }}</strong>
-                <span class="badge bg-info text-dark ms-2">
-                  {{ enabledCount(module) }}/{{ module.features.length }}
-                </span>
+    <!-- Modules Grid -->
+    <div class="row g-3">
+      <template v-for="module in permissions" :key="module.module">
+        <div class="col-lg-4 col-md-6 col-sm-12">
+          <div class="module-card shadow-sm">
+            <!-- Module Header -->
+            <div class="module-header d-flex justify-content-between align-items-center mb-3">
+              <div class="d-flex align-items-center gap-2">
+                <i class="fas fa-layer-group text-primary"></i>
+                <span class="fw-semibold">{{ module.module }}</span>
               </div>
-
-              <div class="form-check form-switch ms-3">
+              <div class="form-check form-switch m-0">
                 <input
                   type="checkbox"
                   class="form-check-input"
                   :checked="isModuleSelected(module)"
-                  @change.stop="toggleModule(module)"
+                  @change="toggleModule(module)"
                 />
               </div>
-            </button>
-          </h2>
+            </div>
 
-          <!-- Feature Items -->
-          <div
-            :id="'collapse' + index"
-            class="accordion-collapse collapse"
-            :aria-labelledby="'heading' + index"
-            data-bs-parent="#featuresAccordion"
-          >
-            <div class="accordion-body row g-2">
+            <!-- Permissions -->
+            <div class="permissions-list">
               <div
-                class="col-md-6 col-sm-12"
-                v-for="feature in module.features"
-                :key="feature.id"
+                class="permission-item d-flex flex-wrap align-items-center gap-2"
+                v-for="action in actions"
+                :key="action"
               >
-                <div
-                  class="d-flex justify-content-between align-items-center border rounded p-2 feature-item"
-                  :title="feature.description"
+                <span
+                  v-if="getPermission(module, action)"
+                  :class="'action-badge ' + action"
+                  :title="action.toUpperCase()"
                 >
-                  <div>
-                    {{ formatFeatureName(feature.name) }}
-                    <span
-                      class="badge ms-2"
-                      :class="selectedFeaturesArray.includes(feature.id) ? 'bg-success' : 'bg-secondary'"
-                    >
-                      {{ selectedFeaturesArray.includes(feature.id) ? 'Enabled' : 'Disabled' }}
-                    </span>
-                  </div>
-
-                  <div class="form-check form-switch">
-                    <input
-                      type="checkbox"
-                      class="form-check-input"
-                      :value="feature.id"
-                      :checked="selectedFeaturesArray.includes(feature.id)"
-                      @change.stop="toggleFeature(feature.id)"
-                    />
-                  </div>
-                </div>
+                  {{ action }}
+                </span>
+                <input
+                  v-if="getPermission(module, action)"
+                  type="checkbox"
+                  class="form-check-input ms-auto"
+                  :value="getPermission(module, action).id"
+                  v-model="selectedPermissions"
+                />
               </div>
             </div>
           </div>
@@ -100,100 +73,160 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { ref, watch, computed } from 'vue'
 
 const props = defineProps({
-  features: { type: Array, default: () => [] },
+  permissions: { type: Array, default: () => [] },
   modelValue: { type: Array, default: () => [] },
-  planName: { type: String, default: '' },
 })
 
 const emit = defineEmits(['update:modelValue'])
 
-const selectedFeaturesArray = computed({
-  get: () => (Array.isArray(props.modelValue) ? props.modelValue : []),
-  set: (val) => emit('update:modelValue', [...new Set(val)]),
+const selectedPermissions = ref([])
+
+const actions = ['view', 'create', 'update', 'delete', 'export', 'import']
+
+// sync with parent
+watch(
+  () => props.modelValue,
+  (val) => {
+    selectedPermissions.value = Array.isArray(val) ? [...val] : []
+  },
+  { immediate: true }
+)
+
+watch(
+  selectedPermissions,
+  (val) => {
+    emit('update:modelValue', [...new Set(val)])
+  },
+  { deep: true }
+)
+
+// helpers
+function getPermission(module, action) {
+  return module.permissions.find((p) => p.name.endsWith(`.${action}`))
+}
+
+// MODULE TOGGLE
+function getModulePermissionIds(module) {
+  return module.permissions.map((p) => p.id)
+}
+
+function isModuleSelected(module) {
+  const ids = getModulePermissionIds(module)
+  return ids.every((id) => selectedPermissions.value.includes(id))
+}
+
+function toggleModule(module) {
+  const ids = getModulePermissionIds(module)
+  const allSelected = ids.every((id) => selectedPermissions.value.includes(id))
+  selectedPermissions.value = allSelected
+    ? selectedPermissions.value.filter((id) => !ids.includes(id))
+    : [...new Set([...selectedPermissions.value, ...ids])]
+}
+
+// GLOBAL TOGGLE
+function getAllPermissionIds() {
+  return props.permissions.flatMap((module) =>
+    module.permissions.map((p) => p.id)
+  )
+}
+
+const allPermissionsSelected = computed(() => {
+  const ids = getAllPermissionIds()
+  return ids.length && ids.every((id) => selectedPermissions.value.includes(id))
 })
 
-const formatFeatureName = (name) => {
-  return name
-    .split('.')
-    .reverse()
-    .join(' ')
-    .replace(/\b\w/g, (l) => l.toUpperCase())
-}
-
-// Toggle individual feature
-const toggleFeature = (id) => {
-  const val = selectedFeaturesArray.value
-  selectedFeaturesArray.value = val.includes(id)
-    ? val.filter((f) => f !== id)
-    : [...val, id]
-}
-
-// Module toggle
-const isModuleSelected = (module) => {
-  const val = selectedFeaturesArray.value
-  return module.features.every((f) => val.includes(f.id))
-}
-
-const toggleModule = (module) => {
-  const val = selectedFeaturesArray.value
-  const ids = module.features.map((f) => f.id)
-  const allSelected = ids.every((id) => val.includes(id))
-  selectedFeaturesArray.value = allSelected
-    ? val.filter((f) => !ids.includes(f))
-    : [...new Set([...val, ...ids])]
-}
-
-// Select All Features
-const allFeaturesSelected = computed(() => {
-  const val = selectedFeaturesArray.value
-  const allIds = props.features.flatMap((m) => m.features.map((f) => f.id))
-  return allIds.length && allIds.every((id) => val.includes(id))
-})
-
-const toggleAllFeatures = () => {
-  const val = selectedFeaturesArray.value
-  const allIds = props.features.flatMap((m) => m.features.map((f) => f.id))
-  selectedFeaturesArray.value = allFeaturesSelected.value
-    ? []
-    : [...new Set([...val, ...allIds])]
-}
-
-// Helper: count enabled features in module
-const enabledCount = (module) => {
-  return module.features.filter((f) => selectedFeaturesArray.value.includes(f.id))
-    .length
+function toggleAllPermissions() {
+  const ids = getAllPermissionIds()
+  selectedPermissions.value = allPermissionsSelected.value ? [] : [...ids]
 }
 </script>
 
 <style scoped>
-.permission-card {
+.permissions-dashboard {
+  font-family: 'Inter', sans-serif;
+}
+
+/* Module Card */
+.module-card {
   border-radius: 12px;
   background: #fff;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+  padding: 1rem;
+  transition: 0.3s;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+}
+.module-card:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
 }
 
-.accordion-button {
-  background-color: #f8fafc;
-  transition: 0.2s;
-  font-weight: 500;
+/* Module Header */
+.module-header {
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 0.5rem;
 }
-.accordion-button:hover {
-  background-color: #e6f0fb;
+.module-header i {
+  font-size: 1.1rem;
 }
 
-.feature-item {
-  transition: 0.2s;
-  cursor: pointer;
+/* Permission items */
+.permissions-list {
+  margin-top: 0.5rem;
 }
-.feature-item:hover {
+.permission-item {
+  padding: 0.4rem 0.6rem;
+  border-radius: 8px;
+  transition: 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.permission-item:hover {
   background: #f3f6fb;
 }
 
-.badge {
+/* Action badges */
+.action-badge {
   font-size: 0.75rem;
-  font-weight: 500;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.action-badge.view {
+  background: #e7f1ff;
+  color: #0d6efd;
+}
+.action-badge.create {
+  background: #e8f8f0;
+  color: #198754;
+}
+.action-badge.update {
+  background: #fff3cd;
+  color: #b8860b;
+}
+.action-badge.delete {
+  background: #fde8e8;
+  color: #dc3545;
+}
+.action-badge.export {
+  background: #eef2ff;
+  color: #6366f1;
+}
+.action-badge.import {
+  background: #d1f7c4;
+  color: #198754;
+}
+
+/* Checkboxes */
+.form-check-input {
+  cursor: pointer;
+  transform: scale(1.2);
+  accent-color: #0d6efd;
+  transition: all 0.2s;
 }
 </style>
