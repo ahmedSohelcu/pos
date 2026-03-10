@@ -15,6 +15,13 @@ class RoleController extends Controller
     {
         $this->service = $roleService;
     }
+
+    public function selectableRoles() 
+    {
+        $roles = $this->service->getSelectableRoles();    
+        return success_response('Selectable Roles', $roles);
+    }
+
     public function index()
     {
         $roles = $this->service->getAll(true, true, [], 10);

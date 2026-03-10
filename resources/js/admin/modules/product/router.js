@@ -9,8 +9,9 @@ export default [
     name: 'product.index',
     meta: {
       breadcrumb: 'All Product',
-      // requiresAuth: true,
-      permission: 'product_view',
+      requiresAuth: true,
+      layout: 'master',
+      // permission: 'product_view',
     },
     component: ProductIndex,
   },

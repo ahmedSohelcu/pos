@@ -1,0 +1,137 @@
+You have 11 sections
+Section 1
+অফিসের নাম → just a list of offices
+
+Section 2-11
+
+Each office will have monthly statistics with these fields:
+
+পূর্ব জের
+বর্তমান মাসে প্রাপ্ত
+মোট
+বর্তমান মাসে নিষ্পন্ন
+অনিষ্পন্ন
+মন্তব্য
+
+So conceptually:
+Office → Category → Monthly Data
+
+Example
+Office	Category	Month	Pending Before	Received	Total	Resolved	Pending	Comment
+Dhaka Office	Gratuity	March	5	3	8	4	4	ok
+2. Database Design (Recommended)
+
+1️⃣ offices table
+offices
+-------
+id
+name
+created_at
+updated_at
+
+Example
+id	name
+1	Dhaka Office
+2	Khulna Office
+2️⃣ categories table
+
+This stores your 11 sections except office
+categories
+-----------
+id
+name
+created_at
+updated_at
+
+Insert data:
+id	name
+1	গ্রাচুইটি
+2	মাসিক পেনশন
+3	জিপিএফ অগ্রীম/জিপিএফ চূড়ান্ত
+4	বেতন নির্ধারণ
+5	এলপিসি
+6	ই-এলপিসি/Service Statement
+7	Substantive Grade এপ্রাভ/আনএপ্রোভ
+8	NID Merge সংক্রান্ত কেইস
+9	বেতন, উৎসব ভাতা
+10	অন্যান্য
+
+3️⃣ reports table (Main data)
+reports
+---------
+id
+office_id
+category_id
+month
+year
+
+previous_pending
+received
+total
+resolved
+pending
+
+comment
+
+created_at
+updated_at
+3. Example Data
+office_id	category_id	month	year	previous_pending	received	total	resolved	pending	comment
+1	1	3	2026	5	2	7	4	3	ok
+4. Laravel Migration Example
+create_offices_table
+Schema::create('offices', function (Blueprint $table) {
+    $table->id();
+    $table->string('name');
+    $table->timestamps();
+});
+create_categories_table
+Schema::create('categories', function (Blueprint $table) {
+    $table->id();
+    $table->string('name');
+    $table->timestamps();
+});
+create_reports_table
+Schema::create('reports', function (Blueprint $table) {
+    $table->id();
+
+    $table->foreignId('office_id')->constrained()->cascadeOnDelete();
+    $table->foreignId('category_id')->constrained()->cascadeOnDelete();
+
+    $table->integer('month');
+    $table->integer('year');
+
+    $table->integer('previous_pending')->default(0);
+    $table->integer('received')->default(0);
+    $table->integer('total')->default(0);
+    $table->integer('resolved')->default(0);
+    $table->integer('pending')->default(0);
+
+    $table->text('comment')->nullable();
+
+    $table->timestamps();
+});
+5. Vue Form UI Idea
+
+One office form like:
+
+Office: [ Select Office ]
+
+Month: [ March 2026 ]
+
+------------------------------------------------
+গ্রাচুইটি
+পূর্ব জের: [ ]
+বর্তমান মাসে প্রাপ্ত: [ ]
+মোট: [ ]
+বর্তমান মাসে নিষ্পন্ন: [ ]
+অনিষ্পন্ন: [ ]
+মন্তব্য: [ ]
+
+------------------------------------------------
+মাসিক পেনশন
+...
+
+------------------------------------------------
+জিপিএফ
+...

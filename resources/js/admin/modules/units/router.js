@@ -7,8 +7,8 @@ export default [
     name: 'unit.index',
     meta: {
       breadcrumb: 'All unit',
-      // requiresAuth: true,
-      // permission: 'unit_view',
+      requiresAuth: true,
+      layout: 'master',
     },
     component: UnitdIndex,
   },

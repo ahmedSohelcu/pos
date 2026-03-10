@@ -1,13 +1,11 @@
 <?php
 
+use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\StatusController;
 use App\Http\Controllers\Api\V1\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
 
 
 Route::prefix('v1')->group(function () {
@@ -21,8 +19,28 @@ Route::get('status/{id}', [StatusController::class, 'show'])
 
 
 // User Crud
-Route::middleware([''])->prefix('v1')->group(function () {
+Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
     Route::apiResource('users', UserController::class)->names('api.users');
     Route::get('selectable-users', [UserController::class, 'selectableUsers'])
         ->name('api.selectable-users');
 });
+
+
+// user Login and logout
+Route::post('/login', [AuthController::class, 'login'])->name('api.login');
+Route::post('/logout', [AuthController::class, 'logout'])->name('api.logout')
+    ->middleware('auth:sanctum');
+
+// logged in user data
+Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
+  Route::get('/me', function (Request $request) {return $request->user();})->name('api.me');
+
+  // get user roles
+  Route::get('/users/{user}/roles', [UserController::class, 'getUserRoles'])->name('api.users.roles');
+  // reassign user roles
+  Route::patch('/users/{user}/roles', [UserController::class, 'updateUserRoles'])->name('api.users.update-roles');
+  
+});
+
+
+

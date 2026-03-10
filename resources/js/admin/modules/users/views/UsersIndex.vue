@@ -14,6 +14,36 @@
       @bulk-delete="userStore.bulkDelete"
     />
 
+    <!-- ------------------------------------
+    Start assign Role Modal
+    ------------------------------------- -->
+    <BaseModal
+      size="md"
+      v-model="userStore.showRoleAssignModal"
+      :loading="userStore.loading"
+      confirmVariant="outline-success"
+      cancelVariant="outline-danger"
+      :centered="true"
+      @confirm="userStore.updateUserRoles"
+      @close="closeModal"
+      :title="'Update User Role'"
+      :confirmText="'Update'"
+    >
+      <!-- form ..  -->
+      <BaseSelect
+        :options="userStore.roles"
+        v-model="userStore.existingRoles"
+        select2
+        multiple
+        label=""
+        placeholder="Choose Role"
+      />
+    </BaseModal>
+
+    <!-- ------------------------------------
+    End Assigning Role Modal
+    ------------------------------------- -->
+
     <BaseModal
       v-model="userStore.showModal"
       size="lg"
@@ -47,15 +77,14 @@ const userStore = useUserStore();
 onMounted(() => {
   userStore.fetchData();
 });
-
-const closeModal = () => {
-  userStore.loading = false;
-};
 //---------------------------
 // load tenant action buttons
 //---------------------------
 const userActions = getUserActions(userStore);
 
+const closeModal = () => {
+  userStore.loading = false;
+};
 //-----------------------
 //Table Column
 //-----------------------
@@ -80,6 +109,28 @@ const columns = [
   { name: 'phone', label: 'Phone', sortable: true },
   { name: 'address', label: 'Address', sortable: true },
   {
+    label: 'Roles',
+    custom: (row) => {
+      return (
+        row?.roles
+          .map(
+            (role) =>
+              `<span class="badge bg-${
+                [
+                  'primary',
+                  'secondary',
+                  'success',
+                  'danger',
+                  'warning',
+                  'info',
+                ][role.id % 6]
+              }">${role.name}</span>`
+          )
+          .join(' ') ?? ''
+      );
+    },
+  },
+  {
     name: 'created_at',
     label: 'Created At',
     sortable: true,
@@ -88,11 +139,23 @@ const columns = [
     },
   },
   {
+    name: 'tenant_id',
+    label: 'Tenant',
+    sortable: true,
+    custom: (row) => {
+      return row?.tenant?.name ?? '';
+    },
+  },
+  {
     name: 'status_id',
     label: 'Status',
     sortable: true,
     custom: (row) => {
-      return `<span class="badge bg-${row.status?.class ?? 'secondary'}">${row.status?.name ?? ''}</span>`;
+      return row.status
+        ? `<span class="badge bg-${row.status?.class ?? 'secondary'}">
+          ${row?.status?.name ?? ''}
+        </span>`
+        : '';
     },
   },
 ];

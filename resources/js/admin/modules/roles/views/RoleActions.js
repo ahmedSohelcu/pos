@@ -5,11 +5,11 @@ import { ROLE_ENDPOINTS } from '@/data/endpoint';
 export const getRoleActions = (roleStore) => [
   {
     label: '<i class="fas fa-key text-warning p-2"></i> Permission',
-    handler: (row) => {
+    handler: async (row) => {
       roleStore.permissionModal = true;
       roleStore.form.role_id = row.id;
-      roleStore.fetchPermissions();
-      roleStore.fetchPermissionsByRole(row.id);
+      await roleStore.fetchPermissions();
+      await roleStore.fetchPermissionsByRole(row.id);
     },
   },
   {

@@ -7,7 +7,8 @@ export default [
     name: 'brand.index',
     meta: {
       breadcrumb: 'All Brand',
-      // requiresAuth: true,
+      layout: 'master',
+      requiresAuth: true,
       // permission: 'brand_view',
     },
     component: BrandIndex,

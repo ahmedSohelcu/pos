@@ -28,6 +28,17 @@ export const STATUS_ENDPOINTS = {
 
 /*
 |--------------------------------------------------------------------------
+| Login logout endpoints
+|--------------------------------------------------------------------------
+*/
+export const LOGIN_ENDPOINT = {
+  login: route('api.login'),
+  logout: route('api.logout'),
+  user: route('api.me'),
+};
+
+/*
+|--------------------------------------------------------------------------
 | brand
 |--------------------------------------------------------------------------
 */
@@ -103,6 +114,7 @@ export const PLAN_ENDPOINTS = {
 |--------------------------------------------------------------------------
 */
 export const ROLE_ENDPOINTS = {
+  selectableRoles: route('api.selectable_roles'),
   index: route('api.role.index'),
   store: route('api.role.store'),
   show: (id) => route('api.role.show', { role: id }),
@@ -183,4 +195,9 @@ export const USER_ENDPOINTS = {
   show: (id) => route('api.users.show', { user: id }),
   update: (id) => route('api.users.update', { user: id }),
   destroy: (id) => route('api.users.destroy', { user: id }),
+  //reassign user roles
+  updateUserRoles: (user_id) =>
+    route('api.users.update-roles', { user: user_id }),
+
+  roles: (user_id) => route('api.users.roles', { user: user_id }),
 };

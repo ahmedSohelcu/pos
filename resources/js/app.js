@@ -36,6 +36,7 @@ select2(window.$);
 import { createI18n } from 'vue-i18n';
 import en from './lang/en';
 import bn from './lang/bn';
+import { useAuthStore } from './ahmed-vue-kit/stores/authStore';
 
 const i18n = createI18n({
   legacy: false,
@@ -71,9 +72,16 @@ app.use(Toast, {
 
 app.use(createPinia());
 app.use(router);
-
 app.use(i18n);
 //------------------------------------
+
+//--------------------------
+// 🔹 Restore user on app load
+//--------------------------
+const auth = useAuthStore();
+if (auth.token) {
+  auth.fetchUser();
+}
 
 app.mount('#app');
 

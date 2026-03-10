@@ -300,3 +300,12 @@ class UserSeeder extends Seeder
         User::insert($users);
     }
 }
+
+
+
+if ($subscription->status_id == Subscription::STATUS_TRIAL && $subscription->ends_at->isPast()) {
+    return response()->json([
+        'success' => false,
+        'message' => 'Trial period ended'
+    ], 403);
+}

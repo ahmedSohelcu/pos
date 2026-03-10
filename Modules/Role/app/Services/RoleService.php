@@ -12,6 +12,13 @@ class RoleService extends BaseService
         $this->model = $role;
     }
 
+    public function getSelectableRoles()
+    {
+        return $this->model
+            ->select('id', 'name')
+            ->get();
+    }
+
     public function getAll(
         bool $isPaginated = true,
         bool $isSorted = true,

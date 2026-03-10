@@ -6,7 +6,11 @@ export default [
     path: '/subscriptions',
     name: 'subscription.index',
     meta: {
-      //  breadcrumb: 'All Tenants', layout: 'master', requiresAuth: true, permission: 'tenant_view'
+      layout: 'master',
+      breadcrumb: 'Subscriptions',
+      layout: 'master',
+      requiresAuth: true,
+      permission: 'view.subscription',
     },
     component: SubsriptionIndex,
   },
@@ -14,6 +18,7 @@ export default [
     path: '/subscriptions-history',
     name: 'subscription.history',
     meta: {
+      layout: 'master',
       //  breadcrumb: 'All Tenants', layout: 'master', requiresAuth: true, permission: 'tenant_view'
     },
     component: SubscriptionHistory,

@@ -34,13 +34,13 @@
         <!-- RIGHT: Actions -->
         <div class="d-flex align-items-center gap-2 flex-wrap">
           <div v-if="showSearch" class="search-wrapper">
-            <i class="fas fa-search search-icon"></i>
             <input
               v-model="search"
               type="text"
               placeholder="Search records..."
-              class="form-control form-control-sm"
+              class="form-control search-input"
             />
+            <i class="fas fa-search search-icon"></i>
           </div>
 
           <button
@@ -149,23 +149,46 @@
 
           <tbody>
             <tr v-for="(row, rowIndex) in rows" :key="rowIndex">
+              <!-- Checkbox -->
               <td>
                 <input type="checkbox" :value="row" v-model="selectedRows" />
               </td>
 
               <!-- Data cells -->
               <td v-for="(col, i) in visibleColumns" :key="i">
-                <!-- 🔥 custom function support -->
-                <span v-if="col.custom" v-html="col.custom(row, rowIndex)"></span>
+                <!-- Custom badge example -->
+                <span
+                  v-if="col.custom"
+                  v-html="col.custom(row, rowIndex)"
+                ></span>
 
-                <!-- 🔥 legacy row function support -->
+                <!-- Legacy function support -->
                 <span
                   v-else-if="typeof row[col.name] === 'function'"
                   v-html="row[col.name](row)"
                 ></span>
 
-                <!-- 🔥 default value -->
-                <span v-else v-html="row[col.name]"></span>
+                <!-- Default value -->
+                <span v-else>
+                  <template v-if="col.name === 'status'">
+                    <span
+                      class="badge"
+                      :class="{
+                        'bg-success': row.status === 'Active',
+                        'bg-danger': row.status === 'Inactive',
+                        'bg-warning': row.status === 'Pending',
+                      }"
+                    >
+                      {{ row.status }}
+                    </span>
+                  </template>
+                  <template v-else-if="col.name === 'role'">
+                    <span class="badge bg-primary">{{ row.role }}</span>
+                  </template>
+                  <template v-else>
+                    {{ row[col.name] }}
+                  </template>
+                </span>
               </td>
 
               <!-- Actions Dropdown -->
@@ -368,31 +391,6 @@ const toggleColumn = (col) => {
   font-size: 12px;
   color: #6c757d;
 }
-.search-wrapper {
-  position: relative;
-}
-.search-wrapper input {
-  height: 32px;
-  padding: 0 12px 0 32px;
-  border: 1px solid #e5e7eb;
-  border-radius: 6px;
-  font-size: 13px;
-  width: 220px;
-  transition: all 0.2s ease;
-}
-.search-wrapper input:focus {
-  outline: none;
-  border-color: #6366f1;
-  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1);
-}
-.search-icon {
-  position: absolute;
-  left: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 12px;
-  color: #9ca3af;
-}
 .table-wrapper {
   overflow-x: auto; /* only horizontal scroll */
   overflow-y: visible; /* allow vertical growth */
@@ -425,7 +423,40 @@ const toggleColumn = (col) => {
 .cursor-pointer {
   cursor: pointer;
 }
+
+/* Search wrapper */
+.search-wrapper {
+  position: relative;
+  width: 250px; /* adjustable */
+}
+
+.search-wrapper .search-input {
+  width: 100%;
+  padding: 6px 12px 8px 36px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.search-wrapper .search-input:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 8px rgba(99, 102, 241, 0.25);
+}
+
+.search-wrapper .search-icon {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  color: #9ca3af;
+  font-size: 14px;
+  pointer-events: none;
+}
 </style>
+
 <!--
     1.table heading
     2.data 

@@ -1,50 +1,30 @@
 <template>
-  <!--begin::App Wrapper-->
-  <div class="app-wrapper">
-    <!-- header Navbar -->
-    <Nav />
-    <!--end header Navbar -->
+  <div>
+    <!-- Check layout type -->
+    <div v-if="$route.meta.layout === 'master'" class="app-wrapper">
+      <Nav />
 
-    <!--begin::Sidebar-->
-    <Sidebar />
-    <!--end::Sidebar-->
+      <Sidebar />
 
-    <!--begin::App Main-->
-    <main class="app-main">
-      <!-- Breadcrumbs -->
-      <Breadcumbs />
-
-      <!--begin::App Content-->
-      <div class="app-content page-wrapper">
-        <!-- <div class="col-md-4">
-          <select class="select2 form-control activate-select2" name="state">
-            <option value="AL">Alabama</option>
-            <option value="WY">Wyoming</option>
-          </select>
+      <main class="app-main">
+        <Breadcumbs />
+        <div class="app-content page-wrapper">
+          <router-view v-slot="{ Component, route }">
+            <transition name="page">
+              <component :is="Component" :key="route.fullPath" />
+            </transition>
+          </router-view>
         </div>
-        <br> -->
+      </main>
 
-        <!-- 🔥 ROUTE WITH TRANSITION -->
-        <router-view v-slot="{ Component, route }">
-          <!-- Fade-in only transition -->
-          <transition name="page">
-            <component :is="Component" :key="route.fullPath" />
-          </transition>
-        </router-view>
+      <Footer />
+    </div>
 
-        <!-- 🔥 ROUTE WITHOUT TRANSITION -->
-        <!-- <div class="app-content">             
-            <router-view :key="$route.fullPath"/>           
-          </div>  -->
-      </div>
-      <!--end::App Content-->
-    </main>
-    <!--end::App Main-->
-
-    <!-- Footer component -->
-    <Footer />
+    <!-- Blank layout (login page) -->
+    <div v-else>
+      <router-view />
+    </div>
   </div>
-  <!--end::App Wrapper-->
 </template>
 
 <script setup>
@@ -52,6 +32,8 @@ import Nav from '../components/Nav.vue';
 import Sidebar from '../components/Sidebar.vue';
 import Footer from '../components/Footer.vue';
 import Breadcumbs from '../components/Breadcumbs.vue';
+import { useAuthStore } from '../../ahmed-vue-kit/stores/authStore';
+const auth = useAuthStore();
 </script>
 
 <style>

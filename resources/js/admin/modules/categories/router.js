@@ -7,7 +7,8 @@ export default [
     name: 'category.index',
     meta: {
       breadcrumb: 'All Category',
-      // requiresAuth: true,
+      layout: 'master',
+      requiresAuth: true,
       // permission: 'category_view',
     },
     component: CategoryIndex,

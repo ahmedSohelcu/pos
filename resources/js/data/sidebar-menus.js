@@ -10,24 +10,6 @@ export const AdminMenus = [
   // Tenants module
   ...TenantMenus,
 
-  // {
-  //   key: 'dashboard',
-  //   label: 'Dashboard',
-  //   icon: 'fas fa-tachometer-alt',
-  //   items: [
-  //     { name: 'component', label: 'Manage Data' },
-  //     { name: 'create-edit', label: 'Create / Update' },
-  //     { name: 'select2', label: 'Select2' },
-  //     { name: 'dashboard', label: 'Dashboard' },
-  //     { name: 'dashboard-2', label: 'Dashboard 2' },
-  //     { name: 'dashboard-3', label: 'Dashboard 3' },
-  //     // { name: 'dashboard', label: 'Overview' },
-  //     // { name: 'dashboard-2', label: 'Sales Summary' },
-  //     // { name: 'dashboard', label: 'Stock Overview' },
-  //     // { name: 'dashboard-2', label: 'Customer Insights' },
-  //   ],
-  // },
-
   //------------------------------------------------
   // Product Module (product, brand, unit, category)
   //------------------------------------------------
@@ -70,7 +52,6 @@ export const AdminMenus = [
     label: 'Suppliers',
     icon: 'bi bi-truck',
     items: [
-      { name: 'component', label: 'All Suppliers' },
       { name: 'component', label: 'Add Supplier' },
       { name: 'component', label: 'Supplier Contacts' },
     ],
@@ -111,6 +92,7 @@ export const AdminMenus = [
   //     { name: 'sample-tables', label: 'Sample Tables' }
   //   ]
   // },
+
   // {
   //   key: 'settings',
   //   label: 'Settings',
@@ -123,4 +105,32 @@ export const AdminMenus = [
   //     { name: 'component', label: 'Tax Configuration' }
   //   ]
   // }
+
+  {
+    key: 'login',
+    label: 'Login',
+    icon: 'bi bi-door-open-fill',
+    items: [{ name: 'Login', label: 'Login' }],
+  },
+
+  {
+    key: 'Example',
+    label: 'Example',
+    icon: 'bi bi-door-open-fill',
+    items: [
+      { name: 'dashboard', label: 'Dashboard' },
+      { name: 'dashboard-2', label: 'Dashboard 2' },
+      { name: 'dashboard-3', label: 'Dashboard 3' },
+      { name: 'info-box', label: 'info-box' },
+      { name: 'create-edit', label: 'Create / Update' },
+      { name: 'select2', label: 'Shop Page' },
+      { name: 'sample-tables', label: 'sample-tables' },
+      { name: 'small-box', label: 'small-box' },
+      { name: 'table-component', label: 'table-component' },
+      { name: 'general-ui', label: 'general-ui' },
+      { name: 'cards', label: 'cards' },
+      { name: 'timeline', label: 'timeline' },
+      { name: 'notFound', label: '404 Page' },
+    ],
+  },
 ];

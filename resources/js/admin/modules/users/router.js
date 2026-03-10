@@ -7,8 +7,9 @@ export default [
     name: 'users.index',
     meta: {
       breadcrumb: 'All Users',
-      // requiresAuth: true,
+      requiresAuth: true,
       permission: 'users_view',
+      layout: 'master',
     },
     component: UsersIndex,
   },
@@ -27,7 +28,8 @@ export default [
     name: 'roles.index',
     meta: {
       breadcrumb: 'All Roles',
-      // requiresAuth: true,
+      layout: 'master',
+      requiresAuth: true,
       // permission: 'roles_view',
     },
     component: RoleIndex,

@@ -17,6 +17,14 @@ class Subscription extends BaseModel
         HasTenant,
         HasStatus;
 
+    protected $casts = [
+        'starts_at' => 'datetime',
+        'ends_at' => 'datetime',
+    ];
+
+    //used in Subscription middleware 
+    const STATUS_TRIAL = 4;
+
     /**
      * The attributes that are mass assignable.
      */

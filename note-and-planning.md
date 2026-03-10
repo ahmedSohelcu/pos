@@ -1,10 +1,16 @@
 ## 🚀 Grocery SaaS app need to concern about 🚀
 
+## Feature need to keep note
+  - subscription status need to auto check to expire depends on end_at 
+  - if is_current then check the ends_at
+  - 
+  - 
+
 # Todo
 
 - assign Role & Permissions to Users
-- Protect Routes / API
-- Optional: Tie Features to Permissions
+- Protect Routes / API -- done
+- Optional: Tie Features to Permissions 
 - laravel response handler
 - Everything Tenant Based
 - Role Permission

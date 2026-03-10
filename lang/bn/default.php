@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'Trial period ended' => 'comple Trial period ended',
     'created_response' => ':name created successfully.',
     'updated_response' => ':name updated successfully.',
     'deleted_response' => ':name deleted successfully.',

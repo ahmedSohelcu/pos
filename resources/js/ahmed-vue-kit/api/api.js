@@ -1,5 +1,7 @@
 import axios from 'axios';
 import { useAuthStore } from '../stores/authStore';
+import { getActivePinia } from 'pinia';
+
 import router from '@/router';
 import { notify } from '@kit/composables/useNotify';
 
@@ -16,9 +18,9 @@ const api = axios.create({
   },
 });
 
-// 🔐 Attach Token Automatically
-api.interceptors.request.use(
-  (config) => {
+// Axios interceptor auto attach
+api.interceptors.request.use((config) => {
+  if (getActivePinia()) {
     const auth = useAuthStore();
 
     if (auth.token) {
@@ -28,11 +30,10 @@ api.interceptors.request.use(
     if (auth.tenant_id) {
       config.headers['X-Tenant-ID'] = auth.tenant_id;
     }
+  }
 
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
+  return config;
+});
 
 // 🌍 Global Error Handling
 api.interceptors.response.use(

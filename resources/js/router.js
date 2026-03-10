@@ -1,4 +1,4 @@
-// resources/js/router.js
+// resources/js/router.js (like web or api.php)
 import { createWebHistory, createRouter } from 'vue-router';
 
 // Import tenant module routes
@@ -11,10 +11,16 @@ import UnitRoutes from './admin/modules/units/router.js';
 import SubscriptionRoutes from './admin/modules/subscriptions/router.js';
 import PlanRoutes from './admin/modules/plans/router.js';
 import CustomerRoutes from './admin/modules/customers/router.js';
-
-// import SuR
+import Login from './admin/pages/auth/Login.vue';
 
 const baseRoutes = [
+  // Login Route
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login,
+    meta: { guest: true, layout: 'blank' }, // layout blank = no sidebar
+  },
   {
     path: '/component',
     name: 'component',
@@ -44,7 +50,7 @@ const baseRoutes = [
   {
     path: '/',
     name: 'dashboard',
-    meta: { breadcrumb: 'Dashboard', layout: 'master', requiresAuth: false },
+    meta: { breadcrumb: 'Dashboard', layout: 'master', requiresAuth: true },
     component: () => import('./admin/pages/lib/dashboard/Dashboard.vue'),
   },
   {
@@ -62,32 +68,32 @@ const baseRoutes = [
   {
     path: '/table-component',
     name: 'table-component',
-    meta: { breadcrumb: 'Table Example' },
+    meta: { breadcrumb: 'Table Example', layout: 'master' },
     component: () => import('./admin/pages/TableComponent.vue'),
   },
   {
     path: '/sample-tables',
     name: 'sample-tables',
-    meta: { breadcrumb: 'Sample Tables' },
+    meta: { breadcrumb: 'Sample Tables', layout: 'master' },
     component: () => import('./admin/pages/SampleTables.vue'),
   },
   //Widget
   {
     path: '/cards',
     name: 'cards',
-    meta: { breadcrumb: 'Cards' },
+    meta: { breadcrumb: 'Cards', layout: 'master' },
     component: () => import('./admin/pages/lib/widget/Cards.vue'),
   },
   {
     path: '/info-box',
     name: 'info-box',
-    meta: { breadcrumb: 'Info Box' },
+    meta: { breadcrumb: 'Info Box', layout: 'master' },
     component: () => import('./admin/pages/lib/widget/InfoBox.vue'),
   },
   {
     path: '/small-box',
     name: 'small-box',
-    meta: { breadcrumb: 'Small Box' },
+    meta: { breadcrumb: 'Small Box', layout: 'master' },
     component: () => import('./admin/pages/lib/widget/SmallBox.vue'),
   },
 
@@ -95,7 +101,7 @@ const baseRoutes = [
   {
     path: '/form',
     name: 'form',
-    meta: { breadcrumb: 'Form' },
+    meta: { breadcrumb: 'Form', layout: 'master' },
     component: () => import('./admin/pages/lib/form/Form.vue'),
   },
 
@@ -103,24 +109,26 @@ const baseRoutes = [
   {
     path: '/general-ui',
     name: 'general-ui',
-    meta: { breadcrumb: 'General UI' },
+    meta: { breadcrumb: 'General UI', layout: 'master' },
     component: () => import('./admin/pages/lib/ui/General.vue'),
   },
   {
     path: '/icon',
     name: 'icon',
-    meta: { breadcrumb: 'Icon' },
+    meta: { breadcrumb: 'Icon', layout: 'master' },
     component: () => import('./admin/pages/lib/ui/Icon.vue'),
   },
   {
     path: '/timeline',
     name: 'timeline',
-    meta: { breadcrumb: 'Timeline' },
+    meta: { breadcrumb: 'Timeline', layout: 'master' },
     component: () => import('./admin/pages/lib/ui/Timeline.vue'),
   },
 
   {
     path: '/:pathMatch(.*)*',
+    name: 'notFound',
+    meta: { breadcrumb: '', layout: 'master' },
     component: () => import('./admin/pages/PageNotFound.vue'),
   },
 ];
@@ -136,8 +144,7 @@ const routes = [
   ...ProductRoutes,
   ...PlanRoutes,
   ...SubscriptionRoutes,
-  ...CustomerRoutes
-  
+  ...CustomerRoutes,
 ];
 
 const router = createRouter({
@@ -145,16 +152,34 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach((to, from, next) => {
-  // Example: check token in localStorage
-  // const isLoggedIn = localStorage.getItem('token')
+// Navigation Guard
+import { useAuthStore } from './ahmed-vue-kit/stores/authStore.js';
 
-  if (to.meta.requiresAuth && !isLoggedIn) {
-    // user not logged in, redirect to login page
-    return next('/timeline');
+router.beforeEach((to, from, next) => {
+  const auth = useAuthStore();
+
+  if (to.meta.requiresAuth && !auth.isAuthenticated) {
+    return next({ name: 'Login' });
   }
-  next(); // allow navigation
+
+  if (to.meta.guest && auth.isAuthenticated) {
+    return next({ name: 'dashboard' });
+  }
+
+  next();
 });
+
+// Navigation Guard
+// router.beforeEach((to, from, next) => {
+//   const token = localStorage.getItem('auth_token'); // or your auth state
+//   if (to.meta.requiresAuth && !token) {
+//     next({ name: 'Login' });
+//   } else if (to.meta.guest && token) {
+//     next({ name: 'Dashboard' });
+//   } else {
+//     next();
+//   }
+// });
 
 // role based
 // const user = JSON.parse(localStorage.getItem('user'))
@@ -167,41 +192,3 @@ router.beforeEach((to, from, next) => {
 // })
 
 export default router;
-
-// with penia
-// 01.
-// stores/auth.js
-// import { defineStore } from 'pinia'
-
-// export const useAuthStore = defineStore('auth', {
-//     state: () => ({
-//         token: localStorage.getItem('token') || null,
-//         user: JSON.parse(localStorage.getItem('user')) || null
-//     }),
-//     getters: {
-//         isLoggedIn: state => !!state.token
-//     }
-// })
-
-// 02.
-// import { useAuthStore } from './stores/auth'
-
-// router.beforeEach((to, from, next) => {
-//     const auth = useAuthStore()
-
-//     if (to.meta.requiresAuth && !auth.isLoggedIn) {
-//         return next('/login')
-//     }
-//     next()
-// })
-
-// 03.
-// router.beforeEach((to, from, next) => {
-//     const auth = useAuthStore()
-
-//     if (to.name === 'login' && auth.isLoggedIn) {
-//         return next('/') // redirect to dashboard
-//     }
-
-//     next()
-// })

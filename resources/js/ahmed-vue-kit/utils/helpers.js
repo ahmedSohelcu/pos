@@ -17,6 +17,16 @@ export function formatDate(date) {
   return new Date(date).toISOString().split('T')[0] ?? ''; //'2022-01-01'
 }
 
+// Format backend date to "Mon. YYYY"
+export const formatDateDayYear = (dateString) => {
+  if (!dateString) return '';
+  const d = new Date(dateString); // rename variable
+  return new Intl.DateTimeFormat('en-US', {
+    month: 'short',
+    year: 'numeric',
+  }).format(d);
+};
+
 export function formatDateTime(date) {
   if (!date) return '';
   return new Date(date).toLocaleString(); //'1/1/2022, 12:00:00 PM'

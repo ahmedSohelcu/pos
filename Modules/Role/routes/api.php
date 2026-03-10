@@ -3,9 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Modules\Role\app\Http\Controllers\Api\RoleController;
 
-Route::
-// middleware(['auth:sanctumd'])
-prefix('v1')->group(function () {
+Route::middleware(['auth:sanctum', 'check.subscription'])->prefix('v1')->group(function () {
     Route::apiResource('roles', RoleController::class)->names('role');
     Route::get('permissions', [RoleController::class, 'permissions'])->name('permissions');
 
@@ -14,4 +12,7 @@ prefix('v1')->group(function () {
         
     Route::post('roles/{role}/permissions', [RoleController::class, 'updatePermissionsByRole'])
         ->name('role.permissions.update');
+
+    Route::get('selectable-roles', [RoleController::class, 'selectableRoles'])
+        ->name('selectable_roles');
 });

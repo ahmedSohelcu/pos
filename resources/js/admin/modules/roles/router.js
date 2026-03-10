@@ -1,4 +1,6 @@
 import index from './views/RoleIndex.vue';
+// loaded from user router.js
+
 
 // import TenantCreate from './views/TenantCreate.vue'
 // import PlanIndex from './views/PlanIndex.vue'

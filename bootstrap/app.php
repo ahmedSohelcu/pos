@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Middleware\Authenticate;
+use App\Http\Middleware\CheckSubscription;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -7,6 +9,7 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Illuminate\Database\QueryException;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Support\Facades\DB;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -21,12 +24,26 @@ return Application::configure(basePath: dirname(__DIR__))
 
     // Middleware
     ->withMiddleware(function (Middleware $middleware) {
-        // You can register global middleware here if needed
+        // You can register global middleware here if needed        
+        $middleware->alias([
+            'auth' => Authenticate::class,
+            'check.subscription' => CheckSubscription::class,
+        ]);
     })
 
     // Global Exception Handling
     ->withExceptions(function (Exceptions $exceptions) {
-        
+
+        // when try to hit api endpoint fron browser
+        // $exceptions->render(function (AuthenticationException $e, $request) {
+        //     if ($request->is('api/*') || $request->expectsJson()) {
+        //         return response()->json([U
+        //             'success' => false,
+        //             'message' => 'Authentication required.'
+        //         ], 401);
+        //     }
+        // });
+
     })
 
     ->create();

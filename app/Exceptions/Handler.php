@@ -3,9 +3,18 @@
 namespace App\Exceptions;
 
 use Exception;
+use Illuminate\Auth\AuthenticationException;
 
 class Handler extends Exception
 {
+    protected function unauthenticated($request, AuthenticationException $exception)
+    {
+        // return response()->json([
+        //     'success' => false,
+        //     'message' => 'Authentication required.',
+        // ], 401);
+    }
+
     // public function render($request, \Throwable $exception)
     // {
     //     if ($exception instanceof \Illuminate\Validation\ValidationException) {

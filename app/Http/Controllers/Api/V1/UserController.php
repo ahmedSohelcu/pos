@@ -7,10 +7,10 @@ use App\Http\Requests\User\UserRequest;
 use App\Models\User;
 use App\Services\User\UserService;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {   
-    // protected $service;    
 
     public function __construct(UserService $userService)
     {
@@ -24,7 +24,7 @@ class UserController extends Controller
 
     public function index()
     {
-        $users = $this->service->getAll(true, true, [], 10);
+        $users = $this->service->getAll(true, true, ['status', 'tenant', 'roles'], 10);
         return success_response('User List', $users);        
     }
 
@@ -68,5 +68,17 @@ class UserController extends Controller
     {
         $user->delete();
         return deleted_responses('User', $user);
+    }
+
+    public function getUserRoles(User $user) 
+    {
+        $roles = $user->roles->pluck('id');
+        return success_response('User Roles', $roles);    
+    }
+
+    public function updateUserRoles(Request $request, User $user){
+        $roleNames = Role::whereIn('id', $request->roles)->pluck('name');
+        $data = $user->syncRoles($roleNames);
+        return updated_response('User Role', $data);
     }
 }

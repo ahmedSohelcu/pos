@@ -37,4 +37,15 @@ export const getUserActions = (userStore) => [
       });
     },
   },
+  {
+    label: (row) => {
+      return `<i class="fas fa-user-tie text-primary me-2"></i>Assign Role`;
+    },
+    handler: async (row) => {
+      userStore.showRoleAssignModal = true;
+      userStore.user_id = row.id;
+      await userStore.fetchRoles();
+      await userStore.fetchUserRoles(row.id);
+    },
+  },
 ];

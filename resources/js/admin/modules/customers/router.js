@@ -6,7 +6,8 @@ export default [
     name: 'customers.index',
     meta: {
       breadcrumb: 'All Customers',
-      // requiresAuth: true,
+      requiresAuth: true,
+      layout: 'master',
       permission: 'customers_view',
     },
     component: CustomersIndex,
