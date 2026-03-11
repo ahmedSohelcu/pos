@@ -12,6 +12,7 @@ import SubscriptionRoutes from './admin/modules/subscriptions/router.js';
 import PlanRoutes from './admin/modules/plans/router.js';
 import CustomerRoutes from './admin/modules/customers/router.js';
 import Login from './admin/pages/auth/Login.vue';
+import NotAllow from './admin/pages/NotAllow.vue';
 
 const baseRoutes = [
   // Login Route
@@ -21,6 +22,13 @@ const baseRoutes = [
     component: Login,
     meta: { guest: true, layout: 'blank' }, // layout blank = no sidebar
   },
+  {
+    path: '/not-allow',
+    name: 'NotAllow',
+    component: NotAllow,
+    meta: { requiresAuth: true, layout: 'master' },
+  },
+
   {
     path: '/component',
     name: 'component',
@@ -152,43 +160,66 @@ const router = createRouter({
   routes,
 });
 
-// Navigation Guard
+/*---------------------------------------------
+Navigation Guard
+checked for 
+  ** Auth check - logged in user can't visit login page
+  ** Guest check --> logged in user can't visit guest page
+  ** System Admin bypass - system admin can visit any page
+  ** Feature check -> check specific feature
+  ** Permission check - check specific permission
+---------------------------------------------
+*/
 import { useAuthStore } from './ahmed-vue-kit/stores/authStore.js';
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   const auth = useAuthStore();
 
+  //--------------------------------
+  // 1️⃣ Auth check
+  //--------------------------------
   if (to.meta.requiresAuth && !auth.isAuthenticated) {
+    // redirect to login
     return next({ name: 'Login' });
   }
 
+  //--------------------------------
+  // 2️⃣ Guest check
+  //--------------------------------
   if (to.meta.guest && auth.isAuthenticated) {
     return next({ name: 'dashboard' });
   }
 
+  //--------------------------------
+  // 3️⃣ System Admin bypass
+  //--------------------------------
+  if (auth.isSystemAdmin()) return next();
+
+  // //--------------------------------
+  // // 4️⃣ Feature check
+  // //--------------------------------
+  // if (to.meta.feature && !auth.hasFeature(to.meta.feature)) {
+  //   return next({ name: 'dashboard' });
+  // }
+
+  // //--------------------------------
+  // // 5️⃣ Permission check
+  // //--------------------------------
+  // if (to.meta.permission && !auth.can(to.meta.permission)) {
+  //   return next({ name: 'dashboard' });
+  // }
+
+  //--------------------------------
+  // Feature + Permission
+  //--------------------------------
+  if (to.meta.access) {
+    const access = to.meta.access;
+    if (!auth.hasFeature(access) && !auth.can(access)) {
+      return next({ name: 'NotAllow' });
+    }
+  }
+
   next();
 });
-
-// Navigation Guard
-// router.beforeEach((to, from, next) => {
-//   const token = localStorage.getItem('auth_token'); // or your auth state
-//   if (to.meta.requiresAuth && !token) {
-//     next({ name: 'Login' });
-//   } else if (to.meta.guest && token) {
-//     next({ name: 'Dashboard' });
-//   } else {
-//     next();
-//   }
-// });
-
-// role based
-// const user = JSON.parse(localStorage.getItem('user'))
-// router.beforeEach((to, from, next) => {
-//     if (to.meta.requiresAuth && !user) return next('/login')
-
-//     if (to.meta.role && user.role !== to.meta.role) return next('/403') // Forbidden page
-
-//     next()
-// })
 
 export default router;

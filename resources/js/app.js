@@ -79,11 +79,20 @@ app.use(i18n);
 // 🔹 Restore user on app load
 //--------------------------
 const auth = useAuthStore();
-if (auth.token) {
-  auth.fetchUser();
+
+async function initAuth() {
+  if (auth.token) {
+    try {
+      await auth.fetchMe();
+    } catch (e) {
+      console.warn('Token invalid or expired on app load.');
+    }
+  }
 }
 
-app.mount('#app');
+initAuth().finally(() => {
+  app.mount('#app');
+});
 
 //===================================
 //writer module

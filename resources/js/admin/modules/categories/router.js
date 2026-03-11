@@ -9,7 +9,7 @@ export default [
       breadcrumb: 'All Category',
       layout: 'master',
       requiresAuth: true,
-      // permission: 'category_view',
+      access: 'category.view',
     },
     component: CategoryIndex,
   },

@@ -28,17 +28,36 @@ Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
 
 // user Login and logout
 Route::post('/login', [AuthController::class, 'login'])->name('api.login');
-Route::post('/logout', [AuthController::class, 'logout'])->name('api.logout')
-    ->middleware('auth:sanctum');
+Route::post('/logout', [AuthController::class, 'logout'])->name('api.logout')->middleware('auth:sanctum');
 
+
+//----------------------------------------------
 // logged in user data
+//----------------------------------------------
+//here if we use 'check.subscription' then will hide user info data
 Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
-  Route::get('/me', function (Request $request) {return $request->user();})->name('api.me');
+    
+    //---------------------------------------------
+    // ** logged user data ** 
+    //---------------------------------------------
+    Route::get('/me', function (Request $request) {
+        $user = $request->user();
 
-  // get user roles
-  Route::get('/users/{user}/roles', [UserController::class, 'getUserRoles'])->name('api.users.roles');
-  // reassign user roles
-  Route::patch('/users/{user}/roles', [UserController::class, 'updateUserRoles'])->name('api.users.update-roles');
+        $subscription = $request->attributes->get('subscription'); //from chekSubscription middleware
+        return response()->json([
+            'user' => $user,
+            'permissions' => $user->getAllPermissions()->pluck('name'),
+            'features' => $subscription ? $subscription->plan->features()->where('is_active', true)->pluck('name') : []
+        ]);
+    })->name('api.me');
+    
+    //Get user roles
+    //-----------------------
+    Route::get('/users/{user}/roles', [UserController::class, 'getUserRoles'])->name('api.users.roles');
+
+    // reassign user roles
+    //-----------------------
+    Route::patch('/users/{user}/roles', [UserController::class, 'updateUserRoles'])->name('api.users.update-roles');
   
 });
 

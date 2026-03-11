@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Modules\Subscription\app\Models\Subscription;
 
 class UserSeeder extends Seeder
 {
@@ -299,13 +300,4 @@ class UserSeeder extends Seeder
         ];
         User::insert($users);
     }
-}
-
-
-
-if ($subscription->status_id == Subscription::STATUS_TRIAL && $subscription->ends_at->isPast()) {
-    return response()->json([
-        'success' => false,
-        'message' => 'Trial period ended'
-    ], 403);
 }

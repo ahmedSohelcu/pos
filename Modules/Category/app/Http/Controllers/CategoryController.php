@@ -3,8 +3,6 @@
 namespace Modules\Category\App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Modules\Brand\app\Http\Requests\BrandRequest;
 use Modules\Category\app\Http\Requests\CategoryRequest;
 use Modules\Category\app\Services\CategoryService;
 

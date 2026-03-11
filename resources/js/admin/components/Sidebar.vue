@@ -3,11 +3,7 @@
     <!-- Sidebar Brand -->
     <div class="sidebar-brand">
       <a href="#" class="brand-link">
-        <img
-          src="admin/v1/assets/img/AdminLTELogo.png"
-          alt="Logo"
-          class="brand-image"
-        />
+        <img src="admin/v1/assets/img/AdminLTELogo.png" alt="Logo" class="brand-image" />
         <span class="brand-text">GroceryPharma Admin</span>
       </a>
     </div>
@@ -29,9 +25,7 @@
               </div>
               <i
                 class="bi"
-                :class="
-                  openMenu === menu.key ? 'bi-chevron-down' : 'bi-chevron-right'
-                "
+                :class="openMenu === menu.key ? 'bi-chevron-down' : 'bi-chevron-right'"
               ></i>
             </div>
 
@@ -58,9 +52,9 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue';
-import { useRoute } from 'vue-router';
-import { AdminMenus } from '../../data/sidebar-menus';
+import { ref, watch } from "vue";
+import { useRoute } from "vue-router";
+import { AdminMenus } from "../../data/sidebar-menus";
 
 const route = useRoute();
 const openMenu = ref(null);
@@ -101,7 +95,7 @@ watch(
   display: flex;
   flex-direction: column;
   padding: 16px 12px;
-  font-family: 'Source Sans 3', sans-serif;
+  font-family: "Source Sans 3", sans-serif;
   box-shadow: 3px 0 8px rgba(0, 0, 0, 0.3);
   border-right: 1px solid #2c2f3a;
 }
@@ -148,7 +142,8 @@ watch(
 }
 
 .menu-item {
-  margin-top: 8px;
+  /* margin-top: 8px; */
+  margin-top: 2px;
 }
 
 .menu-link {
@@ -192,7 +187,7 @@ watch(
 
 /* Left indicator for active/hover */
 .menu-link::before {
-  content: '';
+  content: "";
   position: absolute;
   left: 0;
   top: 0;

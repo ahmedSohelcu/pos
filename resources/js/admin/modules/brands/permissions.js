@@ -1,7 +1,7 @@
 export const brandPermissions = [
-  'brand_access', // Top-level module permission
-  'brand_view', // View brands
-  'brand_create', // Create brands
-  'brand_edit', // Edit brands
-  'brand_delete', // Delete brands
+  'brand.access', // Top-level module permission
+  'brand.view', // View brands
+  'brand.create', // Create brands
+  'brand.edit', // Edit brands
+  'brand.delete', // Delete brands
 ];

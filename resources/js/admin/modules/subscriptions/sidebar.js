@@ -22,7 +22,6 @@ export const SubscriptionMenus = [
         label: 'Subscription History',
         icon: 'fas fa-history',
       },
-      { name: 'component', label: 'Settings', icon: 'fas fa-cog' },
     ],
   },
 ];

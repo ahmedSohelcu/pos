@@ -13,7 +13,7 @@
               v-for="(crumb, index) in breadcrumbs"
               :key="index"
             >
-              {{ crumb?.label }}
+              <!-- {{ crumb?.label }} -->
             </span>
           </h3>
         </div>
@@ -59,7 +59,7 @@ export default {
         0,
         route.matched.indexOf(routeItem) + 1
       );
-      return matchedSegments.map((segment) => segment.path).join('/');
+      return matchedSegments.map((segment) => segment.path).join("/");
     },
   },
 };

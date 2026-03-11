@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Modules\Subscription\App\Models\Subscription;
 use Symfony\Component\HttpFoundation\Response;
 
+// Check Subscription and permission
 class CheckSubscription
 {
     public function handle(Request $request, Closure $next)
@@ -93,13 +94,11 @@ class CheckSubscription
                 'message' => 'Subscription expired'
             ], 403);
         }
-
         //--------------------------------
         // 6️⃣ Save subscription in request
         //--------------------------------
         $request->attributes->set('subscription', $subscription);
 
-        
         // When a middleware runs, sometimes you fetch data that controllers or other middlewares will need. In your case:
         // You just queried the tenant’s current subscription.
         // Later, in your controller or another middleware, you might want:
@@ -145,11 +144,11 @@ class CheckSubscription
 
 //     Route::get('tenants', [TenantController::class, 'index'])
 //         ->name('tenant.index')
-//         ->middleware('feature:tenant_view') // feature key
+//         ->middleware('feature:tenant.view') // feature key
 //         ->middleware('permission:tenant.view'); // spatie permission
 
 //     Route::post('tenants', [TenantController::class, 'store'])
 //         ->name('tenant.store')
-//         ->middleware('feature:tenant_create')
+//         ->middleware('feature:tenant.create')
 //         ->middleware('permission:tenant.create');
 // });

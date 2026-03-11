@@ -9,7 +9,7 @@ export default [
       breadcrumb: 'All Brand',
       layout: 'master',
       requiresAuth: true,
-      // permission: 'brand_view',
+      access: 'brand.view',
     },
     component: BrandIndex,
   },

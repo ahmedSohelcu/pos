@@ -23,9 +23,7 @@
       :centered="true"
       @confirm="createOrUpate"
       @close="closeModal"
-      :title="
-        categoryStore.mode === 'edit' ? 'Update Category' : 'Add New Category'
-      "
+      :title="categoryStore.mode === 'edit' ? 'Update Category' : 'Add New Category'"
       :confirmText="categoryStore.mode === 'edit' ? 'Update' : 'Create'"
     >
       <CategoryForm
@@ -37,14 +35,14 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, onMounted } from 'vue';
-import { categoryFilters } from './categoryFilters';
-import { getCategoryActions } from './categoryActions';
+import { ref, reactive, computed, onMounted } from "vue";
+import { categoryFilters } from "./categoryFilters";
+import { getCategoryActions } from "./categoryActions";
 // store
-import { useCategoryStore } from '../store';
-import BaseModal from '@kit/components/ui/BaseModal.vue';
-import CategoryForm from './CategoryForm.vue';
-import { CATEGORY_ENDPOINTS } from '@/data/endpoint';
+import { useCategoryStore } from "../store";
+import BaseModal from "@kit/components/ui/BaseModal.vue";
+import CategoryForm from "./CategoryForm.vue";
+import { CATEGORY_ENDPOINTS } from "@/data/endpoint";
 
 const categoryStore = useCategoryStore();
 
@@ -62,38 +60,43 @@ onMounted(() => {
 const categoryActions = getCategoryActions(categoryStore);
 
 const columns = [
-  { name: 'id', label: 'ID', sortable: true },
   {
-    name: 'name',
-    label: 'Category Name',
+    label: "#",
+    custom: (row, index) => index + 1,
+  },
+  {
+    name: "name",
+    label: "Category Name",
     sortable: true,
     custom: (row) => `<span class="badge bg-success">${row.name}</span>`,
   },
   {
-    name: 'slug',
-    label: 'Slug',
+    name: "slug",
+    label: "Slug",
     sortable: true,
-    custom: (row) => row.slug ?? '',
+    custom: (row) => row.slug ?? "",
   },
   {
-    name: 'tenant_id',
-    label: 'Tenant',
+    name: "tenant_id",
+    label: "Tenant",
     sortable: true,
     custom: (row) => {
-      return `<span class="text-primary">${row.tenant?.name ?? '-'}</span>`;
+      return `<span class="text-primary">${row.tenant?.name ?? "-"}</span>`;
     },
   },
   {
-    name: 'status_id',
-    label: 'Status',
+    name: "status_id",
+    label: "Status",
     sortable: true,
     custom: (row) => {
-      return `<span class="text-dark badge bg-${row.status?.class ?? ''}">${row.status?.name ?? '-'}</span>`;
+      return `<span class="text-dark badge bg-${row.status?.class ?? ""}">${
+        row.status?.name ?? "-"
+      }</span>`;
     },
   },
   {
-    name: 'created_at',
-    label: 'Created At',
+    name: "created_at",
+    label: "Created At",
     sortable: true,
     custom: (row) => {
       return new Date(row.created_at).toLocaleString();
@@ -103,21 +106,18 @@ const columns = [
 
 const createOrUpate = async () => {
   categoryStore.errors = {};
-  if (categoryStore.mode === 'edit') {
+  if (categoryStore.mode === "edit") {
     await categoryStore.update(
       CATEGORY_ENDPOINTS.update(categoryStore.selectedItem.id),
       categoryStore.selectedItem
     );
   } else {
-    await categoryStore.create(
-      CATEGORY_ENDPOINTS.store,
-      categoryStore.selectedItem
-    );
+    await categoryStore.create(CATEGORY_ENDPOINTS.store, categoryStore.selectedItem);
   }
 };
 
 const createFromTableBtn = () => {
-  categoryStore.mode = 'create';
+  categoryStore.mode = "create";
   categoryStore.errors = {};
   categoryStore.selectedItem = {};
   categoryStore.showModal = true;

@@ -93,25 +93,24 @@ export const AdminMenus = [
   //   ]
   // },
 
-  // {
-  //   key: 'settings',
-  //   label: 'Settings',
-  //   icon: 'bi bi-gear-fill',
-  //   items: [
-  //     { name: 'component', label: 'General' },
-  //     { name: 'component', label: 'Users & Roles' },
-  //     { name: 'component', label: 'Notifications' },
-  //     { name: 'component', label: 'Payment Options' },
-  //     { name: 'component', label: 'Tax Configuration' }
-  //   ]
-  // }
-
   {
-    key: 'login',
-    label: 'Login',
-    icon: 'bi bi-door-open-fill',
-    items: [{ name: 'Login', label: 'Login' }],
+    key: 'settings',
+    label: 'Settings',
+    icon: 'bi bi-gear-fill',
+    items: [
+      { name: 'component', label: 'General' },
+      { name: 'component', label: 'Notifications' },
+      { name: 'component', label: 'Payment Options' },
+      { name: 'component', label: 'Tax Configuration' },
+    ],
   },
+
+  // {
+  //   key: 'login',
+  //   label: 'Login',
+  //   icon: 'bi bi-door-open-fill',
+  //   items: [{ name: 'Login', label: 'Login' }],
+  // },
 
   {
     key: 'Example',

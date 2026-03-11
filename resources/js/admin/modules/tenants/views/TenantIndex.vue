@@ -13,7 +13,7 @@
       @refresh="tenantStore.fetchData"
       @bulk-delete="tenantStore.bulkDelete"
     />
-
+    {{ auth.permissions }}
     <BaseModal
       v-model="tenantStore.showModal"
       size="lg"
@@ -43,9 +43,10 @@ import { useTenantStore } from '../store';
 import BaseModal from '@kit/components/ui/BaseModal.vue';
 import TenantForm from './TenantForm.vue';
 import { TENANT_ENDPOINTS } from '@/data/endpoint';
+import { useAuthStore } from '../../../../ahmed-vue-kit/stores/authStore';
 
 const tenantStore = useTenantStore();
-
+const auth = useAuthStore();
 const closeModal = () => {
   tenantStore.loading = false;
 };

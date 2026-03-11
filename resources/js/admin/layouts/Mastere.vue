@@ -28,11 +28,11 @@
 </template>
 
 <script setup>
-import Nav from '../components/Nav.vue';
-import Sidebar from '../components/Sidebar.vue';
-import Footer from '../components/Footer.vue';
-import Breadcumbs from '../components/Breadcumbs.vue';
-import { useAuthStore } from '../../ahmed-vue-kit/stores/authStore';
+import Nav from "../components/Nav.vue";
+import Sidebar from "../components/Sidebar.vue";
+import Footer from "../components/Footer.vue";
+import Breadcumbs from "../components/Breadcumbs.vue";
+import { useAuthStore } from "../../ahmed-vue-kit/stores/authStore";
 const auth = useAuthStore();
 </script>
 
@@ -43,9 +43,7 @@ const auth = useAuthStore();
 
 /* Fade-in only animation */
 .page-enter-active {
-  transition:
-    opacity 0.3s ease,
-    transform 0.3s ease;
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .page-enter-from {

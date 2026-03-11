@@ -9,6 +9,7 @@ export default [
       breadcrumb: 'All unit',
       requiresAuth: true,
       layout: 'master',
+      access: 'unit.view',
     },
     component: UnitdIndex,
   },

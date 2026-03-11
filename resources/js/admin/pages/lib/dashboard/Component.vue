@@ -2,35 +2,23 @@
   <!--begin::Container-->
   <div class="container-fluid">
     <div class="col-md-12">
-      <h1>{{ $t('welcome') }}</h1>
+      <h1>{{ $t("welcome") }}</h1>
 
-      {{ $t('items', 5) }}
+      {{ $t("items", 5) }}
 
-      {{ $t('user_create', 5) }}
+      {{ $t("user_create", 5) }}
 
-      <button class="btn btn-danger" @click="showModal = true">
-        Show Modal
-      </button>
+      <button class="btn btn-danger" @click="showModal = true">Show Modal</button>
       <br />
       <br />
       <BaseModal v-model="showModal" title="Create User" size="lg">
         <form @submit.prevent="saveUser">
-          <input
-            class="form-control mb-2"
-            v-model="form.name"
-            placeholder="Name"
-          />
-          <input
-            class="form-control"
-            v-model="form.email"
-            placeholder="Email"
-          />
+          <input class="form-control mb-2" v-model="form.name" placeholder="Name" />
+          <input class="form-control" v-model="form.email" placeholder="Email" />
         </form>
 
         <template #footer>
-          <button class="btn btn-secondary" @click="showModal = false">
-            Cancel
-          </button>
+          <button class="btn btn-secondary" @click="showModal = false">Cancel</button>
 
           <button class="btn btn-success" @click="saveUser">Save</button>
         </template>
@@ -53,8 +41,7 @@
         @create="alert('Create new user')"
         @refresh="alert('Refresh table')"
         @bulk-delete="
-          (selected) =>
-            alert('Delete bulk: ' + selected.map((r) => r.name).join(', '))
+          (selected) => alert('Delete bulk: ' + selected.map((r) => r.name).join(', '))
         "
       />
     </div>
@@ -62,16 +49,13 @@
 </template>
 
 <script setup>
-import axios from 'axios';
-import { ref, reactive, onMounted } from 'vue';
-import { route } from 'ziggy-js';
-import router from '../../../../router';
-import {
-  swalpopup,
-  deleteWarning,
-} from '@kit/composables/useDeleteConfirm';
+import axios from "axios";
+import { ref, reactive, onMounted } from "vue";
+import { route } from "ziggy-js";
+import router from "../../../../router";
+import { swalpopup, deleteWarning } from "@kit/composables/useDeleteConfirm";
 
-import BaseModal from '@kit/components/ui/BaseModal.vue';
+import BaseModal from "@kit/components/ui/BaseModal.vue";
 const showModal = ref(false);
 
 const selectedCategory = ref(2); // pre-selected by id
@@ -93,7 +77,7 @@ const selectedCategory = ref(2); // pre-selected by id
   |--------------------------------------------------------------------------
   */
 const query = ref({
-  search: '',
+  search: "",
   filters: {},
   perPage: 10,
   page: 1,
@@ -114,7 +98,7 @@ const loading = ref(false);
 const handleQuery = (value) => {
   // 🔥 IMPORTANT: replace full query
   query.value = value;
-  console.log('Updated Query:', query.value);
+  console.log("Updated Query:", query.value);
   // fetchUsers()
 };
 /*
@@ -147,45 +131,45 @@ const handleQuery = (value) => {
 // }
 
 const form = reactive({
-  name: 'Ahmed Ullah',
-  email: 'ahmed@example.com',
+  name: "Ahmed Ullah",
+  email: "ahmed@example.com",
   category: 2,
-  description: 'Some text here...',
+  description: "Some text here...",
   agree: true,
-  gender: 'male',
+  gender: "male",
   loading: false,
 });
 
 const filters = [
   {
-    name: 'status_id',
-    label: 'Status',
-    type: 'select',
+    name: "status_id",
+    label: "Status",
+    type: "select",
     select2: true, // 🔥 enable select2
     multiple: false, // single select
     // options: [
     //     { id: 1, type: 'active'},
     //     { id: 2, type: 'inactive'},
     // ],
-    getApiRoute: route('selectable_statuses'),
+    getApiRoute: route("selectable_statuses"),
     // optionKeyName: 'type',
     // optionValueName: 'label'
   },
   {
-    name: 'company_id',
-    label: 'Company',
-    type: 'select',
+    name: "company_id",
+    label: "Company",
+    type: "select",
     select2: true, // 🔥 enable select2
     multiple: true, // 🔥 multiple select
     options: [
-      { id: 1, name: 'Abc' },
-      { id: 2, name: 'EFG' },
+      { id: 1, name: "Abc" },
+      { id: 2, name: "EFG" },
     ],
   },
   {
-    name: 'created_at',
-    label: 'Created At',
-    type: 'time',
+    name: "created_at",
+    label: "Created At",
+    type: "time",
   },
   // {
   //     name: 'time',
@@ -208,11 +192,11 @@ const filters = [
 
 //  for table
 const columns = [
-  { name: 'id', label: 'ID', sortable: true },
-  { name: 'name', label: 'Name', sortable: true },
-  { name: 'email', label: 'Email', sortable: true },
-  { name: 'role', label: 'Role', sortable: true },
-  { name: 'status', label: 'Status', sortable: true },
+  { name: "id", label: "ID", sortable: true },
+  { name: "name", label: "Name", sortable: true },
+  { name: "email", label: "Email", sortable: true },
+  { name: "role", label: "Role", sortable: true },
+  { name: "status", label: "Status", sortable: true },
 ];
 
 const users = [
@@ -221,50 +205,50 @@ const users = [
     name: (row) => {
       return "<button class='btn btn-sm btn-primary'>Ahmed Sohel</button>";
     },
-    email: 'ahmed@example.com',
-    role: 'Admin',
-    status: 'Active',
+    email: "ahmed@example.com",
+    role: "Admin",
+    status: "Active",
   },
   {
     id: 2,
-    name: 'Rayan Khan',
-    email: 'rayan@example.com',
-    role: 'User',
-    status: 'Inactive',
+    name: "Rayan Khan",
+    email: "rayan@example.com",
+    role: "User",
+    status: "Inactive",
   },
   {
     id: 3,
-    name: 'Sara Ali',
-    email: 'sara@example.com',
-    role: 'Moderator',
-    status: 'Active',
+    name: "Sara Ali",
+    email: "sara@example.com",
+    role: "Moderator",
+    status: "Active",
   },
   {
     id: 4,
-    name: 'John Doe',
-    email: 'john@example.com',
-    role: 'User',
-    status: 'Active',
+    name: "John Doe",
+    email: "john@example.com",
+    role: "User",
+    status: "Active",
   },
   {
     id: 5,
-    name: 'Jane Smith',
-    email: 'jane@example.com',
-    role: 'User',
-    status: 'Inactive',
+    name: "Jane Smith",
+    email: "jane@example.com",
+    role: "User",
+    status: "Inactive",
   },
 ];
 
 const actions = [
-  { label: 'View', handler: (row) => alert(`View: ${row.name}`) },
+  { label: "View", handler: (row) => alert(`View: ${row.name}`) },
   {
-    label: 'Edit',
+    label: "Edit",
     handler: (row) => {
       form.loading = false;
     },
   },
   {
-    label: 'Delete',
+    label: "Delete",
     handler: (row) => alert(`Delete: ${row.name}`),
   },
   {
@@ -276,15 +260,15 @@ const actions = [
     },
   },
   {
-    label: 'Go To Home',
+    label: "Go To Home",
     handler: (row) => {
-      router.push('/');
+      router.push("/");
     },
   },
 ];
 
 //
 const saveUser = () => {
-  alert('Deleted!');
+  alert("Deleted!");
 };
 </script>
