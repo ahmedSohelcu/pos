@@ -5,88 +5,54 @@ import router from './router';
 import * as ahmedVueKit from './ahmed-vue-kit';
 import Master from './admin/layouts/Mastere.vue';
 
-// important
 import 'bootstrap';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
-//----------------------------------
-// import vue toastification
-//----------------------------------
 import Toast from 'vue-toastification';
 import 'vue-toastification/dist/index.css';
 
-// ===============================
-// jQuery + Select2 (CORRECT ORDER)
-// ===============================
 import $ from 'jquery';
 window.$ = window.jQuery = $;
 
 import select2 from 'select2/dist/js/select2.full.min.js';
 import 'select2/dist/css/select2.min.css';
 
-// 🔥 FORCE ATTACH select2 to global jQuery
 select2(window.$);
-//----------------------------------------
 
-//------------------------------------
-// language support
-//to call in vue {{ $t('welcome') }}
-//in blade {{@lang('welcome')}}
-//------------------------------------
 import { createI18n } from 'vue-i18n';
 import en from './lang/en';
 import bn from './lang/bn';
-import { useAuthStore } from './ahmed-vue-kit/stores/authStore';
 
 const i18n = createI18n({
   legacy: false,
   locale: 'en',
   fallbackLocale: 'en',
-  messages: {
-    en,
-    bn,
-  },
+  messages: { en, bn },
 });
 
 const app = createApp(Master);
+const pinia = createPinia();
 
-// Register all components globally
+app.use(pinia);
+app.use(router);
+app.use(i18n);
+
+app.use(Toast, {
+  position: 'top-right',
+  timeout: 3000,
+});
+
 Object.entries(ahmedVueKit).forEach(([name, component]) => {
   app.component(name, component);
 });
 
-//02️⃣ Register all components locally
-// const app = createApp({
-//     components: {
-//         Master,
-//     },
-// });
+import { useAuthStore } from './ahmed-vue-kit/stores/authStore';
 
-// use vue-toastification
-app.use(Toast, {
-  position: 'top-right',
-  timeout: 3000,
-  closeOnClick: true,
-  pauseOnHover: true,
-});
-
-app.use(createPinia());
-app.use(router);
-app.use(i18n);
-//------------------------------------
-
-//--------------------------
-// 🔹 Restore user on app load
-//--------------------------
-const auth = useAuthStore();
+const auth = useAuthStore(pinia);
 
 async function initAuth() {
   if (auth.token) {
-    try {
-      await auth.fetchMe();
-    } catch (e) {
-      console.warn('Token invalid or expired on app load.');
-    }
+    await auth.fetchMe(true);
   }
 }
 

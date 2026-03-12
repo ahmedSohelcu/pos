@@ -40,7 +40,6 @@ export const useRoleStore = useResourceStore(
       },
 
       async updatePermissionByRole(roleId, permissionIds) {
-        console.log('updatePermissionByRole', roleId, permissionIds);
         try {
           const { data } = await api.post(
             ROLE_ENDPOINTS.updatePermissionsByRole(roleId), // pass roleId in URL

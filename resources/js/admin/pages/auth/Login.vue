@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="login-wrapper d-flex justify-content-center align-items-center vh-100"
-  >
+  <div class="login-wrapper d-flex justify-content-center align-items-center vh-100">
     <div class="card p-4 shadow-sm" style="width: 400px">
       <h3 class="text-center mb-3">Sign In</h3>
       <form>
@@ -29,10 +27,7 @@
           class="btn btn-primary w-100"
           :disabled="auth.loading"
         >
-          <span
-            v-if="auth.loading"
-            class="spinner-border spinner-border-sm me-1"
-          ></span>
+          <span v-if="auth.loading" class="spinner-border spinner-border-sm me-1"></span>
           Login
         </button>
       </form>
@@ -44,31 +39,29 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue';
-import { useAuthStore } from '../../../ahmed-vue-kit/stores/authStore';
-import { useRouter } from 'vue-router';
-import { notify } from '@kit/composables/useNotify';
-import { TENANT_ENDPOINTS } from '../../../data/endpoint';
-const router = useRouter();
+import { reactive } from "vue";
+import { useAuthStore } from "../../../ahmed-vue-kit/stores/authStore";
+import { useRouter } from "vue-router";
+import { notify } from "@kit/composables/useNotify";
 
 const auth = useAuthStore();
+const router = useRouter();
 
-const form = reactive({
-  email: '',
-  password: '',
-  errors: {},
-});
+const form = reactive({ email: "", password: "", errors: {} });
 
 const login = async () => {
   auth.loading = true;
 
   try {
-    let res = await auth.login(form);
+    const res = await auth.login(form);
+    notify.success(res?.data?.message || "Logged In Successfully");
 
-    console.log('res', res);
-
-    notify.success(res?.data?.message || 'Logged In Successfully 2');
-    router.push({ name: 'tenants.index' }); // ✅ redirect
+    router.push({ name: "dashboard" });
+    // if (auth.subscriptionExpired) {
+    //   router.push({ name: 'SubscriptionExpired' });
+    // } else {
+    //   router.push({ name: 'dashboard' });
+    // }
   } catch (error) {
     form.errors = error.errors ?? {};
   } finally {

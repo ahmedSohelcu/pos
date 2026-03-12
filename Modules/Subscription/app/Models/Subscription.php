@@ -33,6 +33,7 @@ class Subscription extends BaseModel
         'plan_id',
         'starts_at',
         'ends_at',
+        'is_trial',
         'status_id',
         'is_current',
     ];

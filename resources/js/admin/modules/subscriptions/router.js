@@ -10,7 +10,7 @@ export default [
       breadcrumb: 'Subscriptions',
       layout: 'master',
       requiresAuth: true,
-      permission: 'view.subscription',
+      access: 'view.subscription',
     },
     component: SubsriptionIndex,
   },
@@ -19,7 +19,9 @@ export default [
     name: 'subscription.history',
     meta: {
       layout: 'master',
-      //  breadcrumb: 'All Tenants', layout: 'master', requiresAuth: true, permission: 'tenant_view'
+      breadcrumb: 'All Tenants',
+      requiresAuth: true,
+      access: 'view.subscription',
     },
     component: SubscriptionHistory,
   },

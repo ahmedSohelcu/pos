@@ -8,7 +8,10 @@ export const useAuthStore = defineStore('auth', {
     user: null,
     subscription: null,
     permissions: [],
+    features: [],
     initialized: false,
+    subscriptionExpired: false,
+    lastFetchTime: 0,
 
     token: localStorage.getItem('token') || null,
     tenant_id: localStorage.getItem('tenant_id') || null,
@@ -20,13 +23,15 @@ export const useAuthStore = defineStore('auth', {
 
   actions: {
     //----------------------------------------
-    //Login
+    // Login
     //----------------------------------------
     async login(form) {
       this.loading = true;
+
       try {
         const res = await api.post(LOGIN_ENDPOINT.login, form);
         this.setAuth(res.data);
+        await this.fetchMe(true);
         return res;
       } catch (error) {
         throw error.response?.data || error;
@@ -35,13 +40,22 @@ export const useAuthStore = defineStore('auth', {
       }
     },
 
-    //---------------------------------------------
-    //** Get logged User Data via token **
-    // used in api.js to set user data
-    //---------------------------------------------
-    async fetchMe() {
-      // if no token don't call API
-      if (!this.token) return null;
+    //----------------------------------------
+    // Fetch logged user
+    //----------------------------------------
+    async fetchMe(force = false) {
+      if (!this.token) {
+        this.initialized = true;
+        return null;
+      }
+      const now = Date.now();
+
+      // use whey api performance will create problem
+      // prevent API spam (10 sec cache)
+      // if (!force && now - this.lastFetchTime < 10000) {
+      //   // alert('Avoid Too Requests');
+      //   return;
+      // }
 
       try {
         const { data } = await api.get(LOGIN_ENDPOINT.user);
@@ -49,47 +63,76 @@ export const useAuthStore = defineStore('auth', {
         this.user = data.user || null;
         this.subscription = data.subscription || null;
         this.permissions = data.permissions || [];
+        this.features = data.features || [];
+
+        // subscription expired detect
+        // if (data.subscription?.is_expired) {
+        //   this.subscriptionExpired = true;
+        // } else {
+        //   this.subscriptionExpired = false;
+        // }
+
+        this.lastFetchTime = now;
+        this.initialized = true;
 
         return data;
-
       } catch (error) {
-        console.error("fetchMe failed:", error);
+        console.error('fetchMe failed:', error);       
 
-        // optional: logout if token invalid
-        if (error.response?.status === 401) {
-          this.clearAuth(false);
+        // 401 → logout
+        if (error.response.status === 401) {
+          this.clearAuth();
         }
 
+        if (
+          error.response.status === 403 &&
+          error.response.data?.error === 'SUBSCRIPTION_EXPIRED'
+        ) {
+          this.subscriptionExpired = true;
+          this.subscription = error.response.data.subscription || null;
+        }
+
+        this.initialized = true;
         return null;
       }
     },
 
-    //-------------------------------------
-    // check specific feature access
-    // v-if="auth.hasFeature('create_invoice')
-    //-------------------------------------
+    //----------------------------------------
+    // Feature check
+    //----------------------------------------
     hasFeature(feature) {
-      return this.subscription?.features.includes(feature);
+      if (!feature) return true;
+      return this.features.includes(feature);
     },
 
-    //-------------------------------------
-    // check specific permission
-    // v-if="auth.can('edit_users')
-    //-------------------------------------
+    //----------------------------------------
+    // Permission check
+    //----------------------------------------
     can(permission) {
+      if (!permission) return true;
       return this.permissions.includes(permission);
     },
 
-    //-------------------------------------
-    // feature and permission bypass
-    //for system admin
-    //-------------------------------------
+    //----------------------------------------
+    // Unified access
+    //----------------------------------------
+    hasAccess(access) {
+      if (!access) return true;
+
+      if (this.isSystemAdmin()) return true;
+
+      return this.can(access) && this.hasFeature(access);
+    },
+
+    //----------------------------------------
+    // System admin bypass
+    //----------------------------------------
     isSystemAdmin() {
       return this.user?.user_type === 'system_admin';
     },
 
     //----------------------------------------
-    // set auth data after successful login
+    // Set auth after login
     //----------------------------------------
     setAuth(data) {
       this.user = data.user;
@@ -98,30 +141,36 @@ export const useAuthStore = defineStore('auth', {
 
       localStorage.setItem('token', data.token);
 
-      if (this.tenant_id) localStorage.setItem('tenant_id', this.tenant_id);
+      if (this.tenant_id) {
+        localStorage.setItem('tenant_id', this.tenant_id);
+      }
 
       api.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
-      if (this.tenant_id)
-        api.defaults.headers.common['X-Tenant-ID'] = this.tenant_id;
-    },
 
-    //----------------------------------------
-    //Logout
-    //----------------------------------------
-    async logout() {
-      try {
-        if (this.token) await api.post(LOGIN_ENDPOINT.logout);
-      } catch (error) {
-        console.error('Logout API failed:', error);
-      } finally {
-        this.clearAuth(true);
+      if (this.tenant_id) {
+        api.defaults.headers.common['X-Tenant-ID'] = this.tenant_id;
       }
     },
 
     //----------------------------------------
-    //clear data after logout
+    // Logout
     //----------------------------------------
-    clearAuth(notifyFrontend = true) {
+    async logout() {
+      try {
+        if (this.token) {
+          await api.post(LOGIN_ENDPOINT.logout);
+        }
+      } catch (error) {
+        console.error('Logout API failed:', error);
+      } finally {
+        this.clearAuth();
+      }
+    },
+
+    //----------------------------------------
+    // Clear auth
+    //----------------------------------------
+    clearAuth() {
       this.user = null;
       this.token = null;
       this.tenant_id = null;
@@ -129,13 +178,8 @@ export const useAuthStore = defineStore('auth', {
       localStorage.removeItem('token');
       localStorage.removeItem('tenant_id');
 
-      // Remove axios defaults
       delete api.defaults.headers.common['Authorization'];
       delete api.defaults.headers.common['X-Tenant-ID'];
-
-      if (notifyFrontend) {
-        // optional: router.push('/login') can be handled in api.js interceptor
-      }
     },
   },
 });

@@ -8,21 +8,11 @@ export default [
     meta: {
       breadcrumb: 'All Users',
       requiresAuth: true,
-      permission: 'users_view',
       layout: 'master',
+      access: 'user.view',
     },
     component: UsersIndex,
   },
-  // {
-  //   path: '/users/:id/edit',
-  //   name: 'users.update',
-  //   meta: {
-  //     breadcrumb: 'Edit Users',
-  //     requiresAuth: true,
-  //     permission: 'users_edit',
-  //   },
-  //   component: UsersEdit,
-  // },
   {
     path: '/roles',
     name: 'roles.index',
@@ -30,7 +20,7 @@ export default [
       breadcrumb: 'All Roles',
       layout: 'master',
       requiresAuth: true,
-      // permission: 'roles_view',
+      access: 'role.view',
     },
     component: RoleIndex,
   },

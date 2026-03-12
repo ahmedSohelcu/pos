@@ -16,27 +16,4 @@ export default [
     },
     component: TenantIndex,
   },
-  {
-    path: '/tenants/create',
-    name: 'tenants.create',
-    meta: {
-      breadcrumb: 'Create Tenant',
-      layout: 'master',
-      requiresAuth: true,
-      access: 'tenant.create',
-    },
-    component: TenantCreate,
-  },
-  //   {
-  //     path: '/tenants/subscriptions',
-  //     name: 'tenants.subscriptions',
-  //     meta: { breadcrumb: 'Subscriptions', layout: 'master', requiresAuth: true, permission: 'subscription_view' },
-  //     component: SubscriptionIndex
-  //   },
-  //   {
-  //     path: '/tenants/plans',
-  //     name: 'tenants.plans',
-  //     meta: { breadcrumb: 'Plans', layout: 'master', requiresAuth: true, permission: 'plan_view' },
-  //     component: PlanIndex
-  //   }
 ];

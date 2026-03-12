@@ -18,6 +18,7 @@ class SubscriptionRequest extends BaseRequest
             'starts_at' => ['required', 'date', 'after_or_equal:today'],
             'ends_at' => ['required', 'date', 'after_or_equal:starts_at'],
             'is_current' => ['required', 'boolean'],
+            'is_trial' => ['nullable', 'boolean'],
         ];
     }
 

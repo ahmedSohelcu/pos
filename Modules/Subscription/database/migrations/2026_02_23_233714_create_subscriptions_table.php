@@ -23,6 +23,7 @@ return new class extends Migration
             $table->date('ends_at');
 
             // 🔹 Control Current Subscription
+            $table->boolean('is_trial')->default(false)->comment('Is this a trial subscription?');
             $table->boolean('is_current')->default(true);
             
             // 🔹 Status (trial, active, expired, cancelled)  

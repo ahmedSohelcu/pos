@@ -13,7 +13,6 @@
       @refresh="tenantStore.fetchData"
       @bulk-delete="tenantStore.bulkDelete"
     />
-    {{ auth.permissions }}
     <BaseModal
       v-model="tenantStore.showModal"
       size="lg"

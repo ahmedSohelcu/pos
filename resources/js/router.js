@@ -1,7 +1,6 @@
-// resources/js/router.js (like web or api.php)
 import { createWebHistory, createRouter } from 'vue-router';
+import { useAuthStore } from './ahmed-vue-kit/stores/authStore.js';
 
-// Import tenant module routes
 import TenantRoutes from './admin/modules/tenants/router.js';
 import UserRoutes from './admin/modules/users/router.js';
 import BrandRoutes from './admin/modules/brands/router.js';
@@ -11,16 +10,16 @@ import UnitRoutes from './admin/modules/units/router.js';
 import SubscriptionRoutes from './admin/modules/subscriptions/router.js';
 import PlanRoutes from './admin/modules/plans/router.js';
 import CustomerRoutes from './admin/modules/customers/router.js';
+
 import Login from './admin/pages/auth/Login.vue';
 import NotAllow from './admin/pages/NotAllow.vue';
 
 const baseRoutes = [
-  // Login Route
   {
     path: '/login',
     name: 'Login',
     component: Login,
-    meta: { guest: true, layout: 'blank' }, // layout blank = no sidebar
+    meta: { guest: true, layout: 'blank' },
   },
   {
     path: '/not-allow',
@@ -28,12 +27,29 @@ const baseRoutes = [
     component: NotAllow,
     meta: { requiresAuth: true, layout: 'master' },
   },
-
+  {
+    path: '/',
+    name: 'dashboard',
+    meta: { breadcrumb: 'Dashboard', layout: 'master', requiresAuth: true },
+    component: () => import('./admin/pages/lib/dashboard/Dashboard.vue'),
+  },
+  {
+    path: '/subscription-expired',
+    name: 'SubscriptionExpired',
+    component: () => import('./admin/pages/SubscriptionExpired.vue'),
+    meta: { requiresAuth: true, layout: 'blank' },
+  },
   {
     path: '/component',
     name: 'component',
     meta: { breadcrumb: 'Component', layout: 'master', requiresAuth: false },
     component: () => import('./admin/pages/lib/dashboard/Component.vue'),
+  },
+  {
+    path: '/dashboard-2',
+    name: 'dashboard-2',
+    meta: { breadcrumb: 'Dashboard 2', layout: 'master' },
+    component: () => import('./admin/pages/lib/dashboard/Dashboard2.vue'),
   },
   {
     path: '/select2',
@@ -55,18 +71,7 @@ const baseRoutes = [
     },
     component: () => import('./admin/pages/lib/dashboard/CreateEdit.vue'),
   },
-  {
-    path: '/',
-    name: 'dashboard',
-    meta: { breadcrumb: 'Dashboard', layout: 'master', requiresAuth: true },
-    component: () => import('./admin/pages/lib/dashboard/Dashboard.vue'),
-  },
-  {
-    path: '/dashboard-2',
-    name: 'dashboard-2',
-    meta: { breadcrumb: 'Dashboard 2', layout: 'master' },
-    component: () => import('./admin/pages/lib/dashboard/Dashboard2.vue'),
-  },
+
   {
     path: '/dashboard-3',
     name: 'dashboard-3',
@@ -141,7 +146,6 @@ const baseRoutes = [
   },
 ];
 
-// Merge all routes dynamically
 const routes = [
   ...baseRoutes,
   ...TenantRoutes,
@@ -160,63 +164,41 @@ const router = createRouter({
   routes,
 });
 
-/*---------------------------------------------
-Navigation Guard
-checked for 
-  ** Auth check - logged in user can't visit login page
-  ** Guest check --> logged in user can't visit guest page
-  ** System Admin bypass - system admin can visit any page
-  ** Feature check -> check specific feature
-  ** Permission check - check specific permission
----------------------------------------------
-*/
-import { useAuthStore } from './ahmed-vue-kit/stores/authStore.js';
-
 router.beforeEach(async (to, from, next) => {
   const auth = useAuthStore();
+  //--------------------------------
+  // refresh user on route change
+  //--------------------------------
+  if (auth.token) {
+    await auth.fetchMe();
+  }
 
   //--------------------------------
-  // 1️⃣ Auth check
+  // auth check
   //--------------------------------
   if (to.meta.requiresAuth && !auth.isAuthenticated) {
-    // redirect to login
     return next({ name: 'Login' });
   }
 
   //--------------------------------
-  // 2️⃣ Guest check
+  // guest check
   //--------------------------------
   if (to.meta.guest && auth.isAuthenticated) {
     return next({ name: 'dashboard' });
   }
 
   //--------------------------------
-  // 3️⃣ System Admin bypass
+  // subscription check
   //--------------------------------
-  if (auth.isSystemAdmin()) return next();
-
-  // //--------------------------------
-  // // 4️⃣ Feature check
-  // //--------------------------------
-  // if (to.meta.feature && !auth.hasFeature(to.meta.feature)) {
-  //   return next({ name: 'dashboard' });
-  // }
-
-  // //--------------------------------
-  // // 5️⃣ Permission check
-  // //--------------------------------
-  // if (to.meta.permission && !auth.can(to.meta.permission)) {
-  //   return next({ name: 'dashboard' });
-  // }
+  if (auth.subscriptionExpired && to.name !== 'SubscriptionExpired') {
+    return next({ name: 'SubscriptionExpired' });
+  }
 
   //--------------------------------
-  // Feature + Permission
+  // permission / feature check
   //--------------------------------
-  if (to.meta.access) {
-    const access = to.meta.access;
-    if (!auth.hasFeature(access) && !auth.can(access)) {
-      return next({ name: 'NotAllow' });
-    }
+  if (to.meta.access && !auth.hasAccess(to.meta.access)) {
+    return next({ name: 'NotAllow' });
   }
 
   next();

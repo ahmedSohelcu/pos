@@ -42,9 +42,11 @@ import { customerFilters } from './customerFilters';
 import BaseModal from '@kit/components/ui/BaseModal.vue';
 import { CUSTOMER_ENDPOINTS } from '@/data/endpoint';
 import CustomerForm from './CustomerForm.vue';
+import { useAuthStore } from '../../../../ahmed-vue-kit/stores/authStore';
 const customerStore = useCustomerStore();
+const auth = useAuthStore();
 
-onMounted(() => {
+onMounted(async () => {
   customerStore.fetchData();
 });
 
@@ -100,7 +102,9 @@ const columns = [
     label: 'Status',
     sortable: true,
     custom: (row) => {
-      return `<span class="badge bg-${row.status?.class ?? 'secondary'}">${row.status?.name ?? ''}</span>`;
+      return `<span class="badge bg-${row.status?.class ?? 'secondary'}">${
+        row.status?.name ?? ''
+      }</span>`;
     },
   },
 ];

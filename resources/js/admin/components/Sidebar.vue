@@ -3,7 +3,11 @@
     <!-- Sidebar Brand -->
     <div class="sidebar-brand">
       <a href="#" class="brand-link">
-        <img src="admin/v1/assets/img/AdminLTELogo.png" alt="Logo" class="brand-image" />
+        <img
+          src="admin/v1/assets/img/AdminLTELogo.png"
+          alt="Logo"
+          class="brand-image"
+        />
         <span class="brand-text">GroceryPharma Admin</span>
       </a>
     </div>
@@ -12,9 +16,10 @@
     <div class="sidebar-wrapper">
       <nav>
         <ul class="sidebar-menu">
-          <li v-for="menu in AdminMenus" :key="menu.key" class="menu-item">
+          <li v-for="menu in menus" :key="menu?.key" class="menu-item">
             <!-- Parent Menu -->
             <div
+              v-if="menu"
               class="menu-link"
               :class="{ active: isMenuActive(menu) }"
               @click="toggleSidebar(menu.key)"
@@ -23,15 +28,22 @@
                 <i :class="menu.icon"></i>
                 <span>{{ menu.label }}</span>
               </div>
+
               <i
                 class="bi"
-                :class="openMenu === menu.key ? 'bi-chevron-down' : 'bi-chevron-right'"
+                :class="
+                  openMenu === menu.key ? 'bi-chevron-down' : 'bi-chevron-right'
+                "
               ></i>
             </div>
 
             <!-- Submenu -->
             <transition name="slide">
-              <ul v-show="openMenu === menu.key" class="submenu">
+              <ul
+                v-if="menu.items && menu.items.length"
+                v-show="openMenu === menu.key"
+                class="submenu"
+              >
                 <li v-for="item in menu.items" :key="item.name">
                   <router-link
                     :to="{ name: item.name }"
@@ -52,31 +64,46 @@
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
-import { useRoute } from "vue-router";
-import { AdminMenus } from "../../data/sidebar-menus";
+import { ref, watch, computed } from 'vue';
+import { useRoute } from 'vue-router';
+import { AdminMenus } from '../../data/sidebar-menus';
+import { filterMenus } from '../../ahmed-vue-kit/utils/menuFilter';
+import { useAuthStore } from '../../ahmed-vue-kit/stores/authStore';
 
 const route = useRoute();
 const openMenu = ref(null);
+const auth = useAuthStore();
 
-// ------------------
-// Helpers
-// ------------------
+// Compute menus with proper filtering
+const menus = computed(() => {
+  if (!auth.initialized) return [];
+  return filterMenus(AdminMenus);
+});
+/*
+|--------------------------------------------------------------------------
+| Helpers
+|--------------------------------------------------------------------------
+*/
+
+// Check if menu is active based on route
 const isMenuActive = (menu) => {
+  if (!menu?.items) return false;
+
   return menu.items.some((item) => item.name === route.name);
 };
 
+// Toggle sidebar open/close
 const toggleSidebar = (key) => {
   openMenu.value = openMenu.value === key ? null : key;
 };
 
-// Auto open active menu
 watch(
   () => route.name,
   () => {
-    const activeMenu = AdminMenus.find((menu) =>
-      menu.items.some((item) => item.name === route.name)
+    const activeMenu = menus.value.find((menu) =>
+      menu?.items?.some((item) => item.name === route.name)
     );
+
     openMenu.value = activeMenu ? activeMenu.key : null;
   },
   { immediate: true }
@@ -85,8 +112,9 @@ watch(
 
 <style scoped>
 /* ===========================
-   Sidebar Base
+Sidebar Base
 =========================== */
+
 .app-sidebar {
   width: 260px;
   height: 100vh;
@@ -95,14 +123,15 @@ watch(
   display: flex;
   flex-direction: column;
   padding: 16px 12px;
-  font-family: "Source Sans 3", sans-serif;
+  font-family: 'Source Sans 3', sans-serif;
   box-shadow: 3px 0 8px rgba(0, 0, 0, 0.3);
   border-right: 1px solid #2c2f3a;
 }
 
 /* ===========================
-   Sidebar Brand
+Sidebar Brand
 =========================== */
+
 .sidebar-brand {
   display: flex;
   align-items: center;
@@ -133,8 +162,9 @@ watch(
 }
 
 /* ===========================
-   Menu
+Menu
 =========================== */
+
 .sidebar-menu {
   list-style: none;
   padding: 0;
@@ -142,7 +172,6 @@ watch(
 }
 
 .menu-item {
-  /* margin-top: 8px; */
   margin-top: 2px;
 }
 
@@ -169,25 +198,19 @@ watch(
   width: 20px;
 }
 
-/* Hover and Active */
 .menu-link:hover {
-  /* background: linear-gradient(135deg, #797ac4, #8b5cf6); */
   background: linear-gradient(135deg, #4f46e5, #2c2439);
   color: #fff;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
 }
-/* .menu-link.active {
-  background: linear-gradient(135deg, #4f46e5, #7c3aed);
-  color: #fff;
-} */
-.menu-link.active[data-v-66a6233b] {
+
+.menu-link.active {
   background: linear-gradient(135deg, #4f46e5, #2c2439);
   color: #fff;
 }
 
-/* Left indicator for active/hover */
 .menu-link::before {
-  content: "";
+  content: '';
   position: absolute;
   left: 0;
   top: 0;
@@ -197,14 +220,16 @@ watch(
   border-radius: 4px 0 0 4px;
   transition: all 0.3s ease;
 }
+
 .menu-link.active::before,
 .menu-link:hover::before {
   background: #fff;
 }
 
 /* ===========================
-   Submenu
+Submenu
 =========================== */
+
 .submenu {
   padding-left: 12px;
   margin-top: 6px;
@@ -220,7 +245,6 @@ watch(
   font-size: 14px;
   text-decoration: none;
   transition: all 0.3s ease;
-  position: relative;
 }
 
 .submenu-link i {
@@ -238,12 +262,14 @@ watch(
 }
 
 /* ===========================
-   Animation
+Animation
 =========================== */
+
 .slide-enter-active,
 .slide-leave-active {
   transition: all 0.25s ease;
 }
+
 .slide-enter-from,
 .slide-leave-to {
   opacity: 0;

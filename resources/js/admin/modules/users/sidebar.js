@@ -3,24 +3,17 @@ export const UsersMenus = [
     key: 'user-management',
     label: 'User Management',
     icon: 'bi bi-shield-lock-fill',
-    permission: 'user_management_access',
     items: [
       {
         name: 'users.index',
         label: 'Users',
-        permission: 'user_view',
+        access: 'user.view',
       },
       {
         name: 'roles.index',
         label: 'Roles',
-        permission: 'role_view',
+        access: 'role.view',
       },
-      // {
-      //   name: 'component',
-      //   // name: 'permissions.index',
-      //   label: 'Permissions',
-      //   permission: 'permission_view',
-      // },
     ],
   },
 ];

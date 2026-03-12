@@ -1,8 +1,3 @@
-import { productPermissions } from './permissions';
-import { brandPermissions } from '../brands/permissions';
-import { unitPermissions } from '../units/permissions';
-import { categoryPermissions } from '../categories/permissions';
-
 export const ProductMenus = [
   {
     key: 'products',
@@ -11,33 +6,22 @@ export const ProductMenus = [
     items: [
       {
         name: 'component',
-        label: 'Grocery Products',
-        permission: '',
-      },
-      {
-        name: 'component',
-        label: 'Medicine Products',
-        permission: '',
-      },
-      {
-        name: 'component',
         label: 'Add New Product',
-        permission: '',
       },
       {
         name: 'category.index',
         label: 'Categories',
-        permission: '',
+        access: 'category.view',
       },
       {
         name: 'brand.index',
         label: 'Brands',
-        permission: '',
+        access: 'brand.view',
       },
       {
         name: 'unit.index',
         label: 'Units',
-        permission: '',
+        access: 'unit.view',
       },
     ],
   },
