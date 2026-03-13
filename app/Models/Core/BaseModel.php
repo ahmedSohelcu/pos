@@ -77,6 +77,7 @@ class BaseModel extends Authenticatable
 
             // check column exists
             if (Schema::hasColumn($table, 'tenant_id') && $user->user_type !== 'system_admin') {
+                // dd($user->tenant_id);
                 $builder->where($table.'.tenant_id', $user->tenant_id);
             }
         });

@@ -8,7 +8,7 @@ export default [
       breadcrumb: 'All Customers',
       requiresAuth: true,
       layout: 'master',
-      permission: 'customers_view',
+      access: 'customer.view',
     },
     component: CustomersIndex,
   },

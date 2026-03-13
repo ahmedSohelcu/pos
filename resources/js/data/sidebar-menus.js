@@ -1,8 +1,10 @@
 //Admin sidebar
 
 import { CustomerMenus } from '../admin/modules/customers/sidebar';
+import { ExpensesMenus } from '../admin/modules/expenses/sidebar';
 import { ProductMenus } from '../admin/modules/product/sidebar';
 import { SubscriptionMenus } from '../admin/modules/subscriptions/sidebar';
+import { SupplierMenus } from '../admin/modules/suppliers/sidebar';
 import { TenantMenus } from '../admin/modules/tenants/sidebar';
 import { UsersMenus } from '../admin/modules/users/sidebar';
 
@@ -47,31 +49,21 @@ export const AdminMenus = [
   //------------------------------------------------
   ...UsersMenus,
 
-  {
-    key: 'suppliers',
-    label: 'Suppliers',
-    icon: 'bi bi-truck',
-    items: [
-      { name: 'component', label: 'Add Supplier' },
-      { name: 'component', label: 'Supplier Contacts' },
-    ],
-  },
+  //------------------------------------------------
+  // Supplier Module
+  //------------------------------------------------
+  ...SupplierMenus,
+
   //------------------------------------------------
   // Subscription Module
   //------------------------------------------------
   ...SubscriptionMenus,
 
-  {
-    key: 'expenses',
-    label: 'Expenses',
-    icon: 'fas fa-wallet',
-    items: [
-      { name: 'component', label: 'Manage Expenses' },
-      { name: 'component', label: 'Expense Categories' },
-
-      // { name: 'expenses.report', label: 'Expense Report' },
-    ],
-  },
+  //------------------------------------------------
+  // Expense and Expense Category
+  //------------------------------------------------
+  ...ExpensesMenus,
+  //------------------------------------------------
   // {
   //   key: 'reports',
   //   label: 'Reports',

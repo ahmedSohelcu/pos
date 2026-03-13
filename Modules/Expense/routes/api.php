@@ -11,9 +11,11 @@ prefix('v1')->group(function () {
 });
 
 Route::
-// middleware(['auth:sanctum'])
-prefix('v1')->group(function () {
+middleware(['auth:sanctum'])
+->prefix('v1')->group(function () {
     Route::apiResource('expense-categories', ExpenseCategoryController::class)->names('expense_category');
-    Route::get('selectable-expense-categories/{tenant_id}', [ExpenseCategoryController::class, 'selectableExpenseCategories'])
+    
+    //auto filter by tenant_id
+    Route::get('selectable-expense-categories', [ExpenseCategoryController::class, 'selectableExpenseCategories'])
         ->name('selectable_expense_categories');
 });

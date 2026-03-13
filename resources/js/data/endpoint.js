@@ -140,8 +140,7 @@ export const EXPENSE_CATEGORY_ENDPOINTS = {
     route('api.expense_category.update', { expense_category: id }),
   destroy: (id) =>
     route('api.expense_category.destroy', { expense_category: id }),
-  selectable: (tenant_id) =>
-    route('api.selectable_expense_categories', { tenant_id: tenant_id }),
+  selectable: route('api.selectable_expense_categories'),
 };
 
 /*

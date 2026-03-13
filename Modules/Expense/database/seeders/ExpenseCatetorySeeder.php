@@ -56,7 +56,7 @@ class ExpenseCatetorySeeder extends Seeder
                 'name' => $category['name'],
                 'slug' => Str::slug($category['name']),
                 'is_active' => true,
-                'sort_order' => 0,
+                'sorting_order' => 0,
             ]);
 
             if (!empty($category['children'])) {
@@ -67,7 +67,7 @@ class ExpenseCatetorySeeder extends Seeder
                         'name' => $child,
                         'slug' => Str::slug($child),
                         'is_active' => true,
-                        'sort_order' => 0,
+                        'sorting_order' => 0,
                     ]);
                 }
             }

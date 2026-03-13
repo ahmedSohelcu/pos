@@ -14,20 +14,19 @@ class ExpenseCategory extends BaseModel
         HasStatus,
         HasSlug,
         HasTenant;
-
-    /**
+    /*
      * The attributes that are mass assignable.
-     */
+    */
       protected $fillable = [
-        'tenant_id',
         'name',
         'slug',
+        'tenant_id',
         'description',
         'parent_id',
         'created_by',
         'updated_by',
-        'icon',
+        'icon',        
         'is_active',
-        'sort_order'
+        'sorting_order'
     ];
 }

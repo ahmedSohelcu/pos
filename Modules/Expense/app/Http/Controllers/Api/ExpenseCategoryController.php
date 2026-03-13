@@ -3,7 +3,7 @@
 namespace Modules\Expense\App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Modules\Expense\App\Http\Requests\ExpenseCategoryRequest;
+use Modules\Expense\app\Http\Requests\ExpenseCategoryRequest;
 use Modules\Expense\App\Models\ExpenseCategory;
 use Modules\Expense\app\Services\ExpenseCategoryService;
 
@@ -15,24 +15,26 @@ class ExpenseCategoryController extends Controller
     }
     public function index()
     {
-        $expenseCategories = $this->service->getAll(true, true, ['status'], 10);
+        $expenseCategories = $this->service->getAll(
+            true, true, [], 10
+        );
         return success_response('Expense Category List', $expenseCategories);
     }
 
-    public function selectableExpenseCategories($tenant_id)
+    public function selectableExpenseCategories()
     {
-        return $this->service->getSelectableExpenseCategories($tenant_id);        
+        return $this->service->getSelectableExpenseCategories();        
     }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(ExpenseCategoryRequest $request) {      
-        $this->service
+        $expCategory = $this->service
             ->setAttrs($request->all())
-            ->create();
+            ->store();
 
-        return created_responses('Expense created successfully', []);
+        return created_responses('Expense  Category created successfully', $expCategory);
     }
 
     /**
@@ -48,7 +50,7 @@ class ExpenseCategoryController extends Controller
      */
     public function update(ExpenseCategoryRequest $request, ExpenseCategory $expenseCategory) 
     {        
-        $tenants = $this->service
+        $tenants = $this->service            
             ->setModel($expenseCategory)
             ->setAttrs($request->all())
             ->update();
@@ -61,7 +63,7 @@ class ExpenseCategoryController extends Controller
      */
     public function destroy(ExpenseCategory $expenseCategory) {
         $expenseCategory->delete();
-        return deleted_responses('Tenant', $expenseCategory);
+        return deleted_responses('Expense Category', $expenseCategory);
     }
 }
 

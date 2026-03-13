@@ -48,10 +48,10 @@ return new class extends Migration
             
             $table->string('icon')->nullable();
             // 🔹 Status
-            $table->boolean('is_active')->default(true);
+            $table->boolean('is_active')->nullable()->default(true);
 
             // 🔹 Sorting order
-            $table->integer('sort_order')->default(0);
+            $table->integer('sorting_order')->nullable()->default(0);
 
             $table->timestamps();
         });

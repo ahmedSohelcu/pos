@@ -8,13 +8,6 @@ export const useCustomerStore = useResourceStore(
   CUSTOMER_ENDPOINTS.index,
   {
     // state: {
-    //   selectedItem: {
-    //     user: {
-    //       name: 'ahmed',
-    //     },
-    //   },
-    // },
-    // state: {
     //   tenantSettings: {
     //     country: 'ahmed', //{{ tenantStore.tenantSettings ?? '' }}
     //   },
@@ -28,7 +21,7 @@ export const useCustomerStore = useResourceStore(
     //   async fetchTenantSettings() {
     //     const res = await api.get('v1/tenant-settings');
     //     this.tenantSettings = res.data.data;
-    //   },
+    // },
     // },
   }
 ); // relative to VITE_API_URL;

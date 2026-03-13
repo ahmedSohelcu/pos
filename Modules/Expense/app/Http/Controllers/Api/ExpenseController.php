@@ -3,9 +3,9 @@
 namespace Modules\Expense\App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use Modules\Expense\app\Http\Requests\ExpenseRequest;
 use Modules\Expense\App\Models\Expense;
 use Modules\Expense\app\Services\ExpenseService;
-use Modules\Tenant\App\Http\Requests\Tenant\TenantRequest;
 
 class ExpenseController extends Controller
 {   
@@ -25,10 +25,10 @@ class ExpenseController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(TenantRequest $request) {      
+    public function store(ExpenseRequest $request) {  
         $this->service
         ->setAttrs($request->all())
-        ->create();
+        ->store();
 
         return created_responses('Expense created successfully', []);
     }
@@ -44,14 +44,14 @@ class ExpenseController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(TenantRequest $request, Expense $expense) 
+    public function update(ExpenseRequest $request, Expense $expense) 
     {        
-        $tenants = $this->service
+        $expenses = $this->service
             ->setModel($expense)
             ->setAttrs($request->all())
             ->update();
 
-        return updated_response('Expense', $tenants);
+        return updated_response('Expense', $expenses);
     }
 
     /**

@@ -38,6 +38,7 @@ class PermissionSeeder extends Seeder
             'category',
             'brand',
             'customer',
+            'expense',
         ];
 
         $modulePermissions = [];

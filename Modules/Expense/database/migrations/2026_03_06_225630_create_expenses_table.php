@@ -59,6 +59,9 @@ return new class extends Migration
                 ->constrained('users')
                 ->nullOnDelete();
 
+            $table->integer('sorting_order')->nullable()->default(0);
+
+
             $table->timestamps();
         });
     }

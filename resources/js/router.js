@@ -10,9 +10,12 @@ import UnitRoutes from './admin/modules/units/router.js';
 import SubscriptionRoutes from './admin/modules/subscriptions/router.js';
 import PlanRoutes from './admin/modules/plans/router.js';
 import CustomerRoutes from './admin/modules/customers/router.js';
+import { ExpenseRoutes } from './admin/modules/expenses/router.js';
 
 import Login from './admin/pages/auth/Login.vue';
 import NotAllow from './admin/pages/NotAllow.vue';
+import { ExpenseCategoryRoutes } from './admin/modules/expense-category/router.js';
+import { SupplierRoutes } from './admin/modules/suppliers/router.js';
 
 const baseRoutes = [
   {
@@ -157,6 +160,9 @@ const routes = [
   ...PlanRoutes,
   ...SubscriptionRoutes,
   ...CustomerRoutes,
+  ...ExpenseRoutes,
+  ...ExpenseCategoryRoutes,
+  ...SupplierRoutes,
 ];
 
 const router = createRouter({
