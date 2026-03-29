@@ -1,7 +1,7 @@
 export const UsersMenus = [
   {
     key: 'user-management',
-    label: 'User Management',
+    label: 'Users',
     icon: 'bi bi-shield-lock-fill',
     items: [
       {

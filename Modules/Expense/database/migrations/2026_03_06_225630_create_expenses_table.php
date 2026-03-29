@@ -16,17 +16,19 @@ return new class extends Migration
 
             // 🔹 Tenant (for SaaS)
             $table->foreignId('tenant_id')
+                ->nullable()
                 ->constrained()
                 ->cascadeOnDelete();
 
             // 🔹 Category
             $table->foreignId('expense_category_id')
+                ->nullable()
                 ->constrained()
                 ->cascadeOnDelete();
 
             // 🔹 Expense info
-            $table->decimal('amount', 12, 2);
-            $table->date('expense_date');
+            $table->decimal('amount', 12, 2)->nullable();
+            $table->date('expense_date')->nullable();;
 
             $table->string('reference')->nullable()->comment('Invoice or reference number');
 

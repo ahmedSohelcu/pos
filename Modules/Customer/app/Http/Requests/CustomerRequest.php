@@ -23,13 +23,10 @@ class CustomerRequest extends BaseRequest
                 // Unique check: ignore current tenant on update
                 Rule::unique('users', 'email')->ignore($userId),
             ],
-            // 'phone' => ['required', 'string', 'max:15'],
             'phone' => ['required', 'regex:/^\+?[0-9]{10,15}$/'],
             'address' => ['nullable', 'string', 'max:50'],
             'status_id' => ['nullable', 'exists:statuses,id'],
 
-            // 'user_id' => ['nullable', 'exists:users,id'],
-            // 'created_by' => ['nullable', 'exists:users,id'],
             'tenant_id' => ['nullable', 'exists:tenants,id'],
             'code' => ['nullable', 'string', 'max:255'],
             'profile_pic' => ['nullable', 'string', 'max:255'],
@@ -41,7 +38,6 @@ class CustomerRequest extends BaseRequest
             'state' => ['nullable', 'string', 'max:50'],
             'country' => ['nullable', 'string', 'max:50'],
             'zip_code' => ['nullable', 'string', 'max:50'],
-            'status_id' => ['nullable', 'exists:statuses,id'],
             'sorting_order' => ['nullable', 'integer'],
         ];
     }

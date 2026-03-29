@@ -80,10 +80,8 @@ class CustomerService extends BaseService
             'email'     => $this->getAttr('email') ?? null,
             'phone'     => $this->getAttr('phone') ?? null,
             'tenant_id' => $this->getAttr('tenant_id') ?? null,
-            'status_id' => $this->getAttr('status_id') ?? null,
             'user_type' => 'tenant_customer',
-        ];
-        
+        ];        
     }
 
     public function findTenantById($id){

@@ -32,14 +32,14 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, onMounted } from 'vue';
-import { expenseFilters } from './expenseFilters';
-import { getExpenseActions } from './expenseActions';
+import { ref, reactive, computed, onMounted } from "vue";
+import { expenseFilters } from "./expenseFilters";
+import { getExpenseActions } from "./expenseActions";
 // store
-import { useExpenseStore } from '../store';
-import BaseModal from '@kit/components/ui/BaseModal.vue';
-import ExpenseForm from './ExpenseForm.vue';
-import { EXPENSE_ENDPOINTS } from '@/data/endpoint';
+import { useExpenseStore } from "../store";
+import BaseModal from "@kit/components/ui/BaseModal.vue";
+import ExpenseForm from "./ExpenseForm.vue";
+import { EXPENSE_ENDPOINTS } from "@/data/endpoint";
 const expenseStore = useExpenseStore();
 
 const closeModal = () => {
@@ -57,37 +57,37 @@ const expenseActions = getExpenseActions(expenseStore);
 
 const columns = [
   {
-    label: '#',
+    label: "#",
     custom: (row, index) => index + 1,
   },
   {
-    name: 'note',
-    label: 'Expense',
+    name: "note",
+    label: "Expense",
     sortable: true,
 
     // custom: (row) => `<span class="badge bg-success">${row.note}</span>`,
   },
   {
-    name: 'tenant_id',
-    label: 'Tenant',
+    name: "tenant_id",
+    label: "Tenant",
     sortable: true,
     custom: (row) => {
-      return `<span class="text-primary">${row.tenant?.name ?? '-'}</span>`;
+      return `<span class="text-primary">${row.tenant?.name ?? "-"}</span>`;
     },
   },
   {
-    name: 'status_id',
-    label: 'Status',
+    name: "status_id",
+    label: "Status",
     sortable: true,
     custom: (row) => {
-      return `<span class="text-dark badge bg-${row.status?.class ?? ''}">${
-        row.status?.name ?? '-'
+      return `<span class="text-dark badge bg-${row.status?.class ?? ""}">${
+        row.status?.name ?? "-"
       }</span>`;
     },
   },
   {
-    name: 'created_at',
-    label: 'Created At',
+    name: "created_at",
+    label: "Created At",
     sortable: true,
     custom: (row) => {
       return new Date(row.created_at).toLocaleString();
@@ -97,21 +97,18 @@ const columns = [
 
 const createOrUpate = async () => {
   expenseStore.errors = {};
-  if (expenseStore.mode === 'edit') {
+  if (expenseStore.mode === "edit") {
     await expenseStore.update(
       EXPENSE_ENDPOINTS.update(expenseStore.selectedItem.id),
       expenseStore.selectedItem
     );
   } else {
-    await expenseStore.create(
-      EXPENSE_ENDPOINTS.store,
-      expenseStore.selectedItem
-    );
+    await expenseStore.create(EXPENSE_ENDPOINTS.store, expenseStore.selectedItem);
   }
 };
 
 const createFromTableBtn = () => {
-  expenseStore.mode = 'create';
+  expenseStore.mode = "create";
   expenseStore.errors = {};
   expenseStore.selectedItem = {};
   expenseStore.showModal = true;

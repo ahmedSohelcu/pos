@@ -8,7 +8,7 @@ export const ExpenseRoutes = [
       breadcrumb: 'Expenses',
       requiresAuth: true,
       layout: 'master',
-      // access: 'expense.view',
+      access: 'expense.view',
     },
     component: ExpenseIndex,
   },

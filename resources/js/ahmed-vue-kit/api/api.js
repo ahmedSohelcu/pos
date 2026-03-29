@@ -83,6 +83,17 @@ api.interceptors.response.use(
     }
 
     //----------------------------------
+    //Logout issue
+    //----------------------------------
+    // if (error.response && error.response.status === 401) {
+    //   alert('Logout issue');
+    //   const auth = useAuthStore();
+    //   auth.clearAuth(); // clear localStorage
+    //   // router.push({ name: 'Login' });
+    //   // window.location.href = "/login";
+    // }
+
+    //----------------------------------
     // Network Error
     //----------------------------------
     if (!error.response) {

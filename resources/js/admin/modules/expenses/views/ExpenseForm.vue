@@ -8,7 +8,7 @@
     </div>
     <div class="row g-3">
       <!-- Tenant -->
-      <!-- <div v-if="auth?.user?.user_type === 'system_admin'" class="col-md-6">
+      <div v-if="auth?.user?.user_type === 'system_admin'" class="col-md-6">
         <BaseSelect
           :getApiRoute="TENANT_ENDPOINTS.selectable"
           select2
@@ -17,7 +17,7 @@
           :error="errors.tenant_id"
           placeholder="Choose Tenant"
         />
-      </div> -->
+      </div>
 
       <!-- <input type="hidden" name="tenant_id" :v-model="auth.user.tenant_id ?? null" /> -->
 
@@ -98,14 +98,11 @@
 </template>
 
 <script setup>
-import { route } from 'ziggy-js';
-import BaseSelect from '@kit/components/form/BaseSelect.vue';
-import BaseInput from '@kit/components/form/BaseInput.vue';
-import {
-  EXPENSE_CATEGORY_ENDPOINTS,
-  TENANT_ENDPOINTS,
-} from '../../../../data/endpoint';
-import { useAuthStore } from '../../../../ahmed-vue-kit/stores/authStore';
+import { route } from "ziggy-js";
+import BaseSelect from "@kit/components/form/BaseSelect.vue";
+import BaseInput from "@kit/components/form/BaseInput.vue";
+import { EXPENSE_CATEGORY_ENDPOINTS, TENANT_ENDPOINTS } from "../../../../data/endpoint";
+import { useAuthStore } from "../../../../ahmed-vue-kit/stores/authStore";
 
 const auth = useAuthStore();
 

@@ -14,6 +14,7 @@
       @bulk-delete="customerStore.bulkDelete"
     />
 
+
     <BaseModal
       v-model="customerStore.showModal"
       size="lg"
@@ -47,7 +48,7 @@ const customerStore = useCustomerStore();
 const auth = useAuthStore();
 
 onMounted(async () => {
-  customerStore.fetchData();
+  // customerStore.fetchData();
 });
 
 const closeModal = () => {

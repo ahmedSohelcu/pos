@@ -77,7 +77,7 @@ export const useAuthStore = defineStore('auth', {
 
         return data;
       } catch (error) {
-        console.error('fetchMe failed:', error);       
+        console.error('fetchMe failed:', error);
 
         // 401 → logout
         if (error.response.status === 401) {

@@ -52,14 +52,14 @@ class ExpenseService extends BaseService
 
     private function expenseRequests(){
         return [
-            'tenant_id'             => $data['tenant_id'] ?? null,
-            'expense_category_id'   => $data['expense_category_id'] ?? null,
-            'amount'                => $data['amount'] ?? null,
-            'expense_date'          => $data['expense_date'] ?? null,
-            'reference'             => $data['reference'] ?? null,
-            'note'                  => $data['note'] ?? null,
-            'status_id'             => $data['status_id'] ?? null,
-            'sorting_order'         => $data['sorting_order'] ?? null,
+            'tenant_id'             => $this->getAttr('tenant_id'), //for admin to select tenant
+            'expense_category_id'   => $this->getAttr('expense_category_id') ?? null,
+            'amount'                => $this->getAttr('amount') ?? null,
+            'expense_date'          => $this->getAttr('expense_date') ?? null,
+            'reference'             => $this->getAttr('reference') ?? null,
+            'note'                  => $this->getAttr('note') ?? null,
+            'status_id'             => $this->getAttr('status_id') ?? null,
+            'sorting_order'         => $this->getAttr('sorting_order') ?? null,
         ];
     }
 
@@ -67,6 +67,6 @@ class ExpenseService extends BaseService
     public function update()
     {     
         $this->model->update($this->expenseRequests());
-        return $this->$this;
+        return $this;
     }
 }

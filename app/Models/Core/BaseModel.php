@@ -9,34 +9,22 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Schema;
 use Laravel\Sanctum\HasApiTokens;
 
-// use Illuminate\Database\Eloquent\SoftDeletes;
-
 class BaseModel extends Authenticatable
 {
-    use HasApiTokens,
-        Notifiable;
-    // use SoftDeletes;
-    
+    use HasApiTokens, Notifiable;
+
     protected $casts = [
         'is_active' => 'boolean',
     ];
-    
-    /*         
-        -------------------------------
-        Here Boot optin belos works for 
-        -------------------------------
-        * Filte by tentant_id if logged in user not system admin
-        * auto assign tenant_id if logged in user not system admin
-        * auto assign created_by id
-        * auto assign updated_by id
-    */
 
+    // -------------------------------
+    // Scopes
+    // -------------------------------
     public function scopeSearch($query, $value)
     {
         return $query->where('name', 'like', '%' . $value . '%');
     }
 
-    // Scope for active records
     public function scopeActive($query, $value = true)
     {
         return $query->where('is_active', $value);
@@ -45,7 +33,7 @@ class BaseModel extends Authenticatable
     public function scopeFilters($query, $filter)
     {
         if (is_array($filter)) {
-            $filter = new FilterBuilder($filter); // or your base filter
+            $filter = new FilterBuilder($filter);
         }
 
         if (!$filter instanceof FilterBuilder) {
@@ -60,76 +48,76 @@ class BaseModel extends Authenticatable
         return $query->orderBy(request('sort_column', 'id'), request('sort_direction', 'asc'));
     }
 
-    // Global Scopes for tenant_id, created_by, updated_by
+    // -------------------------------
+    // Boot method for tenant + user tracking
+    // -------------------------------
     protected static function booted()
-    {         
-        //--------------------------
-        // 01 Tenant Global Scope
-        //--------------------------
+    {
+        //--------------------------------
+        // 1️⃣ Global Scope /  Filter data by Tenant
+        //--------------------------------
         static::addGlobalScope('tenant_id', function ($builder) {
-            if (!Auth::check()) {
-                return;
-            }
-            
+            if (!Auth::check()) return;
+            $user = Auth::user();
             $model = $builder->getModel();
             $table = $model->getTable();
-            $user  = Auth::user();
 
-            // check column exists
             if (Schema::hasColumn($table, 'tenant_id') && $user->user_type !== 'system_admin') {
-                // dd($user->tenant_id);
                 $builder->where($table.'.tenant_id', $user->tenant_id);
             }
         });
 
-        //02 Creating
+        
+        //--------------------------------
+        // 2️⃣ Creating
+        //--------------------------------
         static::creating(function ($model) {
-            if (!Auth::check()) {
-                return;
-            }
+            if (!Auth::check()) return;
 
             $user = Auth::user();
             $table = $model->getTable();
 
-            // Auto set tenant_id
-            if (Schema::hasColumn($table, 'tenant_id') && $user->user_type !== 'system_admin') {
-                $model->tenant_id = $user->tenant_id;
+            // Tenant auto assign
+            if (Schema::hasColumn($table, 'tenant_id')) {
+                if ($user->user_type === 'system_admin') {
+                    if (empty($model->tenant_id)) {
+                        throw new \Exception('Tenant is required for system admin');
+                    }
+                } else {
+                    // Only set if not already set
+                    if (empty($model->tenant_id)) {
+                        $model->tenant_id = $user->tenant_id;
+                    }
+                }
             }
 
-            // Auto set created_by
-            if (Schema::hasColumn($table, 'created_by')) {
+            // created_by
+            if (Schema::hasColumn($table, 'created_by') && empty($model->created_by)) {
                 $model->created_by = $user->id;
             }
 
-            // Auto set updated_by
+            // updated_by
             if (Schema::hasColumn($table, 'updated_by')) {
                 $model->updated_by = $user->id;
             }
         });
 
-        // Updating
+        // 3️⃣ Updating
         static::updating(function ($model) {
+            if (!Auth::check()) return;
 
-            if (!Auth::check()) {
-                return;
-            }
+            $user = Auth::user();
             $table = $model->getTable();
 
+            // Prevent changing tenant_id for normal users
+            if (Schema::hasColumn($table, 'tenant_id') && $user->user_type !== 'system_admin') {
+                $model->tenant_id = $model->getOriginal('tenant_id');
+            }
+
+            // updated_by
             if (Schema::hasColumn($table, 'updated_by')) {
-                $model->updated_by = Auth::id();
+                $model->updated_by = $user->id;
             }
         });
     }
-
-    //    public function createdRules()
-//    {
-//        return [
-//            //
-//        ];
-//    }
-//
-//    public function updatedRules()
-//    {
-//        return $this->createdRules();
-//    }
 }

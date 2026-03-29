@@ -87,7 +87,9 @@ const columns = [
     label: 'Status',
     sortable: true,
     custom: (row) => {
-      return `<span class="text-dark badge bg-${row.status?.class ?? ''}">${row.status?.name ?? '-'}</span>`;
+      return `<span class="text-light badge bg-${row.status?.class ?? ''}">${
+        row.status?.name ?? '-'
+      }</span>`;
     },
   },
   {

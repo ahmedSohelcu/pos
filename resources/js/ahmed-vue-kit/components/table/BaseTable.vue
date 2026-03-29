@@ -10,15 +10,13 @@
   <div class="card table-card border-0">
     <!-- ================= HEADER ================= -->
     <div class="card-header table-header-pro border-0">
-      <div
-        class="d-flex justify-content-between align-items-center flex-wrap gap-3"
-      >
+      <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
         <!-- LEFT: Search & Title -->
         <div class="d-flex align-items-center gap-3 flex-wrap">
           <div>
             <h5 class="mb-1 fw-bold table-title">
               <!-- {{ $t(label || 'Data Management') }} -->
-              {{ $t(label || 'data_management') }}
+              {{ $t(label || "data_management") }}
             </h5>
             <div class="table-subtitle">
               <span class="me-3"
@@ -78,22 +76,13 @@
           </div> -->
 
           <div class="btn-group btn-group-sm">
-            <button
-              class="btn btn-outline-primary me-1"
-              @click="$emit('export-pdf')"
-            >
+            <button class="btn btn-outline-primary me-1" @click="$emit('export-pdf')">
               <i class="fas fa-file-pdf me-1"></i> PDF
             </button>
-            <button
-              class="btn btn-outline-success me-1"
-              @click="$emit('export-csv')"
-            >
+            <button class="btn btn-outline-success me-1" @click="$emit('export-csv')">
               <i class="fas fa-file-csv me-1"></i> CSV
             </button>
-            <button
-              class="btn btn-outline-warning me-1"
-              @click="$emit('print')"
-            >
+            <button class="btn btn-outline-warning me-1" @click="$emit('print')">
               <i class="fas fa-print me-1"></i> Print
             </button>
           </div>
@@ -133,10 +122,7 @@
               >
                 {{ col.label }}
                 <span v-if="col.sortable && sort.column === col.name">
-                  <i
-                    v-if="sort.direction === 'asc'"
-                    class="fas fa-sort-up ms-1"
-                  ></i>
+                  <i v-if="sort.direction === 'asc'" class="fas fa-sort-up ms-1"></i>
                   <i v-else class="fas fa-sort-down ms-1"></i>
                 </span>
               </th>
@@ -157,10 +143,7 @@
               <!-- Data cells -->
               <td v-for="(col, i) in visibleColumns" :key="i">
                 <!-- Custom badge example -->
-                <span
-                  v-if="col.custom"
-                  v-html="col.custom(row, rowIndex)"
-                ></span>
+                <span v-if="col.custom" v-html="col.custom(row, rowIndex)"></span>
 
                 <!-- Legacy function support -->
                 <span
@@ -194,10 +177,7 @@
               <!-- Actions Dropdown -->
               <td v-if="actions.length" class="text-center">
                 <div class="dropdown">
-                  <button
-                    class="btn btn-sm btn-light"
-                    data-bs-toggle="dropdown"
-                  >
+                  <button class="btn btn-sm btn-light" data-bs-toggle="dropdown">
                     <i class="fa-solid fa-ellipsis-vertical"></i>
                   </button>
                   <ul class="dropdown-menu dropdown-menu-end shadow-sm">
@@ -246,9 +226,9 @@
 </template>
 
 <script setup>
-import { ref, reactive, watch } from 'vue';
-import BaseTableEntities from './BaseTableEntities.vue';
-import BaseTablePagination from './BaseTablePagination.vue';
+import { ref, reactive, watch } from "vue";
+import BaseTableEntities from "./BaseTableEntities.vue";
+import BaseTablePagination from "./BaseTablePagination.vue";
 
 /* ================= PROPS ================= */
 const props = defineProps({
@@ -257,7 +237,7 @@ const props = defineProps({
   columns: { type: Array, required: true },
   filters: { type: Array, default: () => [] },
   actions: { type: Array, default: () => [] },
-  actionLabel: { type: String, default: 'Action' },
+  actionLabel: { type: String, default: "Action" },
   loading: { type: Boolean, default: false },
   showSearch: { type: Boolean, default: true },
   createNewButton: { type: Boolean, default: true },
@@ -274,18 +254,18 @@ const props = defineProps({
 
 /* ================= EMITS ================= */
 const emit = defineEmits([
-  'query-change',
-  'bulk-delete',
-  'create',
-  'refresh',
-  'export-pdf',
-  'export-csv',
-  'print',
+  "query-change",
+  "bulk-delete",
+  "create",
+  "refresh",
+  "export-pdf",
+  "export-csv",
+  "print",
 ]);
 
 /* ================= STATE ================= */
 const query = reactive({
-  search: '',
+  search: "",
   filters: {},
   perPage: props.meta.per_page,
   page: props.meta.current_page,
@@ -293,7 +273,7 @@ const query = reactive({
 const sort = reactive({ column: null, direction: null });
 const visibleColumns = ref([...props.columns]);
 const selectedRows = ref([]);
-const search = ref('');
+const search = ref("");
 let debounce = null;
 
 /* ================= WATCHERS ================= */
@@ -309,7 +289,7 @@ watch(
 watch(
   [query, sort],
   () => {
-    emit('query-change', {
+    emit("query-change", {
       ...query,
       sortColumn: sort.column,
       sortDirection: sort.direction,
@@ -332,8 +312,8 @@ const handleFilterChange = (filters, isReset = false) => {
   query.page = 1;
 
   if (isReset) {
-    query.search = '';
-    search.value = '';
+    query.search = "";
+    search.value = "";
   }
 };
 
@@ -343,10 +323,10 @@ const handleSort = (col) => {
   if (sort.column !== col.name) {
     // new column
     sort.column = col.name;
-    sort.direction = 'asc';
+    sort.direction = "asc";
   } else {
     // toggle
-    sort.direction = sort.direction === 'asc' ? 'desc' : 'asc';
+    sort.direction = sort.direction === "asc" ? "desc" : "asc";
   }
 
   query.page = 1; // reset page when sorting

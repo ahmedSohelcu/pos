@@ -18,19 +18,19 @@ class ExpenseController extends Controller
     }
     public function index()
     {
-        $expenses = $this->service->getAll(true, true, ['status'], 10);
+        $expenses = $this->service->getAll(true, true, ['status', 'tenant'], 10);
         return success_response('Expense List', $expenses);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(ExpenseRequest $request) {  
-        $this->service
-        ->setAttrs($request->all())
-        ->store();
+    public function store(ExpenseRequest $request) {          
+        $expense = $this->service
+            ->setAttrs($request->validated())
+            ->store();
 
-        return created_responses('Expense created successfully', []);
+        return created_responses('Expense created successfully',  $expense);
     }
 
     /**
@@ -46,12 +46,12 @@ class ExpenseController extends Controller
      */
     public function update(ExpenseRequest $request, Expense $expense) 
     {        
-        $expenses = $this->service
+        $data = $this->service
             ->setModel($expense)
             ->setAttrs($request->all())
             ->update();
 
-        return updated_response('Expense', $expenses);
+        return updated_response('Expense', $data);
     }
 
     /**

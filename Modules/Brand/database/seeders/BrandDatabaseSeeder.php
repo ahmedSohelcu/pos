@@ -18,6 +18,19 @@ class BrandDatabaseSeeder extends Seeder
         $tenant = Tenant::first();
         $faker = Faker::create();
 
+        $brands = [
+            ['name' => 'প্রাণ'],
+            ['name' => 'আরএফএল'],
+            ['name' => 'স্কয়ার'],
+            ['name' => 'বাশুন্ধরা'],
+            ['name' => 'আকিজ'],
+            ['name' => 'ড্যানিশ'],
+            ['name' => 'ইগলু'],
+            ['name' => 'ফ্রেশ'],
+            ['name' => 'অলিম্পিক'],
+            ['name' => 'কেয়া'],
+        ];
+
         for ($i = 1; $i <= 50; $i++) {
             $name = $faker->unique()->company;
 
