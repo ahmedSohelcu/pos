@@ -5,7 +5,7 @@ export const unitFilters = [
     type: 'select',
     select2: true, // 🔥 enable select2
     multiple: false, // single select
-    getApiRoute: route('selectable_statuses', { type: 'user' }),
+    getApiRoute: route('selectable_statuses', { type: 'common' }),
     optionKeyName: 'name',
     // optionValueName: 'label'
   },

@@ -9,5 +9,6 @@
     "Role": true,
     "Customer": true,
     "Unit": true,
-    "Expense": true
+    "Expense": true,
+    "Attribute": true
 }

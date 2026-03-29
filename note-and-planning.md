@@ -7,6 +7,8 @@
   - 
 
 # Todo
+  - PWA
+  - add sound
 
 - assign Role & Permissions to Users
 - Protect Routes / API -- done
@@ -28,13 +30,11 @@ https://demo.workdo.io/pos-saas/pos
 - php artisan featues : sync
   - to update plan featues from permissions
 
-- php artisan module:make Feature
+
 - php artisan module:make Category Brand Customer Unit
+- php artisan make:service Tenant --module=Tenant 
 - php artisan module:make-migration create_features_table Feature
-- php artisan make:service Tenant --module=Tenant
 - pa module:make-model Feature Feature
-- php artisan module:make-migration create_plan_features_table Feature
-- php artisan module:make-migration add_tenant_id_to_user_table Tenant
 - pa module:make-request TenantRequest Tenant
 
   ### vue file or module with command

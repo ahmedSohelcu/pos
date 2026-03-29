@@ -11,6 +11,8 @@ use Illuminate\Support\Str;
 use Modules\Feature\database\seeders\FeatureSeeder;
 use Modules\Feature\database\seeders\PlanFeatureSeeder;
 use Illuminate\Support\Facades\DB;
+use Modules\Attribute\database\seeders\AttributeDatabaseSeeder;
+use Modules\Attribute\database\seeders\AttributeValueSeeder;
 use Modules\Brand\database\seeders\BrandDatabaseSeeder;
 use Modules\Category\database\seeders\CategoryDatabaseSeeder;
 use Modules\Customer\database\seeders\CustomerDatabaseSeeder;
@@ -79,7 +81,10 @@ class DemoSeeder extends Seeder
             UnitDatabaseSeeder::class,
             CustomerDatabaseSeeder::class,
             ExpenseCatetorySeeder::class,
-            ExpenseDatabaseSeeder::class
+            ExpenseDatabaseSeeder::class,
+
+            AttributeDatabaseSeeder::class,
+            AttributeValueSeeder::class,
         ]);
     }
 }

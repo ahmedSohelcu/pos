@@ -47,7 +47,7 @@
       <!-- Status -->
       <div class="col">
         <BaseSelect
-          :getApiRoute="route('selectable_statuses', { type: 'user' })"
+          :getApiRoute="route('selectable_statuses', { type: 'common' })"
           select2
           label="Status"
           v-model="model.status_id"
@@ -61,13 +61,13 @@
 </template>
 
 <script setup>
-  import { route } from 'ziggy-js';
-  import BaseSelect from '@kit/components/form/BaseSelect.vue';
-  import BaseInput from '@kit/components/form/BaseInput.vue';
-  import { TENANT_ENDPOINTS, UNIT_ENDPOINTS } from '../../../../data/endpoint';
+import { route } from 'ziggy-js';
+import BaseSelect from '@kit/components/form/BaseSelect.vue';
+import BaseInput from '@kit/components/form/BaseInput.vue';
+import { TENANT_ENDPOINTS, UNIT_ENDPOINTS } from '../../../../data/endpoint';
 
-  const props = defineProps({
-    model: Object, // tenantStore.selectedItem
-    errors: Object, // tenantStore.errors
-  });
+const props = defineProps({
+  model: Object, // tenantStore.selectedItem
+  errors: Object, // tenantStore.errors
+});
 </script>
