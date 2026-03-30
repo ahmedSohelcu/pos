@@ -5,6 +5,10 @@ export const ProductMenus = [
     icon: 'bi bi-box-seam-fill',
     items: [
       {
+        name: 'brand.index',
+        label: 'Attributes',
+      },
+      {
         name: 'component',
         label: 'Add New Product',
       },

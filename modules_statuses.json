@@ -10,5 +10,6 @@
     "Customer": true,
     "Unit": true,
     "Expense": true,
-    "Attribute": true
+    "Attribute": true,
+    "Product": true
 }
