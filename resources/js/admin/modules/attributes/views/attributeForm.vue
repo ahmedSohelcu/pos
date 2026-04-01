@@ -54,7 +54,7 @@
           <BaseInput
             v-model="val.value"
             type="text"
-            placeholder="Enter value (e.g. Red, Large)"
+            placeholder="Enter value (e.g. Red/Blue etc.)"
             class="flex-grow-1"
           />
 

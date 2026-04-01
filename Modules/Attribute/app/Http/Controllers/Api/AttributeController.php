@@ -52,13 +52,16 @@ class AttributeController extends Controller
      */
     public function update(AttributeRequest $request, Attribute $attribute) 
     {        
-        $attribute = $this->service
-            ->setModel($attribute)
-            ->setAttrs($request->all())
-            ->updateAttributeData()
-            ->updateAttributeValues();
+        DB::transaction(function () use ($request, $attribute) {           
+            $attribute = $this->service
+                ->setModel($attribute)
+                ->setAttrs($request->all())
+                ->updateAttributeData()
+                ->updateAttributeValues();
 
-        return updated_response('Attribute', $attribute);
+            return updated_response('Attribute', $attribute);
+        });
+
     }
 
     /**
