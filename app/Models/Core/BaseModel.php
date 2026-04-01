@@ -63,6 +63,7 @@ class BaseModel extends Authenticatable
             $table = $model->getTable();
 
             if (Schema::hasColumn($table, 'tenant_id') && $user->user_type !== 'system_admin') {
+                dd('te');
                 $builder->where($table.'.tenant_id', $user->tenant_id);
             }
         });

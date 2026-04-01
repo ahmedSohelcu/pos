@@ -1,15 +1,26 @@
-import { STATUS_ENDPOINTS } from '../../../../data/endpoint';
+import { TENANT_ENDPOINTS } from '../../../../data/endpoint';
 
-export const brandFilters = [
+export const attributeFilters = [
   {
-    name: 'status_id',
+    name: 'is_active',
     label: 'Status',
     type: 'select',
-    select2: true, // 🔥 enable select2
-    multiple: false, // single select
-    getApiRoute: STATUS_ENDPOINTS.selectable('common'),
+    select2: true,
+    multiple: false,
+    options: [
+      { id: 1, name: 'Active', value: 1 },
+      { id: 2, name: 'Inactive', value: 0 },
+    ],
     optionKeyName: 'name',
-    // optionValueName: 'label'
+    optionValueName: 'value',
+  },
+  {
+    name: 'tenant_id',
+    label: 'Tenant',
+    type: 'select',
+    select2: true,
+    multiple: false,
+    getApiRoute: TENANT_ENDPOINTS.selectable,
   },
   {
     name: 'created_at',

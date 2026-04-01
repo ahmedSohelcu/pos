@@ -102,35 +102,56 @@ export function useResourceStore(name, endpoint, options = {}) {
       },
 
       // ➕ Create
+      // async create(url, data) {
+      //   this.saving = true;
+      //   this.errors = {};
+      //   this.message = null;
+
+      //   try {
+      //     const res = await api.post(url, data);
+
+      //     // Show success immediately
+      //     notify.success(res?.data?.message ?? 'Created successfully.');
+
+      //     // Try refreshing data separately
+      //     try {
+      //       await this.fetchData();
+      //     } catch (e) {
+      //       console.warn('Fetch failed after create:', e);
+      //     }
+
+      //     this.showModal = false;
+      //   } catch (error) {
+      //     if (!error.response) {
+      //       notify.error('Network error. Please check your connection.');
+      //     } else if (error.response.status === 422) {
+      //       // Laravel validation error
+      //       this.errors = error.response.data.errors;
+      //     } else {
+      //       // Laravel exception (500, 403, etc.)
+      //       const message = error.response.data?.message ?? 'Create failed.';
+      //       notify.error(message);
+      //     }
+      //   } finally {
+      //     this.saving = false;
+      //   }
+      // },
+
       async create(url, data) {
         this.saving = true;
         this.errors = {};
-        this.message = null;
-
         try {
           const res = await api.post(url, data);
-
-          // Show success immediately
-          notify.success(res?.data?.message ?? 'Created successfully.');
-
-          // Try refreshing data separately
-          try {
-            await this.fetchData();
-          } catch (e) {
-            console.warn('Fetch failed after create:', e);
-          }
-
+          notify.success(res.data.message || 'Created successfully.');
           this.showModal = false;
+          await this.fetchData();
         } catch (error) {
           if (!error.response) {
             notify.error('Network error. Please check your connection.');
           } else if (error.response.status === 422) {
-            // Laravel validation error
             this.errors = error.response.data.errors;
           } else {
-            // Laravel exception (500, 403, etc.)
-            const message = error.response.data?.message ?? 'Create failed.';
-            notify.error(message);
+            notify.error(error.response?.data?.message || 'Create failed.');
           }
         } finally {
           this.saving = false;
@@ -138,19 +159,38 @@ export function useResourceStore(name, endpoint, options = {}) {
       },
 
       // ✏ Update
+      // async update(url, data) {
+      //   this.saving = true;
+      //   this.errors = {};
+      //   try {
+      //     const res = await api.put(url, data);
+
+      //     console.log(`[${name}] update response:`, res.data);
+      //     await this.fetchData();
+      //     this.showModal = false;
+
+      //     notify.success(res.data.message || 'Updated successfully.');
+      //   } catch (error) {
+      //     console.error(`[${name}] update error:`, error);
+      //     if (error.response?.status === 422) {
+      //       this.errors = error.response.data.errors;
+      //     } else {
+      //       notify.error(error.response?.data?.message || 'Update failed.');
+      //     }
+      //   } finally {
+      //     this.saving = false;
+      //   }
+      // },
+
       async update(url, data) {
         this.saving = true;
         this.errors = {};
         try {
           const res = await api.put(url, data);
-
-          console.log(`[${name}] update response:`, res.data);
-          await this.fetchData();
-          this.showModal = false;
-
           notify.success(res.data.message || 'Updated successfully.');
+          this.showModal = false;
+          await this.fetchData();
         } catch (error) {
-          console.error(`[${name}] update error:`, error);
           if (error.response?.status === 422) {
             this.errors = error.response.data.errors;
           } else {
@@ -162,14 +202,12 @@ export function useResourceStore(name, endpoint, options = {}) {
       },
 
       // 🗑 Delete
-      async deleteRow(url) {
+      async deleteRow(url, id) {
         try {
           const res = await api.delete(url);
-          console.log(`[${name}] delete response:`, res.data);
           this.rows = this.rows.filter((r) => r.id !== id);
           notify.success(res.data.message || 'Deleted successfully.');
         } catch (error) {
-          console.error(`[${name}] delete error:`, error);
           notify.error(error.response?.data?.message || 'Delete failed.');
         }
       },
@@ -193,6 +231,20 @@ export function useResourceStore(name, endpoint, options = {}) {
         this.rows = [];
         this.selectedItem = null;
         this.errors = {};
+      },
+
+      reset() {
+        this.rows = [];
+        this.selectedItem = null;
+        this.errors = {};
+        this.query = {
+          search: '',
+          page: 1,
+          perPage: 10,
+          filters: {},
+          sortColumn: null,
+          sortDirection: null,
+        };
       },
 
       // ✅ Spread extra actions for specific stores

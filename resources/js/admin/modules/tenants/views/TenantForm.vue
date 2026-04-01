@@ -47,7 +47,7 @@
       <!-- Status -->
       <div class="col-md-6">
         <BaseSelect
-          :getApiRoute="STATUS_ENDPOINTS.selectable('common')"
+          :getApiRoute="STATUS_ENDPOINTS.selectable('subscription')"
           select2
           label="Status"
           v-model="model.status_id"

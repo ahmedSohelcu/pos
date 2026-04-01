@@ -7,8 +7,8 @@ export const tenantFilters = [
     type: 'select',
     select2: true, // 🔥 enable select2
     multiple: false, // single select
-    getApiRoute: STATUS_ENDPOINTS.selectable('user'),
-    optionKeyName: 'name',
+    getApiRoute: STATUS_ENDPOINTS.selectable('subscription'),
+    // optionKeyName: 'name',
     // optionValueName: 'label'
   },
   {

@@ -14,9 +14,16 @@ const props = defineProps({
   modelValue: { type: [String, Number, Array], default: '' },
   label: String,
   name: String,
-  options: { type: Array, default: () => [] },
   getApiRoute: String,
-  optionKeyName: { type: String, default: 'name' },
+  options: { type: Array, default: () => [] },
+  optionKeyName: {
+    type: String,
+    default: 'name',
+  }, // label
+  optionValueName: { type: String, 
+    default: 'id' 
+  }, // value
+
   placeholder: { type: String, default: 'Select an option' },
   error: String,
   disabled: Boolean,
@@ -202,10 +209,18 @@ onBeforeUnmount(() => {
         {{ loadingRef ? 'Loading...' : placeholder }}
       </option>
 
-      <option
+      <!-- <option
         v-for="option in finalOptions ?? []"
         :key="option.id"
         :value="option.id"
+      >
+        {{ $t ? $t(option[optionKeyName]) : option[optionKeyName] }}
+      </option> -->
+
+      <option
+        v-for="option in finalOptions ?? []"
+        :key="option[optionValueName]"
+        :value="option[optionValueName]"
       >
         {{ $t ? $t(option[optionKeyName]) : option[optionKeyName] }}
       </option>

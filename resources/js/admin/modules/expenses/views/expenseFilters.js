@@ -1,3 +1,4 @@
+import { STATUS_ENDPOINTS } from '../../../../data/endpoint';
 export const expenseFilters = [
   {
     name: 'status_id',
@@ -5,9 +6,9 @@ export const expenseFilters = [
     type: 'select',
     select2: true, // 🔥 enable select2
     multiple: false, // single select
-    getApiRoute: route('selectable_statuses', { type: 'user' }),
-    optionKeyName: 'name',
-    // optionValueName: 'label'
+    getApiRoute: STATUS_ENDPOINTS.selectable('common'),
+    // optionKeyName: 'name',
+    // optionValueName: 'id',
   },
   {
     name: 'created_at',

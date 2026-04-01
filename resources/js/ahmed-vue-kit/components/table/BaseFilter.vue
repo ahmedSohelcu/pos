@@ -26,7 +26,8 @@
             :name="filter.name"
             :getApiRoute="filter.getApiRoute"
             :options="filter.options"
-            :optionKeyName="filter.optionKeyName"
+            :optionKeyName="filter.optionKeyName" 
+            :optionValueName="filter.optionValueName"
             :label="filter.label"
             :placeholder="`Choose ${filter.label}`"
             :select2="filter.select2 || false"
@@ -143,8 +144,25 @@ const getFilterLabel = (key) => {
 };
 
 // Helper to format filter value for display
+// const formatFilterValue = (key, value) => {
+//   if (Array.isArray(value)) return value.join(', ');
+//   return value;
+// };
 const formatFilterValue = (key, value) => {
+  const filter = props.filters.find((f) => f.name === key);
+
+  if (!filter) return value;
+
+  // static select options
+  if (filter.type === 'select' && filter.options) {
+    const option = filter.options.find(
+      (o) => o[filter.optionValueName || 'value'] == value
+    );
+    if (option) return option[filter.optionKeyName || 'name'];
+  }
+
   if (Array.isArray(value)) return value.join(', ');
+
   return value;
 };
 </script>

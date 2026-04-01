@@ -112,6 +112,7 @@ const confirm = () => {
                   v-if="loading"
                   class="spinner-border spinner-border-sm me-2"
                 ></span>
+                <!-- <i class="fa fa-save me-1"></i> -->
                 {{ confirmText }}
               </button>
             </slot>

@@ -11,6 +11,7 @@ import SubscriptionRoutes from './admin/modules/subscriptions/router.js';
 import PlanRoutes from './admin/modules/plans/router.js';
 import CustomerRoutes from './admin/modules/customers/router.js';
 import { ExpenseRoutes } from './admin/modules/expenses/router.js';
+import { AttributeRoutes } from './admin/modules/attributes/router.js';
 
 import Login from './admin/pages/auth/Login.vue';
 import NotAllow from './admin/pages/NotAllow.vue';
@@ -163,6 +164,7 @@ const routes = [
   ...ExpenseRoutes,
   ...ExpenseCategoryRoutes,
   ...SupplierRoutes,
+  ...AttributeRoutes,
 ];
 
 const router = createRouter({

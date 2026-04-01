@@ -1,3 +1,5 @@
+import { STATUS_ENDPOINTS } from '../../../../data/endpoint';
+
 export const categoryFilters = [
   {
     name: 'status_id',
@@ -5,8 +7,8 @@ export const categoryFilters = [
     type: 'select',
     select2: true, // 🔥 enable select2
     multiple: false, // single select
-    getApiRoute: route('selectable_statuses', { type: 'user' }),
-    optionKeyName: 'name',
+    getApiRoute: STATUS_ENDPOINTS.selectable('common'),
+    // optionKeyName: 'name',
     // optionValueName: 'label'
   },
   {

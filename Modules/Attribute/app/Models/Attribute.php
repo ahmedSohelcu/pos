@@ -3,6 +3,8 @@
 namespace Modules\Attribute\App\Models;
 
 use App\Models\Core\BaseModel;
+use App\Models\Traits\HasStatus;
+use App\Models\Traits\HasTenant;
 use App\Traits\HasSlug;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\Attribute\app\Models\AttributeValue;
@@ -10,6 +12,8 @@ use Modules\Attribute\app\Models\AttributeValue;
 class Attribute extends BaseModel
 {
     use HasFactory,
+        HasStatus,
+        HasTenant,
         HasSlug;
 
     /**

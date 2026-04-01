@@ -25,7 +25,6 @@ class FilterBuilder
      */
     public function apply(Builder $query)
     {
-
         // Generic search filter (across multiple fields)
         if (!empty(request()->search)) {
             $query->where(function ($q) use ($query) {
@@ -48,13 +47,17 @@ class FilterBuilder
         // Status filter
         if (!empty($this->filters['status_id'])) {
             $query->where('status_id', $this->filters['status_id']);
+        }        
+            
+        // Filter by is_active true/false
+        if (isset($this->filters['is_active'])) {            
+            $query->where('is_active', $this->filters['is_active']);
         }
 
-            
-        // Active status filter
-        // if (isset($this->filters['is_active'])) {
-        //     $query->where('is_active', $this->filters['is_active']);
-        // }
+        // Filter by tenant_id
+        if (!empty($this->filters['tenant_id'])) {
+            $query->where('tenant_id', $this->filters['tenant_id']);
+        }
 
         // // Date range filters
         // if (!empty($this->filters['created_from'])) {

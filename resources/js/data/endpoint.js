@@ -200,3 +200,17 @@ export const USER_ENDPOINTS = {
 
   roles: (user_id) => route('api.users.roles', { user: user_id }),
 };
+
+
+/*
+|--------------------------------------------------------------------------
+| Attribute and values
+|--------------------------------------------------------------------------
+*/
+export const ATTRIBUTE_ENDPOINTS = {
+  index: route('api.attribute.index'),
+  store: route('api.attribute.store'),
+  show: (id) => route('api.attribute.show', { attribute: id }),
+  update: (id) => route('api.attribute.update', { attribute: id }),
+  destroy: (id) => route('api.attribute.destroy', { attribute: id }),
+};

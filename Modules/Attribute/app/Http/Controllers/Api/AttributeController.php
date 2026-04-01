@@ -2,9 +2,11 @@
 namespace Modules\Attribute\App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Modules\Attribute\app\Http\Requests\AttributeRequest;
 use Modules\Attribute\app\Models\Attribute;
 use Modules\Attribute\app\Services\AttributeService;
+use Modules\Product\app\Models\VariantAttributeValue;
 
 class AttributeController extends Controller
 {   
@@ -16,19 +18,23 @@ class AttributeController extends Controller
     }
     public function index()
     {
-        $units = $this->service->getAll(true, true, ['status', 'tenant'], 10);
-        return success_response('Attribute List', $units);
+        $attributes = $this->service->getAll(true, true, ['status', 'tenant', 'values'], 10);
+        return success_response('Attribute List', $attributes);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(AttributeRequest $request) {                
-        $attribute = $this->service
-            ->setAttributes($request->all())
-            ->store();
+    public function store(AttributeRequest $request) 
+    {
+        DB::transaction(function () use ($request) {           
+            $attribute = $this->service
+                ->setAttributes($request->all())
+                ->storeAttributeData()
+                ->storeAttributeValues();
 
-        return created_responses('Attribute', $attribute);
+            return created_responses('Attribute', $attribute);
+        });
     }
     
 
@@ -37,7 +43,7 @@ class AttributeController extends Controller
      */
     public function show(Attribute $attribute)
     {        
-        // $attribute = $this->service->findAttributeById($id);
+        $attribute = $attribute->load('values:id,attribute_id,tenant_id,slug,value');
         return success_response('Attribute', $attribute);
     }
 
@@ -49,7 +55,8 @@ class AttributeController extends Controller
         $attribute = $this->service
             ->setModel($attribute)
             ->setAttrs($request->all())
-            ->update();
+            ->updateAttributeData()
+            ->updateAttributeValues();
 
         return updated_response('Attribute', $attribute);
     }
@@ -59,7 +66,10 @@ class AttributeController extends Controller
     */   
     public function destroy(Attribute $attribute) 
     {
-        $attribute->delete();
+        if (VariantAttributeValue::where('attribute_id', $attribute->id)->exists()) {
+            return failed_response("Attribute is used in Variant's product", [], 422);
+        }    
+        $attribute->values()->delete();
         return deleted_responses('Attribute', $attribute);
     }
 }
