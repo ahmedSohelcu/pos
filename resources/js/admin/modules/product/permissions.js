@@ -1,7 +1,6 @@
-export const productPermissions = [
-  'brand_access', // Top-level module permission
-  'brand_view', // View brands
-  'brand_create', // Create brands
-  'brand_update', // Edit brands
-  'brand_delete', // Delete brands
-];
+// export const productPermissions = [
+//   'product.view', // View products
+//   'product.create', // Create products
+//   'product.edit', // Edit products
+//   'product.delete', // Delete products
+// ];

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('slug');
 
             // Product type (simple, variant, service)
-            $table->enum('type', ['single', 'variant', 'service'])->default('single');
+            $table->enum('product_type', ['single', 'variant', 'service'])->default('single');
 
             // Multi tenant
             $table->foreignId('tenant_id')->nullable()->constrained()->cascadeOnDelete();
@@ -37,7 +37,7 @@ return new class extends Migration
 
             // Pricing
             $table->decimal('cost_price', 12, 2)->nullable()->comment('Purchase price with other costs');
-            $table->decimal('sale_price', 12, 2)->nullable();
+            $table->decimal('selling_price', 12, 2)->nullable();
 
             // Stock
             $table->boolean('track_stock')->default(true);

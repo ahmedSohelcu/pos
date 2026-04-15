@@ -10,9 +10,9 @@ export const ProductMenus = [
         access: 'attribute.view',
       },
       {
-        name: 'brand.index',
+        name: 'product.create',
         label: 'Add New Product',
-        access: 'brand.view',
+        access: 'product.create',
       },
       {
         name: 'category.index',

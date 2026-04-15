@@ -16,7 +16,6 @@
 
     <!-- Footer -->
     <div class="card-footer d-flex justify-content-between align-items-center">
-      
       <!-- Left Buttons -->
       <div>
         <slot name="footer-left">
@@ -46,41 +45,49 @@
           </button>
 
           <!-- Default submit button if rightFooterButtons empty -->
-            <button
-                v-if="!leftFooterButtons.length && !rightFooterButtons.length && !$slots['footer-left'] && !$slots['footer-right']"
-                type="submit"
-                class="btn btn-success"
-                >
-                Submit
-            </button>
+          <button
+            v-if="
+              showDefaultButton &&
+              !leftFooterButtons.length &&
+              !rightFooterButtons.length &&
+              !$slots['footer-left'] &&
+              !$slots['footer-right']
+            "
+            type="submit"
+            class="btn btn-success"
+          >
+            Submit
+          </button>
         </slot>
       </div>
-
     </div>
-
   </div>
 </template>
 
 <script setup>
-    const props = defineProps({
-        title: { type: String, default: '' },
-        cardClass: { type: String, default: 'card-outline card-primary mb-4' },
-        // Footer
-        footerText: { type: String, default: '' },
-        leftFooterButtons: { type: Array, default: () => [] },
-        rightFooterButtons: { type: Array, default: () => [] },
-    })
+const props = defineProps({
+  title: { type: String, default: '' },
+  cardClass: { type: String, default: 'card-outline card-primary mb-4' },
+  // Footer
+  footerText: { type: String, default: '' },
+  leftFooterButtons: { type: Array, default: () => [] },
+  rightFooterButtons: { type: Array, default: () => [] },
+  showDefaultButton: {
+    type: Boolean,
+    default: true,
+  },
+});
 </script>
 
 <style scoped>
-    .card {
-        transition: all 0.3s ease;
-    }
+.card {
+  transition: all 0.3s ease;
+}
 
-    .card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-    }
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
 </style>
 
 <!--How to use

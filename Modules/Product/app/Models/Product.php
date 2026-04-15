@@ -19,7 +19,21 @@ class Product extends BaseModel
         'name',
         'slug',
         'tenant_id', // important for multi-tenant
-        'is_active',
+        'product_type',
+        'brand_id',
+        'category_id',
+        'unit_id',
+        'sku',
+        'barcode',
+        'cost_price',
+        'selling_price',
+        'track_stock',
+        'alert_quantity',
+        'description',
+        'thumbnail',
+        'status_id',
         'sorting_order',
+        'created_by',
+        'updated_by',
     ];
 }
