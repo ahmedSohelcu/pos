@@ -20,7 +20,8 @@ class Unit extends BaseModel
     protected $fillable = [
         'name',
         'tenant_id',
-        'status_id',
+        'status_id',//for later uses
+        'is_active',
         'sorting_order',
         'short_name'
     ];

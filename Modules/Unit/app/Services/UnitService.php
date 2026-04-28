@@ -41,6 +41,10 @@ class UnitService extends BaseService
         return $query->get();
     }
 
+    public function getSelectableUnits(){
+        return $this->model->select('id', 'name')->get();
+    }
+
     public function create(array $data)
     {
         return $this->model->create($this->unitRequests($data));

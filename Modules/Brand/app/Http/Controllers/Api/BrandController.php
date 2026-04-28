@@ -21,6 +21,11 @@ class BrandController extends Controller
         return success_response('Brand List', $units);
     }
 
+    public function selectable()
+    {
+        return $this->service->getSelectableBrands();        
+    }
+
     /**
      * Store a newly created resource in storage.
      */

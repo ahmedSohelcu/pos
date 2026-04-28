@@ -35,7 +35,9 @@ return new class extends Migration
             $table->foreignId('status_id')
                 ->nullable()
                 ->constrained()
-                ->cascadeOnDelete();
+                ->cascadeOnDelete()->comment('for later uses');
+                
+            $table->boolean('is_active')->nullable()->default(true);
 
             $table->integer('sorting_order')->nullable();
 

@@ -23,7 +23,8 @@ class Brand extends BaseModel
         'name',
         'slug',
         'tenant_id',
-        'status_id',
+        'status_id', //for later
+        'is_active',
         'description',
         'logo',
         'sorting_order'

@@ -41,6 +41,10 @@ class BrandService extends BaseService
         return $query->get();
     }
 
+    public function getSelectableBrands(){
+        return $this->model->select('id', 'name')->get();
+    }
+
     public function create(array $data)
     {
         return $this->model->create($this->brandRequests($data));

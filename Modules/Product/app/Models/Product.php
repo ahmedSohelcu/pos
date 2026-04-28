@@ -31,7 +31,8 @@ class Product extends BaseModel
         'alert_quantity',
         'description',
         'thumbnail',
-        'status_id',
+        'status_id', //for late uses
+        'is_active',
         'sorting_order',
         'created_by',
         'updated_by',

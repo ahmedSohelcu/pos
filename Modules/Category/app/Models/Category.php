@@ -29,7 +29,8 @@ class Category extends BaseModel
         'name',
         'slug',
         'tenant_id',
-        'status_id',
+        'status_id', //for later uses
+        'is_active',
         'created_by',
         'updated_by',
 

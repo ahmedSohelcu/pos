@@ -21,6 +21,11 @@ class UnitController extends Controller
         return success_response('Unit List', $units);
     }
 
+    public function selectable()
+    {
+        return $this->service->getSelectableUnits();        
+    }
+
     /**
      * Store a newly created resource in storage.
      */

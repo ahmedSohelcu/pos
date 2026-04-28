@@ -20,6 +20,11 @@ class CategoryController extends Controller
         return success_response('Category List', $categories);
     }
 
+    public function selectable()
+    {
+        return $this->service->getSelectableCategories();        
+    }
+
     /**
      * Store a newly created resource in storage.
      */

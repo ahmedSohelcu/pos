@@ -5,14 +5,12 @@
 </template>
 
 <script setup>
-  const emit = defineEmits(['submit'])
+const emit = defineEmits(['submit']);
 
-  const emitSubmit = () => {
-    emit('submit')
-  }
+const emitSubmit = (data) => {
+  emit('submit', data);
+};
 </script>
-
-
 
 <!-- 
 how to use

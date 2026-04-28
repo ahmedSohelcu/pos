@@ -48,6 +48,7 @@ export const BRAND_ENDPOINTS = {
   show: (id) => route('api.brand.show', { brand: id }),
   update: (id) => route('api.brand.update', { brand: id }),
   destroy: (id) => route('api.brand.destroy', { brand: id }),
+  selectable: route('api.selectable_brands'),
 };
 
 /*
@@ -61,6 +62,7 @@ export const CATEGORY_ENDPOINTS = {
   show: (id) => route('api.category.show', { category: id }),
   update: (id) => route('api.category.update', { category: id }),
   destroy: (id) => route('api.category.destroy', { category: id }),
+  selectable: route('api.selectable_categories'),
 };
 
 /*
@@ -181,6 +183,7 @@ export const UNIT_ENDPOINTS = {
   show: (id) => route('api.unit.show', { unit: id }),
   update: (id) => route('api.unit.update', { unit: id }),
   destroy: (id) => route('api.unit.destroy', { unit: id }),
+  selectable: route('api.selectable_units'),
 };
 
 /*
@@ -200,7 +203,6 @@ export const USER_ENDPOINTS = {
 
   roles: (user_id) => route('api.users.roles', { user: user_id }),
 };
-
 
 /*
 |--------------------------------------------------------------------------

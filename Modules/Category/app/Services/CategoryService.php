@@ -41,6 +41,10 @@ class CategoryService extends BaseService
         return $query->get();
     }
 
+    public function getSelectableCategories(){
+        return $this->model->select('id', 'name')->get();
+    }
+
     public function create(array $data)
     {
         return $this->model->create($this->categoryRequests($data));

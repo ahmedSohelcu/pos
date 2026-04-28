@@ -20,9 +20,7 @@ const props = defineProps({
     type: String,
     default: 'name',
   }, // label
-  optionValueName: { type: String, 
-    default: 'id' 
-  }, // value
+  optionValueName: { type: String, default: 'id' }, // value
 
   placeholder: { type: String, default: 'Select an option' },
   error: String,
@@ -395,9 +393,60 @@ Supports
     3. options array to build options (first priority)
     4. getApiRoute to call api for options (if optinos not provided)
     5. optionKeyName -- by default its name, some times may be type others
+      optionValueName -- default id
     6. placeholder
     7. error
     8. disabled
+-->
 
 
+
+<!-- 
+    v-model Example 
+
+    ----------------------------
+    01.parent component
+    ----------------------------
+    <template>
+  <div>
+    <h2>Test Component using Vite</h2>
+
+    <select :value="modelValue" @change="handleChange" class="form-control">
+      <option value="bd">Bangladesh</option>
+      <option value="usa">USA</option>
+    </select>
+  </div>
+</template>
+
+<script setup>
+const props = defineProps({
+  modelValue: String,
+});
+
+const emit = defineEmits(['update:modelValue']);
+
+const handleChange = (e) => {
+  const value = e.target.value;
+
+  // send value to parent
+  emit('update:modelValue', value);
+};
+</script>
+
+
+
+    ----------------------------
+    01.child component
+    ----------------------------
+  <p>Selected: {{ form.country }}</p>
+
+
+  <Test v-model="form.country" />
+
+👉 internally এটা হয়:
+
+<Test
+  :modelValue="country"
+  @update:modelValue="country = $event"
+/>
 -->

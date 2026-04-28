@@ -1,6 +1,13 @@
 <script setup>
 import { reactive, computed } from 'vue';
-import BaseForm from '../../../../ahmed-vue-kit/components/form/BaseForm.vue';
+import BaseInput from '../../../../ahmed-vue-kit/components/form/BaseInput.vue';
+import {
+  BRAND_ENDPOINTS,
+  CATEGORY_ENDPOINTS,
+  UNIT_ENDPOINTS,
+} from '../../../../data/endpoint';
+
+import Test from '@kit/components/form/Test.vue';
 
 const form = reactive({
   name: '',
@@ -25,11 +32,15 @@ const form = reactive({
   thumbnail: null,
   gallery: [],
 
-  status_id: 1,
+  is_active: true,
   sorting_order: 0,
 
   attributes: [],
   variants: [],
+});
+
+const errors = reactive({
+  name: [],
 });
 
 const isSingle = computed(() => form.product_type === 'single');
@@ -105,7 +116,7 @@ function saveProduct() {
     <!-- HEADER -->
     <div class="page-header">
       <div>
-        <h2>Create Product</h2>
+        <h2>Add New Product</h2>
         <p>Manage your store inventory efficiently</p>
       </div>
     </div>
@@ -118,50 +129,73 @@ function saveProduct() {
           <div class="card-header">Basic Information</div>
           <div class="card-body">
             <div class="row g-4">
-              <div class="col-md-6">
-                <label>Product Name</label>
-                <input v-model="form.name" class="form-control input-modern" />
-              </div>
-
-              <div class="col-md-6">
-                <label>Slug</label>
-                <input v-model="form.slug" class="form-control input-modern" />
+              <div class="col-md-8">
+                <BaseInput
+                  name="name"
+                  label="Product Name"
+                  v-model="form.name"
+                  :error="errors?.name"
+                  placeholder="Enter Product Name"
+                />
               </div>
 
               <div class="col-md-4">
-                <label>Product Type</label>
-                <select
+                <BaseSelect
+                  class="me-2"
                   v-model="form.product_type"
-                  class="form-select input-modern"
-                >
-                  <option value="single">Single</option>
-                  <option value="variant">Variant</option>
-                  <option value="service">Service</option>
-                </select>
+                  name="product_type"
+                  :options="[
+                    { id: 'single', label: 'Single' },
+                    { id: 'variant', label: 'Variant' },
+                    { id: 'service', label: 'Service' },
+                  ]"
+                  label="Product Type"
+                  select2
+                  optionKeyName="label"
+                  placeholder="Choose Product Type"
+                />
+                <!-- <div class="me-2">{{ form.product_type }}</div> -->
               </div>
 
-              <div class="col-md-4">
-                <label>Brand</label>
-                <select
-                  v-model="form.brand_id"
-                  class="form-select input-modern"
-                ></select>
-              </div>
-
-              <div class="col-md-4">
-                <label>Category</label>
-                <select
+              <div class="col">
+                <BaseSelect
+                  class="me-2"
                   v-model="form.category_id"
-                  class="form-select input-modern"
-                ></select>
+                  name="category_id"
+                  :getApiRoute="CATEGORY_ENDPOINTS.selectable"
+                  label="Category"
+                  select2
+                  placeholder="Choose Category"
+                  @update:modelValue="onProductTypeChange()"
+                />
+                <div class="me-2">{{ form.category_id }}</div>
               </div>
 
-              <div class="col-md-4" v-if="!isService">
-                <label>Unit</label>
-                <select
+              <div class="col">
+                <BaseSelect
+                  class="me-2"
+                  v-model="form.brand_id"
+                  name="brand_id"
+                  :getApiRoute="BRAND_ENDPOINTS.selectable"
+                  label="Brand"
+                  select2
+                  placeholder="Choose Brand"
+                />
+                <div class="me-2">{{ form.brand_id }}</div>
+              </div>
+
+              <div class="col" v-if="!isService">
+                <BaseSelect
+                  class="me-2"
                   v-model="form.unit_id"
-                  class="form-select input-modern"
-                ></select>
+                  name="unit_id"
+                  :getApiRoute="UNIT_ENDPOINTS.selectable"
+                  label="Unit"
+                  select2
+                  multiple
+                  placeholder="Unit"
+                />
+                <div class="me-2">{{ form.unit_id }}</div>
               </div>
             </div>
           </div>
@@ -201,47 +235,67 @@ function saveProduct() {
           <div class="card-header">Pricing & Inventory</div>
           <div class="card-body">
             <div class="row g-4">
-              <div class="col-md-3">
-                <label>SKU</label>
-                <input v-model="form.sku" class="form-control" />
+              <div class="col">
+                <BaseInput
+                  v-model="form.sku"
+                  label="SKU"
+                  type="text"
+                  :error="errors.sku"
+                  placeholder="Enter sku"
+                  icon="fa-store"
+                />
               </div>
 
-              <div class="col-md-3">
-                <label>Barcode</label>
-                <input v-model="form.barcode" class="form-control" />
+              <div class="col">
+                <BaseInput
+                  v-model="form.barcode"
+                  label="Barcode"
+                  type="text"
+                  :error="errors.sku"
+                  placeholder="Enter Barcode"
+                  icon="fa-store"
+                />
               </div>
 
-              <div class="col-md-2">
-                <label>Cost</label>
-                <input
-                  type="number"
+              <div class="col">
+                <BaseInput
                   v-model="form.cost_price"
-                  class="form-control"
+                  label="Purchase Price"
+                  type="number"
+                  :error="errors.cost_price"
+                  placeholder="Enter purchase price"
+                  icon="fa-store"
                 />
               </div>
 
-              <div class="col-md-2">
-                <label>Sale Price</label>
-                <input
-                  type="number"
+              <div class="col">
+                <BaseInput
                   v-model="form.selling_price"
-                  class="form-control"
+                  label="Sell Price"
+                  type="number"
+                  :error="errors.selling_price"
+                  placeholder="Enter Sell price"
+                  icon="fa-store"
                 />
               </div>
 
-              <div class="col-md-2">
-                <label>Stock</label>
-                <input
-                  type="number"
+              <div class="col">
+                <BaseInput
                   v-model="form.stock"
-                  class="form-control"
+                  label="Stock"
+                  type="number"
+                  :error="errors.stock"
+                  placeholder="Enter Stock"
+                  icon="fa-store"
                 />
               </div>
             </div>
           </div>
         </div>
 
+        <!-- ======================================== -->
         <!-- VARIANTS -->
+        <!-- ======================================== -->
         <div v-if="isVariant" class="card card-outline card-primary mt-4 mb-4">
           <div class="card-header d-flex justify-content-between">
             <span>Attributes</span>
@@ -259,21 +313,18 @@ function saveProduct() {
               :key="index"
               class="row g-3 mb-3"
             >
-              <div class="col-md-4">
-                <input
-                  v-model="attr.name"
-                  placeholder="Color"
-                  class="form-control"
-                />
+              <div class="col">
+                <BaseInput v-model="attr.name" placeholder="Color" />
               </div>
-              <div class="col-md-6">
-                <input
+
+              <div class="col">
+                <BaseInput
                   v-model="attr.values"
                   placeholder="Red, Blue, Green"
-                  class="form-control"
                 />
               </div>
-              <div class="col-md-2">
+
+              <div class="col">
                 <button
                   class="btn btn-danger w-100"
                   @click="removeAttribute(index)"
@@ -290,12 +341,17 @@ function saveProduct() {
             <table v-if="form.variants.length" class="table table-modern">
               <thead>
                 <tr>
-                  <th>Image</th>
+                  <th>Image Thumbnail</th>
                   <th>Variant</th>
                   <th>SKU</th>
-                  <th>Price</th>
+                  <th>
+                    Purchase Price<br />
+                    <code>incuding other cost</code>
+                  </th>
+                  <th>Selling Price</th>
                   <th>Stock</th>
-                  <th></th>
+                  <th>Stock Alert Qty</th>
+                  <th>Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -312,21 +368,27 @@ function saveProduct() {
                     />
                   </td>
                   <td>{{ variant.name }}</td>
-                  <td><input v-model="variant.sku" class="form-control" /></td>
+
                   <td>
-                    <input
-                      type="number"
-                      v-model="variant.sale_price"
-                      class="form-control"
-                    />
+                    <BaseInput v-model="variant.sku" />
                   </td>
+
                   <td>
-                    <input
-                      type="number"
-                      v-model="variant.stock"
-                      class="form-control"
-                    />
+                    <BaseInput type="number" v-model="variant.purchase_price" />
                   </td>
+
+                  <td>
+                    <BaseInput type="number" v-model="variant.sale_price" />
+                  </td>
+
+                  <td>
+                    <BaseInput type="number" v-model="variant.stock" />
+                  </td>
+
+                  <td>
+                    <BaseInput type="number" v-model="variant.stock_alert" />
+                  </td>
+
                   <td>
                     <button
                       class="btn btn-danger btn-sm"
@@ -348,17 +410,26 @@ function saveProduct() {
           <div class="card card-outline card-primary">
             <div class="card-header">Product Settings</div>
             <div class="card-body">
-              <label>Status</label>
-              <select v-model="form.status_id" class="form-select mb-3">
-                <option value="1">Active</option>
-                <option value="2">Inactive</option>
-              </select>
+              <BaseSwitch
+                v-model="form.is_active"
+                size="md"
+                name="is_active"
+                activeColor="#198754"
+                inactiveColor="#dc3545"
+                activeText="ACTIVE"
+                inactiveText="INACTIVE"
+                label="Product Status"
+                :error="errors.is_active"
+                description="Mark this product as active or inactive"
+              />
 
-              <label>Sorting</label>
-              <input
+              <hr />
+
+              <BaseInput
+                name="sorting_order"
                 type="number"
                 v-model="form.sorting_order"
-                class="form-control"
+                label="Sorting"
               />
             </div>
           </div>
