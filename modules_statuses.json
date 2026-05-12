@@ -1,0 +1,15 @@
+{
+    "Category": true,
+    "Brand": true,
+    "Plan": true,
+    "Feature": true,
+    "Tenant": true,
+    "Subscription": true,
+    "Payment": true,
+    "Role": true,
+    "Customer": true,
+    "Unit": true,
+    "Expense": true,
+    "Attribute": true,
+    "Product": true
+}

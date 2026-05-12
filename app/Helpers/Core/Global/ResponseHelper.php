@@ -1,0 +1,72 @@
+<?php
+
+use App\Helpers\Core\General\ResponseHelper;
+
+if (!function_exists('created_responses')) {
+    function created_responses($name, $data = [])
+    {
+        return resolve(ResponseHelper::class)->createdResponse($name, $data);
+    }
+}
+
+//For fetch data
+if (!function_exists('success_response')) {
+    function success_response($message, $data = [], $status = 200)
+    {
+        return response()->json([
+            'status'  => 'success',
+            'message' => $message,
+            'data'    => $data,
+        ], $status);
+    }
+}
+
+
+if (!function_exists('updated_response')) {
+
+    function updated_response($name, $data = [])
+    {
+        return resolve(ResponseHelper::class)->updatedResponse($name, $data);
+    }
+}
+
+
+if (!function_exists('deleted_responses')) {
+    function deleted_responses($name, $data = [])
+    {
+        return resolve(ResponseHelper::class)->deletedResponse($name, $data);
+    }
+}
+
+if (!function_exists('failed_response')) {
+    function failed_response($name = null, $data = [])
+    {
+        return resolve(ResponseHelper::class)->failedResponse($name, $data);
+    }
+}
+
+
+// if (!function_exists('attached_response')) {
+//     function attached_response($name, $data = [])
+//     {
+//         return resolve(ResponseHelper::class)->attachedResponse($name, $data);
+//     }
+// }
+
+// if (!function_exists('detached_response')) {
+//     function detached_response($name, $data = []) {
+//         return resolve(ResponseHelper::class)->detachedResponse($name, $data);
+//     }
+// }
+
+// if (!function_exists('duplicated_response')) {
+//     function duplicated_response($name, $data = []) {
+//         return resolve(ResponseHelper::class)->duplicatedResponse($name, $data);
+//     }
+// }
+
+// if (!function_exists('status_response')) {
+//     function status_response($name, $status, $data = []) {
+//         return resolve(ResponseHelper::class)->statusResponse($name, $status, $data);
+//     }
+// }

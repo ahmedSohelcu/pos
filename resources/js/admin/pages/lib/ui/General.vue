@@ -696,7 +696,8 @@
                 <!--begin::Spinner-->
                 <div class="card card-success card-outline mb-4">
                   <!--begin::Header-->
-                  <div class="card-header"><div class="card-title">Spinner</div></div>
+                  <div class="card-header">
+                    <div class="card-title">Spinner</div></div>
                   <!--end::Header-->
                   <!--begin::Body-->
                   <div class="card-body">

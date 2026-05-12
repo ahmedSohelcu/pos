@@ -275,7 +275,8 @@ to your server.
 
 ## 🚀 Roadmap
 
-- [ ] Dark mode
+  * Dark mode
+  - Dark mode
 - [ ] Typescript support
 - [ ] Form builder
 - [ ] Datatable server-side API

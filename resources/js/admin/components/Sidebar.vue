@@ -1,557 +1,278 @@
-
 <template>
-    <aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
-        <!--begin::Sidebar Brand-->
-        <div class="sidebar-brand">
-            <!--begin::Brand Link-->
-            <a href="./index.html" class="brand-link">
-            <!--begin::Brand Image-->
-            <img
-                src="admin/v1/assets/img/AdminLTELogo.png"
-                alt="AdminLTE Logo"
-                class="brand-image opacity-75 shadow"
-            />
-            <!--end::Brand Image-->
-            <!--begin::Brand Text-->
-            <span class="brand-text fw-light">AdminLTE 4</span>
-            <!--end::Brand Text-->
-            </a>
-            <!--end::Brand Link-->
-        </div>
-        <!--end::Sidebar Brand-->
-        <!--begin::Sidebar Wrapper-->
-        <div class="sidebar-wrapper">
-            <nav class="mt-2">
-            <!--begin::Sidebar Menu-->
-            <ul
-                class="nav sidebar-menu flex-column"
-                data-lte-toggle="treeview"
-                role="menu"
-                data-accordion="false">
+  <aside class="app-sidebar">
+    <!-- Sidebar Brand -->
+    <div class="sidebar-brand">
+      <a href="#" class="brand-link">
+        <img
+          src="admin/v1/assets/img/AdminLTELogo.png"
+          alt="Logo"
+          class="brand-image"
+        />
+        <span class="brand-text">GroceryPharma Admin</span>
+      </a>
+    </div>
 
-                <li class="nav-item has-treeview" :class="{ 'menu-open': isActiveMenuItem(['dashboard', 'dashboard-2', 'dashboard-3']) || isOpen  }">
-                    <a @click="toggleSidebar" href="#" class="nav-link" :class="{ 'bg-primary': isActiveMenuItem(['dashboard', 'dashboard-2', 'dashboard-3']) }">
-                        <!-- <i class="nav-icon bi bi-speedometer"></i> -->
-                        <i class="nav-icon fas fa-th"></i>
-                        <p>                            
-                            Dashboard 
-                        <i class="nav-arrow bi bi-chevron-right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">           
-                        <li class="nav-item">
-                            <router-link :to="{ name: 'dashboard' }" class="nav-link">
-                                <i class="nav-icon bi bi-circle"></i>
-                                <p>Dashboard</p>
-                            </router-link>
-                        </li>      
+    <!-- Sidebar Wrapper -->
+    <div class="sidebar-wrapper">
+      <nav>
+        <ul class="sidebar-menu">
+          <li v-for="menu in menus" :key="menu?.key" class="menu-item">
+            <!-- Parent Menu -->
+            <div
+              v-if="menu"
+              class="menu-link"
+              :class="{ active: isMenuActive(menu) }"
+              @click="toggleSidebar(menu.key)"
+            >
+              <div class="menu-left">
+                <i :class="menu.icon"></i>
+                <span>{{ menu.label }}</span>
+              </div>
 
-                        <li class="nav-item">
-                            <router-link :to="{ name: 'dashboard-2' }" class="nav-link">
-                                <i class="nav-icon bi bi-circle"></i>
-                                <p>Dashboard 2</p>
-                            </router-link>
-                        </li>  
+              <i
+                class="bi"
+                :class="
+                  openMenu === menu.key ? 'bi-chevron-down' : 'bi-chevron-right'
+                "
+              ></i>
+            </div>
 
-                        <li class="nav-item">
-                            <router-link :to="{ name: 'dashboard-3' }" class="nav-link">
-                                <i class="nav-icon bi bi-circle"></i>
-                                <p>Dashboard 3</p>
-                            </router-link>
-                        </li>                         
-                    </ul>
+            <!-- Submenu -->
+            <transition name="slide">
+              <ul
+                v-if="menu.items && menu.items.length"
+                v-show="openMenu === menu.key"
+                class="submenu"
+              >
+                <li v-for="item in menu.items" :key="item.name">
+                  <router-link
+                    :to="{ name: item.name }"
+                    class="submenu-link"
+                    active-class="active-child"
+                  >
+                    <i class="bi bi-dot"></i>
+                    {{ item.label }}
+                  </router-link>
                 </li>
-
-                <li class="nav-item has-treeview" :class="{ 'menu-open': isActiveMenuItem(['sample-tables']) || isOpen  }">
-                    <a @click="toggleSidebar" href="#" class="nav-link" :class="{ 'bg-primary': isActiveMenuItem(['sample-tables']) }">
-                        <i class="nav-icon bi bi-table"></i>
-                        <p>
-                        Tables
-                        <i class="nav-arrow bi bi-chevron-right"></i>
-                        </p>
-                    </a>
-
-                    <ul class="nav nav-treeview">                       
-                        <li class="nav-item">
-                            <router-link :to="{ name: 'table-component' }" class="nav-link">
-                                <i class="nav-icon bi bi-circle"></i>
-                                <p>Table Component Example</p>
-                            </router-link>
-                        </li>           
-
-                        <li class="nav-item">
-                            <router-link :to="{ name: 'sample-tables' }" class="nav-link">
-                                <i class="nav-icon bi bi-circle"></i>
-                                <p>Sample Tables</p>
-                            </router-link>
-                        </li>     
-                    </ul>
-                </li>
-
-
-                <li class="nav-item has-treeview" :class="{ 'menu-open': isActiveMenuItem(['cards', 'info-box', 'small-box']) || isOpen  }">
-                    <a @click="toggleSidebar" href="#" class="nav-link" :class="{ 'bg-primary': isActiveMenuItem(['cards', 'info-box', 'small-box']) }">
-                        <i class="nav-icon bi bi-box-seam-fill"></i>
-                        <p>
-                        Widgets
-                        <i class="nav-arrow bi bi-chevron-right"></i>
-                        </p>
-                    </a>
-
-                    <ul class="nav nav-treeview">                       
-                        <li class="nav-item">
-                            <router-link :to="{ name: 'small-box' }" class="nav-link">
-                                <i class="nav-icon bi bi-circle"></i>
-                                <p>Small Box</p>
-                            </router-link>
-                        </li>                
-
-                        <li class="nav-item">
-                            <router-link :to="{ name: 'info-box' }" class="nav-link">
-                                <i class="nav-icon bi bi-circle"></i>
-                                <p>Info Box</p>
-                            </router-link>
-                        </li>               
-
-                        <li class="nav-item">
-                            <router-link :to="{ name: 'cards' }" class="nav-link">
-                                <i class="nav-icon bi bi-circle"></i>
-                                <p>Cards</p>
-                            </router-link>
-                        </li>     
-                    </ul>
-                </li>
-
-
-                <li class="nav-item has-treeview" :class="{ 'menu-open': isActiveMenuItem(['form']) || isOpen  }">
-                    <a @click="toggleSidebar" href="#" class="nav-link" :class="{ 'bg-primary': isActiveMenuItem(['form']) }">
-                        <i class="nav-icon bi bi-pencil-square"></i>
-                        <p>
-                            Forms
-                        <i class="nav-arrow bi bi-chevron-right"></i>
-                        </p>
-                    </a>
-
-                    <ul class="nav nav-treeview">                       
-                        <li class="nav-item">
-                            <router-link :to="{ name: 'form' }" class="nav-link">
-                                <i class="nav-icon bi bi-circle"></i>
-                                <p>General Elements</p>
-                            </router-link>
-                        </li>             
-                    </ul>
-                </li>
-
-
-                <li class="nav-item has-treeview" :class="{ 'menu-open': isActiveMenuItem(['general-ui', 'icon', 'timeline']) || isOpen  }">
-                    <a @click="toggleSidebar" href="#" class="nav-link" :class="{ 'bg-primary': isActiveMenuItem(['general-ui', 'icon', 'timeline']) }">
-                        <i class="nav-icon bi bi-tree-fill"></i>
-                        <p>
-                            UI Elements
-                            <i class="nav-arrow bi bi-chevron-right"></i>
-                        </p>
-                    </a>
-
-                    <ul class="nav nav-treeview">                       
-                        <li class="nav-item">
-                            <router-link :to="{ name: 'general-ui' }" class="nav-link">
-                                <i class="nav-icon bi bi-circle"></i>
-                                <p>General</p>
-                            </router-link>
-                        </li>                         
-
-                        <li class="nav-item">
-                            <router-link :to="{ name: 'icon' }" class="nav-link">
-                                <i class="nav-icon bi bi-circle"></i>
-                                <p>Icon</p>
-                            </router-link>
-                        </li>                          
-
-                        <li class="nav-item">
-                            <router-link :to="{ name: 'timeline' }" class="nav-link">
-                                <i class="nav-icon bi bi-circle"></i>
-                                <p>Timeline</p>
-                            </router-link>
-                        </li>             
-                    </ul>
-                </li>
-
-
-              
-
-                 
-                <!-- <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon bi bi-clipboard-fill"></i>
-                        <p>
-                        Layout Options
-                        <span class="nav-badge badge text-bg-secondary me-3">6</span>
-                        <i class="nav-arrow bi bi-chevron-right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                        <a href="./layout/unfixed-sidebar.html" class="nav-link">
-                            <i class="nav-icon bi bi-circle"></i>
-                            <p>Default Sidebar</p>
-                        </a>
-                        </li>
-                        <li class="nav-item">
-                        <a href="./layout/fixed-sidebar.html" class="nav-link">
-                            <i class="nav-icon bi bi-circle"></i>
-                            <p>Fixed Sidebar</p>
-                        </a>
-                        </li>
-                        <li class="nav-item">
-                        <a href="./layout/layout-custom-area.html" class="nav-link">
-                            <i class="nav-icon bi bi-circle"></i>
-                            <p>Layout <small>+ Custom Area </small></p>
-                        </a>
-                        </li>
-                        <li class="nav-item">
-                        <a href="./layout/sidebar-mini.html" class="nav-link">
-                            <i class="nav-icon bi bi-circle"></i>
-                            <p>Sidebar Mini</p>
-                        </a>
-                        </li>
-                        <li class="nav-item">
-                        <a href="./layout/collapsed-sidebar.html" class="nav-link">
-                            <i class="nav-icon bi bi-circle"></i>
-                            <p>Sidebar Mini <small>+ Collapsed</small></p>
-                        </a>
-                        </li>
-                        <li class="nav-item">
-                        <a href="./layout/logo-switch.html" class="nav-link">
-                            <i class="nav-icon bi bi-circle"></i>
-                            <p>Sidebar Mini <small>+ Logo Switch</small></p>
-                        </a>
-                        </li>
-                        <li class="nav-item">
-                        <a href="./layout/layout-rtl.html" class="nav-link">
-                            <i class="nav-icon bi bi-circle"></i>
-                            <p>Layout RTL</p>
-                        </a>
-                        </li>
-                    </ul>
-                </li> -->
-             
-              
-
-                
-
-               
-
-                <!-- <li class="nav-header">EXAMPLES</li>
-                <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="nav-icon bi bi-box-arrow-in-right"></i>
-                    <p>
-                    Auth
-                    <i class="nav-arrow bi bi-chevron-right"></i>
-                    </p>
-                </a>
-                <ul class="nav nav-treeview">
-                    <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon bi bi-box-arrow-in-right"></i>
-                        <p>
-                        Version 1
-                        <i class="nav-arrow bi bi-chevron-right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                        <a href="./examples/login.html" class="nav-link">
-                            <i class="nav-icon bi bi-circle"></i>
-                            <p>Login</p>
-                        </a>
-                        </li>
-                        <li class="nav-item">
-                        <a href="./examples/register.html" class="nav-link">
-                            <i class="nav-icon bi bi-circle"></i>
-                            <p>Register</p>
-                        </a>
-                        </li>
-                    </ul>
-                    </li>
-                    <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon bi bi-box-arrow-in-right"></i>
-                        <p>
-                        Version 2
-                        <i class="nav-arrow bi bi-chevron-right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                        <a href="./examples/login-v2.html" class="nav-link">
-                            <i class="nav-icon bi bi-circle"></i>
-                            <p>Login</p>
-                        </a>
-                        </li>
-                        <li class="nav-item">
-                        <a href="./examples/register-v2.html" class="nav-link">
-                            <i class="nav-icon bi bi-circle"></i>
-                            <p>Register</p>
-                        </a>
-                        </li>
-                    </ul>
-                    </li>
-                    <li class="nav-item">
-                    <a href="./examples/lockscreen.html" class="nav-link">
-                        <i class="nav-icon bi bi-circle"></i>
-                        <p>Lockscreen</p>
-                    </a>
-                    </li>
-                </ul>
-                </li>
-                <li class="nav-header">DOCUMENTATIONS</li>
-                <li class="nav-item">
-                <a href="./docs/introduction.html" class="nav-link">
-                    <i class="nav-icon bi bi-download"></i>
-                    <p>Installation</p>
-                </a>
-                </li>
-                <li class="nav-item">
-                <a href="./docs/layout.html" class="nav-link">
-                    <i class="nav-icon bi bi-grip-horizontal"></i>
-                    <p>Layout</p>
-                </a>
-                </li>
-                <li class="nav-item">
-                <a href="./docs/color-mode.html" class="nav-link">
-                    <i class="nav-icon bi bi-star-half"></i>
-                    <p>Color Mode</p>
-                </a>
-                </li>
-                <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="nav-icon bi bi-ui-checks-grid"></i>
-                    <p>
-                    Components
-                    <i class="nav-arrow bi bi-chevron-right"></i>
-                    </p>
-                </a>
-                <ul class="nav nav-treeview">
-                    <li class="nav-item">
-                    <a href="./docs/components/main-header.html" class="nav-link">
-                        <i class="nav-icon bi bi-circle"></i>
-                        <p>Main Header</p>
-                    </a>
-                    </li>
-                    <li class="nav-item">
-                    <a href="./docs/components/main-sidebar.html" class="nav-link">
-                        <i class="nav-icon bi bi-circle"></i>
-                        <p>Main Sidebar</p>
-                    </a>
-                    </li>
-                </ul>
-                </li>
-                <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="nav-icon bi bi-filetype-js"></i>
-                    <p>
-                    Javascript
-                    <i class="nav-arrow bi bi-chevron-right"></i>
-                    </p>
-                </a>
-                <ul class="nav nav-treeview">
-                    <li class="nav-item">
-                    <a href="./docs/javascript/treeview.html" class="nav-link">
-                        <i class="nav-icon bi bi-circle"></i>
-                        <p>Treeview</p>
-                    </a>
-                    </li>
-                </ul>
-                </li>
-                <li class="nav-item">
-                <a href="./docs/browser-support.html" class="nav-link">
-                    <i class="nav-icon bi bi-browser-edge"></i>
-                    <p>Browser Support</p>
-                </a>
-                </li>
-                <li class="nav-item">
-                <a href="./docs/how-to-contribute.html" class="nav-link">
-                    <i class="nav-icon bi bi-hand-thumbs-up-fill"></i>
-                    <p>How To Contribute</p>
-                </a>
-                </li>
-                <li class="nav-item">
-                <a href="./docs/faq.html" class="nav-link">
-                    <i class="nav-icon bi bi-question-circle-fill"></i>
-                    <p>FAQ</p>
-                </a>
-                </li>
-                <li class="nav-item">
-                <a href="./docs/license.html" class="nav-link">
-                    <i class="nav-icon bi bi-patch-check-fill"></i>
-                    <p>License</p>
-                </a>
-                </li>
-                <li class="nav-header">MULTI LEVEL EXAMPLE</li>
-                <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="nav-icon bi bi-circle-fill"></i>
-                    <p>Level 1</p>
-                </a>
-                </li> -->
-<!--                 
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon bi bi-circle-fill"></i>
-                        <p>
-                        Level 1
-                        <i class="nav-arrow bi bi-chevron-right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon bi bi-circle"></i>
-                            <p>Level 2</p>
-                        </a>
-                        </li>
-                        <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon bi bi-circle"></i>
-                            <p>
-                            Level 2
-                            <i class="nav-arrow bi bi-chevron-right"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon bi bi-record-circle-fill"></i>
-                                <p>Level 3</p>
-                            </a>
-                            </li>
-                            <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon bi bi-record-circle-fill"></i>
-                                <p>Level 3</p>
-                            </a>
-                            </li>
-                            <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon bi bi-record-circle-fill"></i>
-                                <p>Level 3</p>
-                            </a>
-                            </li>
-                        </ul>
-                        </li>
-                        <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon bi bi-circle"></i>
-                            <p>Level 2</p>
-                        </a>
-                        </li>
-                    </ul>
-                </li> -->
-                <!-- <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon bi bi-circle-fill"></i>
-                        <p>Level 1</p>
-                    </a>
-                </li> -->
-
-                <!-- <li class="nav-header">LABELS</li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon bi bi-circle text-danger"></i>
-                        <p class="text">Important</p>
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon bi bi-circle text-warning"></i>
-                        <p>Warning</p>
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon bi bi-circle text-info"></i>
-                        <p>Informational</p>
-                    </a>
-                </li> -->
-            </ul>
-            <!--end::Sidebar Menu-->
-            </nav>
-        </div>
-        <!--end::Sidebar Wrapper-->
-    </aside>
+              </ul>
+            </transition>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </aside>
 </template>
 
-<script>
-
-import { ref, computed } from 'vue';
+<script setup>
+import { ref, watch, computed } from 'vue';
 import { useRoute } from 'vue-router';
+import { AdminMenus } from '../../data/sidebar-menus';
+import { filterMenus } from '../../ahmed-vue-kit/utils/menuFilter';
+import { useAuthStore } from '../../ahmed-vue-kit/stores/authStore';
 
-export default {
-      setup() {
-        const isOpen = ref(false);
+const route = useRoute();
+const openMenu = ref(null);
+const auth = useAuthStore();
 
-        const route = useRoute();
+// Compute menus with proper filtering
+const menus = computed(() => {
+  if (!auth.initialized) return [];
+  return filterMenus(AdminMenus);
+});
+/*
+|--------------------------------------------------------------------------
+| Helpers
+|--------------------------------------------------------------------------
+*/
 
-        const isActiveMenu = computed(() => (menuName) => {            
-            return route.name?.startsWith(menuName);
-        });
+// Check if menu is active based on route
+const isMenuActive = (menu) => {
+  if (!menu?.items) return false;
 
-        const isActiveMenuItem = computed(() => (itemName) => {                     
-            return itemName.includes(route.name);
-            // return route.name === itemName;
-        });
-        
-        const toggleSidebar = () => {
+  return menu.items.some((item) => item.name === route.name);
+};
 
-        isOpen.value = !isOpen.value;
-         
-          // Close all other menus when opening a new one
-          const treeviews = document.querySelectorAll('.has-treeview');
-          treeviews.forEach(treeview => {
-            if (!treeview.contains(event.target)) {
-              treeview.classList.remove('menu-open');
-            }
-          });
-        };
-    
-        return {
-            isOpen,
-            toggleSidebar,
-            isActiveMenu,
-            isActiveMenuItem
-        };
-      },
-    };
+// Toggle sidebar open/close
+const toggleSidebar = (key) => {
+  openMenu.value = openMenu.value === key ? null : key;
+};
+
+watch(
+  () => route.name,
+  () => {
+    const activeMenu = menus.value.find((menu) =>
+      menu?.items?.some((item) => item.name === route.name)
+    );
+
+    openMenu.value = activeMenu ? activeMenu.key : null;
+  },
+  { immediate: true }
+);
 </script>
 
 <style scoped>
-    .sidebar-wrapper {
-        transition: all 0.3s ease;
-    }
-    /* .router-link-active, */
-    .router-link-active{
-        background-color:  rgba(255,255,255,.9);
-        color: #000000!important;
-    }
+/* ===========================
+Sidebar Base
+=========================== */
 
-    /* .menu-open{
-        background-color: #007bff!important;
-        color: #fff!important;
-    } */
+.app-sidebar {
+  width: 260px;
+  height: 100vh;
+  background: #111827;
+  color: #d1d5db;
+  display: flex;
+  flex-direction: column;
+  padding: 16px 12px;
+  font-family: 'Source Sans 3', sans-serif;
+  box-shadow: 3px 0 8px rgba(0, 0, 0, 0.3);
+  border-right: 1px solid #2c2f3a;
+}
 
-    .sidebar-wrapper.menu-open {
-    /* Add your expanded styles here */
-    }
+/* ===========================
+Sidebar Brand
+=========================== */
 
-    .sidebar-wrapper:not(.menu-open) {
-    /* Add your collapsed styles here */
-    }
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 8px 20px 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.brand-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.brand-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: #4f46e5;
+  padding: 4px;
+}
+
+.brand-text {
+  font-size: 16px;
+  font-weight: 700;
+  color: #f9fafb;
+}
+
+/* ===========================
+Menu
+=========================== */
+
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0 0 0;
+}
+
+.menu-item {
+  margin-top: 2px;
+}
+
+.menu-link {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  border-radius: 12px;
+  color: #d1d5db;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.menu-link .menu-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.menu-link i {
+  font-size: 16px;
+  width: 20px;
+}
+
+.menu-link:hover {
+  background: linear-gradient(135deg, #4f46e5, #2c2439);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.menu-link.active {
+  background: linear-gradient(135deg, #4f46e5, #2c2439);
+  color: #fff;
+}
+
+.menu-link::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 4px;
+  height: 100%;
+  background: transparent;
+  border-radius: 4px 0 0 4px;
+  transition: all 0.3s ease;
+}
+
+.menu-link.active::before,
+.menu-link:hover::before {
+  background: #fff;
+}
+
+/* ===========================
+Submenu
+=========================== */
+
+.submenu {
+  padding-left: 12px;
+  margin-top: 6px;
+}
+
+.submenu-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  color: #9ca3af;
+  font-size: 14px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.submenu-link i {
+  font-size: 10px;
+}
+
+.submenu-link:hover {
+  background: rgba(99, 102, 241, 0.2);
+  color: #fff;
+}
+
+.active-child {
+  background: rgba(99, 102, 241, 0.25);
+  color: #fff !important;
+}
+
+/* ===========================
+Animation
+=========================== */
+
+.slide-enter-active,
+.slide-leave-active {
+  transition: all 0.25s ease;
+}
+
+.slide-enter-from,
+.slide-leave-to {
+  opacity: 0;
+  transform: translateY(-5px);
+}
 </style>
-<!-- https://adminlte.io/docs/3.0/components/main-sidebar.html -->
-
-
-
-<!-- https://adminlte.io/themes/v3/pages/widgets.html -->

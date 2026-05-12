@@ -61,9 +61,8 @@
       integrity="sha256-+uGLJmmTKOqBr+2E6KDYs/NRsHxSkONXFHUL0fy2O/4="
       crossorigin="anonymous"
     />
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
-
+    @routes
     @vite(['resources/css/app.css', 'resources/js/app.js'])
   </head>
   <!--end::Head-->
@@ -71,9 +70,9 @@
   <!--begin::Body-->
   <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">        
     <div class="main" id="app">
-        <div>
-            <master></master>
-        </div>
+        <div>          
+            <master></master>              
+        </div>        
 
         <!--begin::Script-->
         <!--begin::Third Party Plugin(OverlayScrollbars)-->
@@ -211,14 +210,10 @@
         integrity="sha256-/t1nN2956BT869E6H4V1dnt0X5pAQHPytli+1nTZm2Y="
         crossorigin="anonymous"
       ></script>
-      <script
-        src="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/maps/world.js"
+      <script src="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/maps/world.js"
         integrity="sha256-XPpPaZlU8S/HWf7FZLAncLg2SAkP8ScUTII89x9D3lY="
-        crossorigin="anonymous"
-      ></script>
-
-      <script src="{{ asset('admin/v1/assets/js/jquery-3.7.1.min.js') }}"></script>
-      <script src="{{ asset('admin/v1/assets/js/select2.min.js') }}"></script>
+        crossorigin="anonymous">
+    </script>
 
       <!-- jsvectormap -->
       <script>
@@ -326,11 +321,6 @@
   
         const sparkline3 = new ApexCharts(document.querySelector('#sparkline-3'), option_sparkline3);
         sparkline3.render();
-
-        // In your Javascript (external .js resource or <script> tag)
-        {{--  $(document).ready(function() {
-          $('.js-example-basic-single').select2();
-        });  --}}
       </script>
       <!--end::Script-->
     </body>

@@ -1,0 +1,12 @@
+{
+    "name": "Feature",
+    "alias": "feature",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Feature\\app\\Providers\\FeatureServiceProvider",        
+        "Modules\\Feature\\app\\Providers\\RouteServiceProvider"      
+    ],
+    "files": []
+}

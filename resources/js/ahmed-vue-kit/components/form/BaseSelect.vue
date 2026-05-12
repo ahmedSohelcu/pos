@@ -1,0 +1,452 @@
+<script setup>
+import {
+  ref,
+  computed,
+  onMounted,
+  onBeforeUnmount,
+  nextTick,
+  watch,
+} from 'vue';
+
+import api from '../../api/api';
+
+const props = defineProps({
+  modelValue: { type: [String, Number, Array], default: '' },
+  label: String,
+  name: String,
+  getApiRoute: String,
+  options: { type: Array, default: () => [] },
+  optionKeyName: {
+    type: String,
+    default: 'name',
+  }, // label
+  optionValueName: { type: String, default: 'id' }, // value
+
+  placeholder: { type: String, default: 'Select an option' },
+  error: String,
+  disabled: Boolean,
+  select2: Boolean,
+  multiple: Boolean,
+  customClass: String,
+  visible: { type: Boolean, default: true },
+  infinite: { type: Boolean, default: false }, // ✅ enable infinite scroll
+});
+
+const emit = defineEmits(['update:modelValue']);
+
+const selectRef = ref(null);
+const optionsRef = ref([]);
+const loadingRef = ref(false);
+let selectInstance = null;
+
+const finalOptions = computed(() =>
+  props.options.length ? props.options : optionsRef.value
+);
+
+// ==========================
+// Load all options (non-infinite)
+// ==========================
+const loadOptions = async () => {
+  if (!props.getApiRoute || props.infinite) return;
+  loadingRef.value = true;
+  try {
+    const res = await api.get(props.getApiRoute);
+    optionsRef.value = res.data;
+  } finally {
+    loadingRef.value = false;
+  }
+};
+
+// ==========================
+// Init Select2
+// ==========================
+const initSelect2 = async () => {
+  if (!props.select2 || !selectRef.value) return;
+  await nextTick();
+
+  const $select = window.$(selectRef.value);
+  const $modalParent = $select.closest('.modal');
+
+  if ($select.hasClass('select2-hidden-accessible')) $select.select2('destroy');
+
+  const select2Options = {
+    placeholder: props.placeholder,
+    allowClear: !props.multiple,
+    width: '100%',
+    closeOnSelect: !props.multiple,
+    dropdownParent: $modalParent.length ? $modalParent : undefined,
+  };
+
+  // ==========================
+  // Infinite scroll configuration
+  // ==========================
+  if (props.infinite && props.getApiRoute) {
+    select2Options.ajax = {
+      url: props.getApiRoute,
+      dataType: 'json',
+      delay: 250,
+      data: (params) => ({ q: params.term, page: params.page || 1 }),
+      processResults: (data, params) => {
+        params.page = params.page || 1;
+        return {
+          results: data.data.map((item) => ({
+            id: item.id,
+            text: item[props.optionKeyName],
+          })),
+          pagination: { more: params.page < data.meta.last_page },
+        };
+      },
+      cache: true,
+    };
+    select2Options.minimumInputLength = 1;
+  }
+
+  selectInstance = $select.select2(select2Options);
+
+  // Set initial value safely
+  if (props.infinite) {
+    $select.val(props.modelValue).trigger('change');
+  } else {
+    $select.val(props.modelValue).trigger('change.select2');
+  }
+
+  // Sync with v-model
+  $select.on('change.select2', function () {
+    const value = props.multiple ? $(this).val() || [] : $(this).val();
+    if (JSON.stringify(value) !== JSON.stringify(props.modelValue)) {
+      emit('update:modelValue', value);
+    }
+  });
+};
+
+// ==========================
+// Destroy Select2
+// ==========================
+const destroySelect2 = () => {
+  if (!props.select2 || !selectRef.value) return;
+  const $select = window.$(selectRef.value);
+  if ($select.hasClass('select2-hidden-accessible')) {
+    $select.off('change.select2');
+    $select.select2('destroy');
+  }
+  selectInstance = null;
+};
+
+// ==========================
+// Watchers
+// ==========================
+watch(
+  () => props.modelValue,
+  (val) => {
+    if (!props.select2 || !selectRef.value) return;
+    const $select = window.$(selectRef.value);
+    const currentVal = $select.val();
+    if (JSON.stringify(currentVal) !== JSON.stringify(val))
+      $select.val(val).trigger('change.select2');
+  }
+);
+
+watch(
+  () => JSON.stringify(finalOptions.value),
+  async () => {
+    if (!props.select2 || props.infinite) return;
+    destroySelect2();
+    await nextTick();
+    initSelect2();
+  }
+);
+
+watch(
+  () => props.visible,
+  async (val) => {
+    if (!props.select2 || !selectRef.value) return;
+    if (val) {
+      await nextTick();
+      initSelect2();
+    } else {
+      destroySelect2();
+    }
+  }
+);
+
+// ==========================
+// Lifecycle
+// ==========================
+onMounted(async () => {
+  await loadOptions();
+  await nextTick();
+  if (props.select2) initSelect2();
+});
+
+onBeforeUnmount(() => {
+  destroySelect2();
+});
+</script>
+
+<template>
+  <div class="mb-2 me-2 justify-content-between">
+    <label v-if="label" class="form-label">{{ label }}</label>
+
+    <select
+      ref="selectRef"
+      :name="name"
+      :multiple="multiple"
+      :disabled="disabled"
+      :class="['form-selects', customClass, { 'is-invalid': error }]"
+      @change="
+        !select2 &&
+        emit(
+          'update:modelValue',
+          multiple
+            ? Array.from($event.target.selectedOptions).map((o) => o.value)
+            : $event.target.value
+        )
+      "
+    >
+      <option v-if="!multiple" value="" disabled>
+        {{ loadingRef ? 'Loading...' : placeholder }}
+      </option>
+
+      <!-- <option
+        v-for="option in finalOptions ?? []"
+        :key="option.id"
+        :value="option.id"
+      >
+        {{ $t ? $t(option[optionKeyName]) : option[optionKeyName] }}
+      </option> -->
+
+      <option
+        v-for="option in finalOptions ?? []"
+        :key="option[optionValueName]"
+        :value="option[optionValueName]"
+      >
+        {{ $t ? $t(option[optionKeyName]) : option[optionKeyName] }}
+      </option>
+    </select>
+
+    <small v-if="error" class="text-danger">{{ error[0] }}</small>
+  </div>
+</template>
+
+<style>
+/* Base professional styling for Select2 */
+.select2-container--default .select2-selection--single {
+  background-color: #fff;
+  border: 1px solid #ced4da;
+  border-radius: 8px;
+  height: 40px !important;
+  padding: 5px 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.select2-container--default .select2-selection--single:focus,
+.select2-container--default .select2-selection--single:hover {
+  border-color: #86b7fe;
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+.select2-container--default
+  .select2-selection--single
+  .select2-selection__rendered {
+  line-height: 30px !important;
+  font-size: 0.95rem;
+  color: #495057;
+}
+
+.select2-container--default
+  .select2-selection--single
+  .select2-selection__arrow {
+  height: 40px !important;
+  right: 10px;
+}
+
+/* Multiple select look */
+.select2-container--default .select2-selection--multiple {
+  min-height: 40px !important;
+  border-radius: 8px;
+  padding: 5px 8px;
+  border: 1px solid #ced4da;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.select2-container--default
+  .select2-selection--multiple
+  .select2-selection__choice {
+  background-color: #0d6efd;
+  border: none;
+  color: #fff;
+  padding: 3px 10px;
+  font-size: 0.85rem;
+  border-radius: 6px;
+  margin-top: 3px;
+}
+
+.select2-container--default
+  .select2-selection--multiple
+  .select2-selection__choice__remove {
+  color: #fff;
+  margin-right: 4px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.select2-container--default
+  .select2-selection--multiple
+  .select2-selection__choice__remove:hover {
+  color: #ffc107;
+}
+
+/* Dropdown menu */
+.select2-container--default .select2-dropdown {
+  border-radius: 8px;
+  border: 1px solid #ced4da;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.select2-container--default .select2-results__option--highlighted {
+  background-color: #0d6efd;
+  color: white;
+}
+
+/* Multiple select look with black text */
+.select2-container--default
+  .select2-selection--multiple
+  .select2-selection__choice {
+  background-color: #0d6efd; /* keep blue background */
+  border: none;
+  color: #000; /* black font */
+  padding: 3px 10px;
+  font-size: 0.85rem;
+  border-radius: 6px;
+  margin-top: 3px;
+}
+
+.select2-container--default
+  .select2-selection--multiple
+  .select2-selection__choice__remove {
+  color: #000; /* black remove icon */
+  margin-right: 4px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.select2-container .select2-search--inline .select2-search__field {
+  height: 22px !important;
+}
+
+/* Multiple Select height */
+.select2-container .select2-selection--multiple {
+  min-height: 35px !important;
+  /* padding: 5px; */
+}
+
+.form-label {
+  color: #6c757d;
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 600;
+  color: #344767;
+  margin-bottom: 6px;
+  letter-spacing: 0.3px;
+}
+</style>
+<!-- 
+    ---------------
+    How to use
+    ---------------
+    <div class="col">
+    //options through api call
+        <BaseSelect
+            v-model="form.category_id"
+            name="category_id"
+            :getApiRoute="route('selectable_statuses')" //or :optinons="categories"
+            label="Category"
+            placeholder="Choose category"                          
+        />
+        <div class="me-2">{{ form.category }}</div>
+    </div>
+
+    //options through and options array
+    //pass select2 for single and select2 multiple for multiple
+    <div class="col">
+        <BaseSelect
+        class="me-2"
+        v-model="form.category_id"
+        name="category_id"
+        :options="categories"
+        label="Country"
+        select2
+        multiple
+        placeholder="Choose category"                                    
+    />
+    <div class="me-2">{{ form.category }}</div>              
+</div>      
+
+Supports
+---------
+
+    1. label
+    2. name
+    3. options array to build options (first priority)
+    4. getApiRoute to call api for options (if optinos not provided)
+    5. optionKeyName -- by default its name, some times may be type others
+      optionValueName -- default id
+    6. placeholder
+    7. error
+    8. disabled
+-->
+
+
+
+<!-- 
+    v-model Example 
+
+    ----------------------------
+    01.parent component
+    ----------------------------
+    <template>
+  <div>
+    <h2>Test Component using Vite</h2>
+
+    <select :value="modelValue" @change="handleChange" class="form-control">
+      <option value="bd">Bangladesh</option>
+      <option value="usa">USA</option>
+    </select>
+  </div>
+</template>
+
+<script setup>
+const props = defineProps({
+  modelValue: String,
+});
+
+const emit = defineEmits(['update:modelValue']);
+
+const handleChange = (e) => {
+  const value = e.target.value;
+
+  // send value to parent
+  emit('update:modelValue', value);
+};
+</script>
+
+
+
+    ----------------------------
+    01.child component
+    ----------------------------
+  <p>Selected: {{ form.country }}</p>
+
+
+  <Test v-model="form.country" />
+
+👉 internally এটা হয়:
+
+<Test
+  :modelValue="country"
+  @update:modelValue="country = $event"
+/>
+-->
