@@ -9,3 +9,48 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
+
+:root {
+    color-scheme: light;
+
+    --app-bg: #f8f9fa;
+    --app-surface: #ffffff;
+    --app-surface-muted: #f8fafc;
+    --app-border: #e5e7eb;
+    --app-text: #212529;
+    --app-text-muted: #6b7280;
+
+    --sidebar-bg: #111827;
+    --sidebar-text: #d1d5db;
+    --sidebar-border: #2c2f3a;
+    --sidebar-brand-text: #f9fafb;
+    --sidebar-submenu-text: #9ca3af;
+    --sidebar-submenu-hover-bg: rgba(99, 102, 241, 0.2);
+    --sidebar-submenu-active-bg: rgba(99, 102, 241, 0.25);
+    --sidebar-submenu-active-color: #ffffff;
+}
+
+[data-bs-theme='dark'] {
+    color-scheme: dark;
+
+    --app-bg: #2b3035;
+    --app-surface: #212529;
+    --app-surface-muted: #111827;
+    --app-border: #374151;
+    --app-text: #e5e7eb;
+    --app-text-muted: #9ca3af;
+}
+
+.os-theme-sidebar {
+    --os-size: 6px;
+    --os-padding-perpendicular: 2px;
+    --os-padding-axis: 2px;
+    --os-track-border-radius: 10px;
+    --os-track-bg: rgba(255, 255, 255, 0.06);
+    --os-handle-border-radius: 10px;
+    --os-handle-bg: #000;
+    --os-handle-bg-hover: #1f2937;
+    --os-handle-bg-active: #374151;
+    --os-handle-min-size: 33px;
+    --os-handle-interactive-area-offset: 4px;
+}

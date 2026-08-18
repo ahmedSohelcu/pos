@@ -23,6 +23,6 @@ class ProductionSeeder extends Seeder
             'email' => 'test@example.com',
         ]);
 
-        $this->call(PlanDatabaseSeeder::class);
+        // $this->call(PlanDatabaseSeeder::class);
     }
 }

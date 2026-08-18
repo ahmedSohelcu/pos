@@ -3,17 +3,24 @@
 namespace Modules\Product\App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Modules\Product\App\Models\Product;
+use App\Services\Core\FileService;
+use Illuminate\Support\Facades\DB;
+use Modules\Product\app\Models\Product;
 use Modules\Product\app\Services\ProductService;
 use Modules\Product\app\Http\Requests\ProductRequest;
 
 class ProductController extends Controller
 {   
-    protected $service;    
+    protected $fileService;
 
-    public function __construct(ProductService $productService)
+    public function __construct(
+            ProductService $productService,
+            FileService $fileService
+        )
     {
         $this->service = $productService;
+        $this->fileService = $fileService;
+
     }
     public function index()
     {
@@ -24,10 +31,16 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(ProductRequest $request) {                
-        $product = $this->service
-            ->setAttributes($request->all())
-            ->productStore();
+    public function store(ProductRequest $request) {
+        $product = DB::transaction(function () use ($request) {
+            return $this->service
+                ->setAttributes($request->all())
+                ->storeProductInfo()
+                ->storeProductMedia()
+                ->storeVariantMedia()
+                ->getModel()
+                ->load(["variants.attributes", "media"]);
+        });
 
         return created_responses('Product', $product);
     }
@@ -38,6 +51,8 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {        
+        $product->load(["variants.attributes", "media"]);
+
         return success_response('Product', $product);
     }
 
@@ -46,10 +61,16 @@ class ProductController extends Controller
      */
     public function update(ProductRequest $request, Product $product) 
     {        
-        $product = $this->service
-            ->setModel($product)
-            ->setAttrs($request->all())
-            ->productUpdate();
+        $product = DB::transaction(function () use ($request, $product) {
+            return $this->service
+                ->setModel($product)
+                ->setAttrs($request->all())
+                ->productUpdate()
+                ->updateProductMedia()
+                ->updateVariantMedia()
+                ->getModel()
+                ->load(["variants.attributes", "media"]);
+        });
 
         return updated_response('Product', $product);
     }

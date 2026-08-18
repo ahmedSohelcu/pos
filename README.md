@@ -286,3 +286,114 @@ to your server.
 ---
 
 ## 🤝
+
+
+ i want to build a education flutter app with riverpod and repository pattern and with best standart structure.maintain full professional architech and lateer i will replace actual api only. Home page should have drawer and bottom navigation menu.in bottom navigation menu should contain stude&practice, Question Bank, Live Exam,Archive, Bookmark if click any item then open their actual screen. Drawer item should Profile, Performance Statistics,Bookmark, Wrong & Unanswered, Result, Settings,Our More Apps, Contact Us, Terms & Condition,Logout, you can use better word for this drawer item. and prepare individual screen for every drawer item and if click then should open. Design a nice and professional home page.
+
+when click study & practice should display 1.Admission, 2.BCS & Others Job, 3.Bank
+when clik Admission will show Subject Lists with box style  with nice design like Bangle 1st, Bangla 2nd, English, Economics, Analytics, Critical, Vash gian O bishesh dokkota, 
+when click individual subject then show the Topic List like for bangla 1.Goddo , 2.Poddo, 3. Notok
+after click each topic will display some mcq answer and question list more then 30 each page with pagination. each mcq qust should contain 4 options after each quest add a checkbox  to bookmark this  question .( later these all book mark quest will show under bookmark action from drawer.). After the options of each quest should 3 action . 1.answer 2.Explain, 3.favourite . use nice icon for all 3 option.
+when click answer then make highlight the optino of this question . when click explain then show content as explanation of each quest. when click favourte then make this qustion as favourte. all favourite mcq quest ,option should list and drawer. Repeat this Admission system for Bcs and bank too.
+
+Follow the system for Question Bank AND MAKE BOX DESIGN
+Question Bank Option
+    1.BCS
+        Exam Year wise
+          1st Bcs -> when click then show mcq as described before
+          2nd Bcs -> when click then show mcq as described before
+          ....
+
+        Subject Wise
+          Bangla -> when click then show mcq as described before
+          Math-> when click then show mcq as described before
+          English-> when click then show mcq as described before
+          ...
+
+    2.Bank
+      Subject wise
+        Bangla-> when click then show mcq as described before
+        Math-> when click then show mcq as described before
+        English-> when click then show mcq as described before
+
+      Category Wise
+        Sunali Bank-> when click then show mcq as described before
+        Rupali Bank-> when click then show mcq as described before
+        ..
+
+    3.University
+        DU
+          Exam Year wise
+            2005 -> when click then show mcq as described before
+            2006 -> when click then show mcq as described before
+          ....
+
+          Subject Wise
+            Bangla -> when click then show mcq as described before
+            Math-> when click then show mcq as described before
+            English-> when click then show mcq as described before
+          ...
+
+        CU
+          Exam Year wise
+            2005 -> when click then show mcq as described before
+            2006 -> when click then show mcq as described before
+          ....
+
+          Subject Wise
+            Bangla -> when click then show mcq as described before
+            Math-> when click then show mcq as described before
+            English-> when click then show mcq as described before
+          ...
+
+
+        RU
+          Exam Year wise
+            2005 -> when click then show mcq as described before
+            2006 -> when click then show mcq as described before
+          ....
+
+          Subject Wise
+            Bangla -> when click then show mcq as described before
+            Math-> when click then show mcq as described before
+            English-> when click then show mcq as described before
+          ...
+
+
+        JU
+          Exam Year wise
+            2005 -> when click then show mcq as described before
+            2006 -> when click then show mcq as described before
+          ....
+
+          Subject Wise
+            Bangla -> when click then show mcq as described before
+            Math-> when click then show mcq as described before
+            English-> when click then show mcq as described before
+          ...
+
+
+        JNU
+          Exam Year wise
+            2005 -> when click then show mcq as described before
+            2006 -> when click then show mcq as described before
+          ....
+
+          Subject Wise
+            Bangla -> when click then show mcq as described before
+            Math-> when click then show mcq as described before
+            English-> when click then show mcq as described before
+          ...
+
+
+live exam 
+mcq question and option list with paginated  20 each page. user will check the answer finally will submit exam. should display exam time. and a progressbar for answered question. after submit the exam. will show a screen where display some info  result will public later. you will notify.
+ from the like exam user also will be able any quest as bookmark. 
+
+
+ ARCHIVE SCREEN
+    ALL live exam mcq
+
+  notice scren -- show sommy notice..
+
+  now write a prompt to build a nice flutter application via claude and and essential feature and professional design

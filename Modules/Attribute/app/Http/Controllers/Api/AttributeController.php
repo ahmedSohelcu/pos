@@ -16,6 +16,17 @@ class AttributeController extends Controller
     {
         $this->service = $attributeService;
     }
+
+    public function attributeValuesByAttributeId($attribute_id)
+    {
+        return $this->service->getAttributeValuesByAttributeId($attribute_id);        
+    }
+
+
+    public function selectable()
+    {
+        return $this->service->getSelectableAttributes();        
+    }
     public function index()
     {
         $attributes = $this->service->getAll(true, true, ['status', 'tenant', 'values'], 10);

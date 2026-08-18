@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('sku')->nullable();
             $table->string('barcode')->nullable();
 
-            $table->decimal('cost_price',12,2)->nullable()->comment('purchase price with other coast');
+            $table->decimal('purchase_price',12,2)->nullable()->comment('purchase price with other coast');
             $table->decimal('sale_price',12,2);
 
             $table->decimal('stock',12,2)->default(0);

@@ -9,7 +9,7 @@ class AttributeRequest extends BaseRequest
 {
     public function rules(): array
     {
-        $attribute_id = $this->id ?? null;      
+        $attribute_id = $this->route('attribute')?->id ?? null;      
         $tenant_id = $this->tenant_id ?? auth()->user()->tenant_id;
 
         return [

@@ -26,7 +26,7 @@
             :name="filter.name"
             :getApiRoute="filter.getApiRoute"
             :options="filter.options"
-            :optionKeyName="filter.optionKeyName" 
+            :optionKeyName="filter.optionKeyName"
             :optionValueName="filter.optionValueName"
             :label="filter.label"
             :placeholder="`Choose ${filter.label}`"
@@ -184,7 +184,7 @@ const formatFilterValue = (key, value) => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--app-border);
 }
 
 .filter-card-header h5 {
@@ -215,11 +215,7 @@ const formatFilterValue = (key, value) => {
 /* Dark mode support */
 @media (prefers-color-scheme: dark) {
   .filter-pos-card {
-    background-color: #1f2937;
     color: #f9fafb;
-  }
-  .filter-card-header {
-    border-bottom: 1px solid #374151;
   }
   .badge.bg-primary {
     background-color: #3b82f6;

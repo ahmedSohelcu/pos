@@ -1,15 +1,18 @@
 <?php
+namespace App\Models\Traits;
 
 use App\Models\User;
+
 
 trait HasUserTracking
 {
     public static function bootHasUserTracking()
-    {
+    {        
         static::creating(function ($model) {
-            if (auth()->check()) {
+            if (auth()->check()) {          
                 $model->created_by ??= auth()->id();
             }
+
         });
 
         static::updating(function ($model) {

@@ -1,6 +1,5 @@
 <script setup>
-import { reactive, computed, onMounted, watch } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { reactive, computed, onMounted } from 'vue';
 import BaseInput from '../../../../ahmed-vue-kit/components/form/BaseInput.vue';
 import {
   BRAND_ENDPOINTS,
@@ -13,24 +12,22 @@ import {
 import BaseFileUpload from '../../../../ahmed-vue-kit/components/form/BaseFileUpload.vue';
 
 import { useProductStore } from '../store';
-import { useAuthStore } from '../../../../ahmed-vue-kit/stores/authStore';
 import BaseRichTextEditor from '../../../../ahmed-vue-kit/components/form/BaseRichTextEditor.vue';
 import api from '../../../../ahmed-vue-kit/api/api';
-import { notify } from '@kit/composables/useNotify';
 
 const productStore = useProductStore();
-const auth = useAuthStore();
-const route = useRoute();
-const router = useRouter();
 
-const isEdit = computed(() => route.name === 'product.edit');
+// fetch data
+onMounted(() => {
+  // productStore.fetchData();
+});
 
 const form = reactive({
   id: null,
   name: '',
   slug: '',
   product_type: 'single',
-  tenant_id: auth.tenant_id || null,
+  tenant_id: 1,
 
   brand_id: '',
   category_id: '',
@@ -48,39 +45,14 @@ const form = reactive({
   product_thumbnail: null,
   product_galleries: [],
 
-  existingThumbnail: [],
-  existingGalleries: [],
-
   is_active: true,
   sorting_order: 0,
 
-  attributes: [
-    {
-      uid: Date.now(),
-      attribute_id: '',
-      selectable_values: [],
-      values: [],
-    },
-  ],
-
+  attributes: [{ attribute_id: '', selectable_values: '', values: '' }],
   variants: [],
 });
 
-const errors = computed(() => productStore.errors);
-
-const firstError = (prefix) => {
-  const key = Object.keys(productStore.errors ?? {}).find((k) =>
-    k.startsWith(prefix)
-  );
-  return key ? productStore.errors[key] : null;
-};
-
-const variantError = (index, field) =>
-  productStore.errors?.[`variants.${index}.${field}`];
-
-const attributeErrors = computed(() =>
-  Object.keys(productStore.errors ?? {}).filter((k) => k.includes('.attributes.'))
-);
+const errors = {};
 
 const isSingle = computed(() => form.product_type === 'single');
 const isVariant = computed(() => form.product_type === 'variant');
@@ -88,10 +60,8 @@ const isService = computed(() => form.product_type === 'service');
 
 function addAttribute() {
   form.attributes.push({
-    uid: Date.now() + Math.random(),
     attribute_id: '',
-    selectable_values: [],
-    values: [],
+    values: '',
   });
 }
 
@@ -99,86 +69,44 @@ function removeAttribute(i) {
   form.attributes.splice(i, 1);
 }
 
-async function loadAttributeValues(attr) {
-  if (!attr.attribute_id) {
-    attr.selectable_values = [];
-    return;
-  }
-
-  try {
-    const res = await api.get(
-      ATTRIBUTE_ENDPOINTS.attributeValues(attr.attribute_id)
-    );
-    attr.selectable_values = res.data;
-  } catch (err) {
-    console.error(err);
-  }
-}
-
 /**
  * Reset values when attribute changes
  */
 function onAttributeChange(index) {
-  const currentAttributeId = form.attributes[index].attribute_id;
-
-  // prevent duplicate attribute selection
-  const alreadyExists = form.attributes.some(
-    (attr, i) =>
-      i !== index && String(attr.attribute_id) === String(currentAttributeId)
-  );
-
-  if (alreadyExists) {
-    alert('This attribute is already selected');
-
-    form.attributes[index].attribute_id = '';
-    form.attributes[index].values = [];
-    form.attributes[index].selectable_values = [];
-
-    return;
+  form.attributes[index].values = '';
+  if (form.attributes[index].attribute_id) {
+    api
+      .get(
+        ATTRIBUTE_ENDPOINTS.attributeValues(form.attributes[index].attribute_id)
+      )
+      .then((res) => {
+        form.attributes[index].selectable_values = res.data;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
+}
 
-  // reset values
-  form.attributes[index].values = [];
-  form.attributes[index].selectable_values = [];
-
-  loadAttributeValues(form.attributes[index]);
+function fileSelect() {
+  alert('test');
 }
 
 function generateVariants() {
-  const attrs = form.attributes
-    .filter((a) => Array.isArray(a.values) && a.values.length)
-    .map((a) =>
-      a.values.map((valueId) => {
-        const found = a.selectable_values.find(
-          (item) => String(item.id) === String(valueId)
-        );
+  console.log('generate attributes', form.attributes);
 
-        return {
-          attribute_id: a.attribute_id,
-          attribute_value_id: valueId,
-          value_name: found ? found.value : valueId,
-        };
-      })
-    );
+  const attrs = form.attributes
+    .filter((a) => a.values)
+    .map((a) => a.values.split(',').map((v) => v.trim()));
 
   if (!attrs.length) return;
 
-  // handle single attribute (no reduce needed)
-  const combinations =
-    attrs.length === 1
-      ? attrs[0].map((item) => [item])
-      : attrs.reduce((a, b) =>
-          a.flatMap((d) => b.map((e) => [].concat(d, e)))
-        );
+  const combinations = attrs.reduce((a, b) =>
+    a.flatMap((d) => b.map((e) => [].concat(d, e)))
+  );
 
-  form.variants = combinations.map((combination) => ({
-    name: combination.map((item) => item.value_name).join('-'),
-
-    attributes: combination.map((item) => ({
-      attribute_id: item.attribute_id,
-      attribute_value_id: item.attribute_value_id,
-    })),
-
+  form.variants = combinations.map((c) => ({
+    name: c.join('-'),
     sku: generateSKU(),
     purchase_price: '',
     sale_price: '',
@@ -199,134 +127,27 @@ function cancel() {
   window.history.back();
 }
 
-// reset attributes/variants when leaving variant type
-watch(
-  () => form.product_type,
-  (val) => {
-    if (val !== 'variant') {
-      form.variants = [];
-      form.attributes = [
-        {
-          uid: Date.now(),
-          attribute_id: '',
-          selectable_values: [],
-          values: [],
-        },
-      ];
-    }
-  }
-);
-
-//------------------------------------------
-// EDIT MODE
-//------------------------------------------
-async function loadProduct() {
-  try {
-    const product = await productStore.show(PRODUCT_ENDPOINTS.show(form.id));
-
-    form.name = product.name ?? '';
-    form.slug = product.slug ?? '';
-    form.product_type = product.product_type ?? 'single';
-    form.brand_id = product.brand_id ?? '';
-    form.category_id = product.category_id ?? '';
-    form.unit_id = product.unit_id ?? '';
-    form.sku = product.sku ?? '';
-    form.barcode = product.barcode ?? '';
-    form.purchase_price = product.purchase_price ?? '';
-    form.sale_price = product.sale_price ?? '';
-    form.stock = product.stock ?? '';
-    form.track_stock = product.track_stock ?? true;
-    form.alert_quantity = product.alert_quantity ?? '';
-    form.description = product.description ?? '';
-    form.is_active = product.is_active ?? true;
-    form.sorting_order = product.sorting_order ?? 0;
-
-    // existing media
-    form.existingThumbnail = product.thumbnail
-      ? [{ id: 0, url: product.thumbnail }]
-      : [];
-
-    form.existingGalleries = (product.media ?? [])
-      .filter((m) => m.collection === 'gallery')
-      .map((m) => ({ id: m.id, url: m.url }));
-
-    // variants
-    if (product.product_type === 'variant' && product.variants?.length) {
-      const attrMap = new Map();
-
-      product.variants.forEach((v) => {
-        (v.attributes ?? []).forEach((a) => {
-          if (!attrMap.has(String(a.attribute_id))) {
-            attrMap.set(String(a.attribute_id), new Set());
-          }
-          attrMap.get(String(a.attribute_id)).add(String(a.attribute_value_id));
-        });
-      });
-
-      form.attributes = [...attrMap.entries()].map(
-        ([attribute_id, values], index) => ({
-          uid: Date.now() + index,
-          attribute_id,
-          selectable_values: [],
-          values: [...values],
-        })
-      );
-
-      form.attributes.forEach((attr) => loadAttributeValues(attr));
-
-      form.variants = product.variants.map((v) => ({
-        id: v.id,
-        name: v.name ?? '',
-        attributes: (v.attributes ?? []).map((a) => ({
-          attribute_id: a.attribute_id,
-          attribute_value_id: a.attribute_value_id,
-        })),
-        sku: v.sku ?? '',
-        purchase_price: v.purchase_price ?? '',
-        sale_price: v.sale_price ?? '',
-        stock: v.stock ?? '',
-        variant_thumbnail: null,
-      }));
-    }
-  } catch (error) {
-    notify.error('Failed to load product.');
-  }
+function selectedFile(file) {
+  // console.log('selectedFile', file);
 }
-
-onMounted(() => {
-  if (isEdit.value) {
-    form.id = route.params.id;
-    productStore.mode = 'edit';
-    loadProduct();
-  } else {
-    productStore.mode = 'create';
-  }
-});
 
 const createOrUpate = async () => {
   productStore.errors = {};
 
-  let success;
-
-  if (isEdit.value) {
-    success = await productStore.update(PRODUCT_ENDPOINTS.update(form.id), form);
+  if (productStore.mode === 'edit') {
+    await productStore.update(PRODUCT_ENDPOINTS.update(form.id), form);
   } else {
-    success = await productStore.create(PRODUCT_ENDPOINTS.store, form);
-  }
-
-  if (success) {
-    router.push({ name: 'product.index' });
+    await productStore.create(PRODUCT_ENDPOINTS.store, form);
   }
 };
 </script>
-
 
 <template>
   <div class="product-page">
     <!-- HEADER -->
     <div class="page-header">
       <div>
-        <h2>{{ isEdit ? 'Edit Product' : 'Add New Product' }}</h2>
+        <h2>Add New Product</h2>
         <p>Manage your store inventory efficiently</p>
       </div>
     </div>
@@ -358,13 +179,12 @@ const createOrUpate = async () => {
                   :options="[
                     { id: 'single', label: 'Single' },
                     { id: 'variant', label: 'Variant' },
-                    { id: 'service', label: 'Service' },
+                    { id: 'digital', label: 'Digital' },
                   ]"
                   label="Product Type"
                   select2
                   optionKeyName="label"
                   placeholder="Choose Product Type"
-                  :error="errors?.product_type"
                 />
               </div>
 
@@ -377,7 +197,7 @@ const createOrUpate = async () => {
                   label="Category"
                   select2
                   placeholder="Choose Category"
-                  :error="errors?.category_id"
+                  @update:modelValue="onProductTypeChange()"
                 />
 
                 <div class="me-2">{{ form.category_id }}</div>
@@ -392,7 +212,6 @@ const createOrUpate = async () => {
                   label="Brand"
                   select2
                   placeholder="Choose Brand"
-                  :error="errors?.brand_id"
                 />
 
                 <div class="me-2">{{ form.brand_id }}</div>
@@ -407,7 +226,6 @@ const createOrUpate = async () => {
                   label="Unit"
                   select2
                   placeholder="Unit"
-                  :error="errors?.unit_id"
                 />
 
                 <div class="me-2">{{ form.unit_id }}</div>
@@ -426,34 +244,24 @@ const createOrUpate = async () => {
                 <BaseFileUpload
                   label="Thumbnail"
                   v-model="form.product_thumbnail"
-                  :existingFiles="form.existingThumbnail"
+                  :existingFiles="form.existingFiles"
                   :multiple="false"
                   :deleteUrl="null"
                   :maxSize="1024"
                   class="border border-1 p-3 border-gray-300 rounded-2"
                 />
-                <small
-                  v-if="errors?.product_thumbnail"
-                  class="text-danger d-block mt-1"
-                  >{{ errors.product_thumbnail[0] }}</small
-                >
               </div>
 
               <div class="col-md-8">
                 <BaseFileUpload
                   label="Gallery Images"
                   v-model="form.product_galleries"
-                  :existingFiles="form.existingGalleries"
+                  :existingFiles="form.existingFiles"
                   :multiple="true"
                   :deleteUrl="null"
                   :maxSize="1024"
                   class="border border-1 p-3 border-gray-300 rounded-2"
                 />
-                <small
-                  v-if="firstError('product_galleries')"
-                  class="text-danger d-block mt-1"
-                  >{{ firstError('product_galleries')[0] }}</small
-                >
               </div>
             </div>
           </div>
@@ -511,10 +319,10 @@ const createOrUpate = async () => {
 
               <div class="col">
                 <BaseInput
-                  v-model="form.alert_quantity"
+                  v-model="form.stock_alert"
                   label="Stock Alert"
                   type="number"
-                  :error="errors.alert_quantity"
+                  :error="errors.stock_alert"
                   placeholder="Enter stock alert"
                   icon="fa-store"
                 />
@@ -536,24 +344,13 @@ const createOrUpate = async () => {
               Add More Attribute
             </button>
           </div>
-
           <div class="card-body">
             <div
-              v-if="attributeErrors.length"
-              class="alert alert-danger py-2 mb-3"
-            >
-              <div v-for="key in attributeErrors" :key="key">
-                {{ productStore.errors[key][0] }}
-              </div>
-            </div>
-
-            <div
               v-for="(attr, index) in form.attributes"
-              :key="attr.uid"
+              :key="`${index}-${attr.attribute_id}`"
               class="row g-3 mb-3"
             >
-              <!-- {{ form.attributes[index] }} -->
-
+              {{ form.attributes[index] }}
               <!-- ATTRIBUTE -->
               <div class="col">
                 <BaseSelect
@@ -573,7 +370,7 @@ const createOrUpate = async () => {
                   :options="form.attributes[index].selectable_values"
                   v-model="form.attributes[index].values"
                   :optionKeyName="'value'"
-                  multiple
+                  multiple="true"
                 />
               </div>
 
@@ -601,6 +398,7 @@ const createOrUpate = async () => {
                   <th>Purchase Price</th>
                   <th>Selling Price</th>
                   <th>Stock</th>
+                  <th>Stock Alert Qty</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -609,55 +407,32 @@ const createOrUpate = async () => {
                 <tr v-for="(variant, i) in form.variants" :key="i">
                   <td>
                     <BaseFileUpload
-                      v-model="variant.variant_thumbnail"
+                      v-model="form.variant_thumbnail"
                       :multiple="false"
                       :maxSize="1024"
                     />
-                    <small
-                      v-if="variantError(i, 'variant_thumbnail')"
-                      class="text-danger d-block mt-1"
-                      >{{ variantError(i, 'variant_thumbnail')[0] }}</small
-                    >
+                  </td>
+
+                  <td>{{ variant.name }}</td>
+
+                  <td>
+                    <BaseInput v-model="variant.sku" />
                   </td>
 
                   <td>
-                    {{ variant.name }}
-                    <small
-                      v-if="variantError(i, 'name')"
-                      class="text-danger d-block"
-                      >{{ variantError(i, 'name')[0] }}</small
-                    >
+                    <BaseInput type="number" v-model="variant.purchase_price" />
                   </td>
 
                   <td>
-                    <BaseInput
-                      v-model="variant.sku"
-                      :error="variantError(i, 'sku')"
-                    />
+                    <BaseInput type="number" v-model="variant.sale_price" />
                   </td>
 
                   <td>
-                    <BaseInput
-                      type="number"
-                      v-model="variant.purchase_price"
-                      :error="variantError(i, 'purchase_price')"
-                    />
+                    <BaseInput type="number" v-model="variant.stock" />
                   </td>
 
                   <td>
-                    <BaseInput
-                      type="number"
-                      v-model="variant.sale_price"
-                      :error="variantError(i, 'sale_price')"
-                    />
-                  </td>
-
-                  <td>
-                    <BaseInput
-                      type="number"
-                      v-model="variant.stock"
-                      :error="variantError(i, 'stock')"
-                    />
+                    <BaseInput type="number" v-model="variant.stock_alert" />
                   </td>
 
                   <td>
@@ -725,7 +500,6 @@ const createOrUpate = async () => {
                 type="number"
                 v-model="form.sorting_order"
                 label="Sorting"
-                :error="errors?.sorting_order"
               />
             </div>
           </div>
@@ -748,20 +522,20 @@ const createOrUpate = async () => {
 .product-page {
   padding: 30px;
   padding-bottom: 140px;
-  background: var(--app-bg);
+  background: #eef2f7;
 }
 
 .section-card {
   border: none;
   border-radius: 12px;
   box-shadow: 0 6px 25px rgba(0, 0, 0, 0.07);
-  background: var(--app-surface);
+  background: #ffffff;
 }
 
 .section-card .card-header {
   font-weight: 600;
-  background: var(--app-surface);
-  border-bottom: 1px solid var(--app-border);
+  background: #ffffff;
+  border-bottom: 1px solid #ddd;
 }
 
 .card-body {
@@ -774,11 +548,11 @@ const createOrUpate = async () => {
 }
 
 .upload-box {
-  border: 2px dashed var(--app-border);
+  border: 2px dashed #cfd8e3;
   padding: 35px;
   text-align: center;
   border-radius: 10px;
-  background: var(--app-surface-muted);
+  background: #f9fafc;
 }
 
 .upload-box img {
@@ -811,7 +585,7 @@ const createOrUpate = async () => {
 }
 
 .table-modern thead {
-  background: var(--app-surface-muted);
+  background: #f3f4f8;
 }
 
 .action-bar {
@@ -819,8 +593,8 @@ const createOrUpate = async () => {
   bottom: 0;
   left: 0;
   right: 0;
-  background: var(--app-surface);
-  border-top: 1px solid var(--app-border);
+  background: #ffffff;
+  border-top: 1px solid #ddd;
   padding: 15px 30px;
   display: flex;
   justify-content: flex-end;
@@ -846,7 +620,7 @@ const createOrUpate = async () => {
 
 .cancel-btn {
   padding: 10px 22px;
-  background: var(--app-surface-muted);
+  background: #f1f3f6;
   border: none;
 }
 </style>

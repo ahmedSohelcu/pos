@@ -2,6 +2,7 @@
 import { defineStore } from 'pinia';
 import api from '../api/api';
 import { notify } from '@kit/composables/useNotify';
+import { buildFormData } from '../composables/buildFormData';
 
 export function useResourceStore(name, endpoint, options = {}) {
   return defineStore(name, {
@@ -101,50 +102,51 @@ export function useResourceStore(name, endpoint, options = {}) {
         }
       },
 
-      // ➕ Create
-      // async create(url, data) {
-      //   this.saving = true;
-      //   this.errors = {};
-      //   this.message = null;
-
-      //   try {
-      //     const res = await api.post(url, data);
-
-      //     // Show success immediately
-      //     notify.success(res?.data?.message ?? 'Created successfully.');
-
-      //     // Try refreshing data separately
-      //     try {
-      //       await this.fetchData();
-      //     } catch (e) {
-      //       console.warn('Fetch failed after create:', e);
-      //     }
-
-      //     this.showModal = false;
-      //   } catch (error) {
-      //     if (!error.response) {
-      //       notify.error('Network error. Please check your connection.');
-      //     } else if (error.response.status === 422) {
-      //       // Laravel validation error
-      //       this.errors = error.response.data.errors;
-      //     } else {
-      //       // Laravel exception (500, 403, etc.)
-      //       const message = error.response.data?.message ?? 'Create failed.';
-      //       notify.error(message);
-      //     }
-      //   } finally {
-      //     this.saving = false;
-      //   }
-      // },
+      // import { buildFormData } from '@/utils/buildFormData'
 
       async create(url, data) {
         this.saving = true;
         this.errors = {};
+
         try {
-          const res = await api.post(url, data);
+          //-------------------------------
+          // 🔍 detect if any File exists
+          //-------------------------------
+          const hasFile = (obj) => {
+            if (!obj) return false;
+
+            if (obj instanceof File) return true;
+
+            if (Array.isArray(obj)) {
+              return obj.some((item) => hasFile(item));
+            }
+
+            if (typeof obj === 'object') {
+              return Object.values(obj).some((val) => hasFile(val));
+            }
+
+            return false;
+          };
+
+          let payload = data;
+          let config = {};
+
+          //-------------------------------
+          // ✅ if file exists → use FormData
+          //-------------------------------
+          if (hasFile(data)) {
+            payload = buildFormData(data);
+            config.headers = {
+              'Content-Type': 'multipart/form-data',
+            };
+          }
+
+          const res = await api.post(url, payload, config);
+
           notify.success(res.data.message || 'Created successfully.');
           this.showModal = false;
           await this.fetchData();
+          return true;
         } catch (error) {
           if (!error.response) {
             notify.error('Network error. Please check your connection.');
@@ -153,10 +155,32 @@ export function useResourceStore(name, endpoint, options = {}) {
           } else {
             notify.error(error.response?.data?.message || 'Create failed.');
           }
+          return false;
         } finally {
           this.saving = false;
         }
       },
+
+      // async create(url, data) {
+      //   this.saving = true;
+      //   this.errors = {};
+      //   try {
+      //     const res = await api.post(url, data);
+      //     notify.success(res.data.message || 'Created successfully.');
+      //     this.showModal = false;
+      //     await this.fetchData();
+      //   } catch (error) {
+      //     if (!error.response) {
+      //       notify.error('Network error. Please check your connection.');
+      //     } else if (error.response.status === 422) {
+      //       this.errors = error.response.data.errors;
+      //     } else {
+      //       notify.error(error.response?.data?.message || 'Create failed.');
+      //     }
+      //   } finally {
+      //     this.saving = false;
+      //   }
+      // },
 
       // ✏ Update
       // async update(url, data) {
@@ -186,16 +210,56 @@ export function useResourceStore(name, endpoint, options = {}) {
         this.saving = true;
         this.errors = {};
         try {
-          const res = await api.put(url, data);
+          let payload = data;
+          let config = {};
+
+          //-------------------------------
+          // 🔍 detect if any File exists
+          //-------------------------------
+          const hasFile = (obj) => {
+            if (!obj) return false;
+
+            if (obj instanceof File) return true;
+
+            if (Array.isArray(obj)) {
+              return obj.some((item) => hasFile(item));
+            }
+
+            if (typeof obj === 'object') {
+              return Object.values(obj).some((val) => hasFile(val));
+            }
+
+            return false;
+          };
+
+          //-------------------------------
+          // ✅ if file exists → use FormData
+          //    PHP doesn't populate $_POST/$_FILES
+          //    for PUT, so spoof method with _method
+          //-------------------------------
+          let res;
+
+          if (hasFile(data)) {
+            payload = buildFormData(data);
+            payload.append('_method', 'PUT');
+            config.headers = {
+              'Content-Type': 'multipart/form-data',
+            };
+            res = await api.post(url, payload, config);
+          } else {
+            res = await api.put(url, payload);
+          }
           notify.success(res.data.message || 'Updated successfully.');
           this.showModal = false;
           await this.fetchData();
+          return true;
         } catch (error) {
           if (error.response?.status === 422) {
             this.errors = error.response.data.errors;
           } else {
             notify.error(error.response?.data?.message || 'Update failed.');
           }
+          return false;
         } finally {
           this.saving = false;
         }

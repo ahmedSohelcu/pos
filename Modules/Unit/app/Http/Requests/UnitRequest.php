@@ -12,7 +12,7 @@ class UnitRequest extends BaseRequest
      */
     public function rules(): array
     {
-        $unitId = $this->id ?? null; // null for create
+        $unitId = $this->route('unit')?->id ?? null; // null for create
 
         return [
             'name' => [

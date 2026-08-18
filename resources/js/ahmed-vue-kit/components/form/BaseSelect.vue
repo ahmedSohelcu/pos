@@ -231,8 +231,8 @@ onBeforeUnmount(() => {
 <style>
 /* Base professional styling for Select2 */
 .select2-container--default .select2-selection--single {
-  background-color: #fff;
-  border: 1px solid #ced4da;
+  background-color: var(--app-surface);
+  border: 1px solid var(--app-border);
   border-radius: 8px;
   height: 40px !important;
   padding: 5px 12px;
@@ -253,7 +253,7 @@ onBeforeUnmount(() => {
   .select2-selection__rendered {
   line-height: 30px !important;
   font-size: 0.95rem;
-  color: #495057;
+  color: var(--app-text);
 }
 
 .select2-container--default
@@ -268,7 +268,8 @@ onBeforeUnmount(() => {
   min-height: 40px !important;
   border-radius: 8px;
   padding: 5px 8px;
-  border: 1px solid #ced4da;
+  border: 1px solid var(--app-border);
+  background: var(--app-surface);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
@@ -302,8 +303,13 @@ onBeforeUnmount(() => {
 /* Dropdown menu */
 .select2-container--default .select2-dropdown {
   border-radius: 8px;
-  border: 1px solid #ced4da;
+  border: 1px solid var(--app-border);
+  background-color: var(--app-surface);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.select2-container--default .select2-results__option {
+  color: var(--app-text);
 }
 
 .select2-container--default .select2-results__option--highlighted {
@@ -344,11 +350,10 @@ onBeforeUnmount(() => {
 }
 
 .form-label {
-  color: #6c757d;
+  color: var(--app-text-muted);
   text-transform: uppercase;
   font-size: 14px;
   font-weight: 600;
-  color: #344767;
   margin-bottom: 6px;
   letter-spacing: 0.3px;
 }

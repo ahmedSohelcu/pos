@@ -32,6 +32,22 @@
           </a>
         </li>
 
+        <!--begin::Theme Toggle-->
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            href="#"
+            role="button"
+            title="Toggle theme"
+            @click.prevent="themeStore.toggle()"
+          >
+            <i
+              class="bi"
+              :class="themeStore.theme === 'dark' ? 'bi-sun-fill' : 'bi-moon-stars-fill'"
+            ></i>
+          </a>
+        </li>
+        <!--end::Theme Toggle-->
         <!--begin::Language Switch-->
         <li class="nav-item dropdown">
           <a
@@ -268,6 +284,7 @@
 <script setup>
 import { useI18n } from 'vue-i18n';
 import { useAuthStore } from '../../ahmed-vue-kit/stores/authStore';
+import { useThemeStore } from '../../ahmed-vue-kit/stores/themeStore';
 import { useRouter } from 'vue-router';
 import { notify } from '@kit/composables/useNotify';
 import {
@@ -277,6 +294,7 @@ import {
 const router = useRouter();
 const { locale } = useI18n();
 const auth = useAuthStore();
+const themeStore = useThemeStore();
 
 const switchLanguage = (lang) => {
   locale.value = lang;

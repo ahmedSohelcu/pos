@@ -63,7 +63,6 @@ class BaseModel extends Authenticatable
             $table = $model->getTable();
 
             if (Schema::hasColumn($table, 'tenant_id') && $user->user_type !== 'system_admin') {
-                dd('te');
                 $builder->where($table.'.tenant_id', $user->tenant_id);
             }
         });
@@ -78,19 +77,19 @@ class BaseModel extends Authenticatable
             $user = Auth::user();
             $table = $model->getTable();
 
-            // Tenant auto assign
-            if (Schema::hasColumn($table, 'tenant_id')) {
-                if ($user->user_type === 'system_admin') {
-                    if (empty($model->tenant_id)) {
-                        throw new \Exception('Tenant is required for system admin');
-                    }
-                } else {
-                    // Only set if not already set
-                    if (empty($model->tenant_id)) {
-                        $model->tenant_id = $user->tenant_id;
-                    }
-                }
-            }
+            // Tenant auto assign //stopped due to testing via system admin            
+            // if (Schema::hasColumn($table, 'tenant_id')) {
+            //     if ($user->user_type === 'system_admin') {
+            //         if (empty($model->tenant_id)) {
+            //             throw new \Exception('Tenant is required for system admin');
+            //         }
+            //     } else {
+            //         // set if not set yet
+            //         if (empty($model->tenant_id)) {
+            //             $model->tenant_id = $user->tenant_id;
+            //         }
+            //     }
+            // }
 
             // created_by
             if (Schema::hasColumn($table, 'created_by') && empty($model->created_by)) {
