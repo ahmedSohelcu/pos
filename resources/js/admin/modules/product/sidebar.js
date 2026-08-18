@@ -5,6 +5,11 @@ export const ProductMenus = [
     icon: 'bi bi-box-seam-fill',
     items: [
       {
+        name: 'product.index',
+        label: 'Products List',
+        access: 'product.view',
+      },
+      {
         name: 'attribute.index',
         label: 'Attributes / Variations',
         access: 'attribute.view',

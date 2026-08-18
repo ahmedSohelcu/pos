@@ -12,7 +12,7 @@ class BrandRequest extends BaseRequest
      */
     public function rules(): array
     {
-        $brand_id = $this->id ?? null;
+        $brand_id = $this->route('brand')?->id ?? null;
 
         return [
             'name' => [

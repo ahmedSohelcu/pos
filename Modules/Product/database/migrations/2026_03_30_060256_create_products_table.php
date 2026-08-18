@@ -33,14 +33,11 @@ return new class extends Migration
 
             // Barcode / SKU
             $table->string('sku')->nullable();
-            $table->string('barcode')->nullable();
-
-            // Pricing
-            $table->decimal('cost_price', 12, 2)->nullable()->comment('Purchase price with other costs');
-            $table->decimal('selling_price', 12, 2)->nullable();
+            $table->string('barcode')->nullable();           
 
             // Stock
             $table->boolean('track_stock')->default(true);
+            $table->decimal('stock', 12, 2)->nullable()->default(0)->comment('total stock quantity');
             $table->decimal('alert_quantity', 12, 2)->nullable();
 
             // Extra

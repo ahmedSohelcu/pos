@@ -98,14 +98,14 @@ const formatDate = (date) => {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: linear-gradient(135deg, #f8fafc, #eef2ff);
+  background: var(--app-bg);
   padding: 20px;
 }
 
 .expired-card {
   width: 480px;
   max-width: 100%;
-  background: white;
+  background: var(--app-surface);
   padding: 40px;
   border-radius: 14px;
   text-align: center;
@@ -125,13 +125,13 @@ const formatDate = (date) => {
 }
 
 .subtitle {
-  color: #6b7280;
+  color: var(--app-text-muted);
   font-size: 14px;
   margin-bottom: 25px;
 }
 
 .plan-info {
-  background: #f9fafb;
+  background: var(--app-surface-muted);
   border-radius: 10px;
   padding: 15px;
   margin-bottom: 25px;
@@ -166,16 +166,16 @@ const formatDate = (date) => {
 }
 
 .btn-outline {
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--app-border);
   padding: 10px 18px;
   border-radius: 6px;
-  background: white;
+  background: var(--app-surface);
   cursor: pointer;
 }
 
 .divider {
   height: 1px;
-  background: #e5e7eb;
+  background: var(--app-border);
   margin: 20px 0;
 }
 
@@ -190,7 +190,7 @@ const formatDate = (date) => {
 
 .support p {
   font-size: 13px;
-  color: #6b7280;
+  color: var(--app-text-muted);
   margin-bottom: 12px;
 }
 
@@ -206,7 +206,7 @@ const formatDate = (date) => {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  color: #374151;
+  color: var(--app-text);
 }
 
 .contact-item i {

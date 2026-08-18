@@ -12,7 +12,7 @@ class ExpenseCategoryRequest extends BaseRequest
      */
     public function rules(): array
     {
-        $category_id = $this->id ?? null;
+        $category_id = $this->route('expense_category')?->id ?? null;
 
         return [
             'name' => [

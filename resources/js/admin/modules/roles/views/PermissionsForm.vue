@@ -189,7 +189,7 @@ const filteredModules = computed(() => {
 /* CARD */
 
 .module-card {
-  background: white;
+  background: var(--app-surface);
   border-radius: 12px;
   padding: 15px;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
@@ -220,7 +220,7 @@ const filteredModules = computed(() => {
 }
 
 .action-cell {
-  background: #f8fafc;
+  background: var(--app-surface-muted);
   padding: 6px 8px;
   border-radius: 6px;
   display: flex;
@@ -236,7 +236,7 @@ const filteredModules = computed(() => {
 }
 
 .action-cell{
-  background:#f8fafc;
+  background: var(--app-surface-muted);
   padding:8px 10px;
   border-radius:8px;
   display:flex;
@@ -248,6 +248,6 @@ const filteredModules = computed(() => {
 }
 
 .action-cell:hover{
-background:#eef2ff;
+background: var(--sidebar-submenu-active-bg);
 }
 </style>

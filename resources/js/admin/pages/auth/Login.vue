@@ -76,7 +76,7 @@ const reset = () => {
 
 <style scoped>
 .login-wrapper {
-  background: #f1f3f5;
+  background: var(--app-bg);
 }
 .card {
   border-radius: 10px;

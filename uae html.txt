@@ -1,0 +1,6 @@
+i need an ecommerce html website for uae based whole sale fruit sale inspired on attachted file. in home page need a section also where will be something about saler. design all page. in checkout page payment system  should only COD or Bank . if select bank then show form to submit about bank info. in checkout page show seller contact  info like phone , email and whats to contact with seller via customer. and highlight this section. in    home page also keep a section where customer can able to see ther seller contact info and highlight.   design all pages like home, products, detais, cart, wishlist, checkout, and other important page. in checkout keep a form also for adding deliver address via customer.
+
+in home page highligh also products . add to cart add to wishlist, show more product and make more professional. also add contact form in home page. footer make more professinal.
+
+in home page show 20 product and 5 eash row and and filter by category
+

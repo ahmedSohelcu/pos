@@ -12,7 +12,7 @@ class CustomerRequest extends BaseRequest
      */
       public function rules(): array
     {
-        $userId = $this->id ?? null; // null for create
+        $userId = $this->route('customer')?->id ?? null; // null for create
 
         return [
             'name' => ['required', 'string', 'max:255'],

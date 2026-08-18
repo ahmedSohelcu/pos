@@ -12,7 +12,7 @@ class RoleRequest extends BaseRequest
      */
     public function rules(): array
     {
-        $role_id = $this->id ?? null; // null for create
+        $role_id = $this->route('role')?->id ?? null; // null for create
 
         return [
             'name' => [

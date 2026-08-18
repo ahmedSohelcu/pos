@@ -12,7 +12,7 @@ class ExpenseRequest extends BaseRequest
      */
     public function rules(): array
     {
-        $expense_id = $this->id ?? null; // null for create         
+        $expense_id = $this->route('expense')?->id ?? null; // null for create         
             
         return [            
             'tenant_id' => ['nullable','exists:tenants,id'],

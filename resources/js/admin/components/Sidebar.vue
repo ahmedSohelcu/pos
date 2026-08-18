@@ -64,7 +64,7 @@
 </template>
 
 <script setup>
-import { ref, watch, computed } from 'vue';
+import { ref, watch, computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { AdminMenus } from '../../data/sidebar-menus';
 import { filterMenus } from '../../ahmed-vue-kit/utils/menuFilter';
@@ -73,6 +73,20 @@ import { useAuthStore } from '../../ahmed-vue-kit/stores/authStore';
 const route = useRoute();
 const openMenu = ref(null);
 const auth = useAuthStore();
+
+// Initialize OverlayScrollbars on the sidebar wrapper
+onMounted(() => {
+  const wrapper = document.querySelector('.sidebar-wrapper');
+  if (wrapper && window.OverlayScrollbarsGlobal?.OverlayScrollbars) {
+    window.OverlayScrollbarsGlobal.OverlayScrollbars(wrapper, {
+      scrollbars: {
+        theme: 'os-theme-sidebar',
+        autoHide: 'scroll',
+        clickScroll: true,
+      },
+    });
+  }
+});
 
 // Compute menus with proper filtering
 const menus = computed(() => {
@@ -118,14 +132,15 @@ Sidebar Base
 .app-sidebar {
   width: 260px;
   height: 100vh;
-  background: #111827;
-  color: #d1d5db;
+  background: var(--sidebar-bg);
+  color: var(--sidebar-text);
   display: flex;
   flex-direction: column;
   padding: 16px 12px;
   font-family: 'Source Sans 3', sans-serif;
   box-shadow: 3px 0 8px rgba(0, 0, 0, 0.3);
-  border-right: 1px solid #2c2f3a;
+  border-right: 1px solid var(--sidebar-border);
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 /* ===========================
@@ -158,7 +173,28 @@ Sidebar Brand
 .brand-text {
   font-size: 16px;
   font-weight: 700;
-  color: #f9fafb;
+  color: var(--sidebar-brand-text);
+}
+
+/* ===========================
+Sidebar Wrapper
+=========================== */
+
+.sidebar-wrapper {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #000 transparent;
+}
+
+.sidebar-wrapper::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar-wrapper::-webkit-scrollbar-thumb {
+  background: #000;
+  border-radius: 3px;
 }
 
 /* ===========================
@@ -181,7 +217,7 @@ Menu
   align-items: center;
   padding: 12px 16px;
   border-radius: 12px;
-  color: #d1d5db;
+  color: var(--sidebar-text);
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
@@ -241,7 +277,7 @@ Submenu
   gap: 6px;
   padding: 8px 12px;
   border-radius: 8px;
-  color: #9ca3af;
+  color: var(--sidebar-submenu-text);
   font-size: 14px;
   text-decoration: none;
   transition: all 0.3s ease;
@@ -252,13 +288,13 @@ Submenu
 }
 
 .submenu-link:hover {
-  background: rgba(99, 102, 241, 0.2);
-  color: #fff;
+  background: var(--sidebar-submenu-hover-bg);
+  color: var(--sidebar-brand-text);
 }
 
 .active-child {
-  background: rgba(99, 102, 241, 0.25);
-  color: #fff !important;
+  background: var(--sidebar-submenu-active-bg);
+  color: var(--sidebar-submenu-active-color) !important;
 }
 
 /* ===========================

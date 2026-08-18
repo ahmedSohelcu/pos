@@ -359,9 +359,9 @@ const toggleColumn = (col) => {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
 }
 .table-header-pro {
-  background: #fff;
+  background: var(--app-surface);
   padding: 16px 20px;
-  border-bottom: 1px solid #f1f3f5;
+  border-bottom: 1px solid var(--app-border);
 }
 .table-title {
   font-size: 15px;
@@ -369,7 +369,7 @@ const toggleColumn = (col) => {
 }
 .table-subtitle {
   font-size: 12px;
-  color: #6c757d;
+  color: var(--app-text-muted);
 }
 .table-wrapper {
   overflow-x: auto; /* only horizontal scroll */
@@ -380,12 +380,12 @@ const toggleColumn = (col) => {
 .modern-table thead th {
   position: sticky;
   top: 0;
-  background: #fff;
+  background: var(--app-surface);
   z-index: 5;
   font-size: 14px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  color: #6b7280;
+  color: var(--app-text-muted);
   /* text-align: center; */
 }
 .empty-state {
@@ -394,7 +394,7 @@ const toggleColumn = (col) => {
 .table-loading-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(255, 255, 255, 0.6);
+  background: color-mix(in srgb, var(--app-surface) 60%, transparent);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -414,7 +414,8 @@ const toggleColumn = (col) => {
   width: 100%;
   padding: 6px 12px 8px 36px;
   border-radius: 8px;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--app-border);
+  background: var(--app-surface);
   font-size: 14px;
   transition: all 0.2s ease;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);

@@ -185,17 +185,17 @@ const enabledCount = (module) => {
 <style scoped>
 .permission-card {
   border-radius: 12px;
-  background: #fff;
+  background: var(--app-surface);
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
 }
 
 .accordion-button {
-  background-color: #f8fafc;
+  background-color: var(--app-surface-muted);
   transition: 0.2s;
   font-weight: 500;
 }
 .accordion-button:hover {
-  background-color: #e6f0fb;
+  background-color: var(--sidebar-submenu-active-bg);
 }
 
 .feature-item {
@@ -203,7 +203,7 @@ const enabledCount = (module) => {
   cursor: pointer;
 }
 .feature-item:hover {
-  background: #f3f6fb;
+  background: var(--sidebar-submenu-active-bg);
 }
 
 .badge {

@@ -12,7 +12,7 @@ class PlanRequest extends BaseRequest
      */
     public function rules(): array
     {
-        $plan_id = $this->id ?? null; // null for create          
+        $plan_id = $this->route('plan')?->id ?? null; // null for create          
 
         return [
             'name' => ['required','string','max:255', Rule::unique('plans','name')->ignore($plan_id)],

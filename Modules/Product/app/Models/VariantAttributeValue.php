@@ -12,6 +12,7 @@ class VariantAttributeValue extends BaseModel
     use HasFactory;
 
     protected $fillable = [
+        'tenant_id',
         'product_variant_id',
         'attribute_id',
         'attribute_value_id',

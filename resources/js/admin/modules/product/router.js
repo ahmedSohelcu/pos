@@ -26,4 +26,15 @@ export default [
     },
     component: ProductCreate,
   },
+  {
+    path: '/product/:id/edit',
+    name: 'product.edit',
+    meta: {
+      breadcrumb: 'Edit Product',
+      requiresAuth: true,
+      layout: 'master',
+      access: 'product.update',
+    },
+    component: ProductCreate,
+  },
 ];

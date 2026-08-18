@@ -12,7 +12,7 @@ class CategoryRequest extends BaseRequest
      */
     public function rules(): array
     {
-        $category_id = $this->id ?? null;
+        $category_id = $this->route('category')?->id ?? null;
 
         return [
             'name' => [

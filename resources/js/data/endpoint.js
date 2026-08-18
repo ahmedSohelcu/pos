@@ -215,4 +215,20 @@ export const ATTRIBUTE_ENDPOINTS = {
   show: (id) => route('api.attribute.show', { attribute: id }),
   update: (id) => route('api.attribute.update', { attribute: id }),
   destroy: (id) => route('api.attribute.destroy', { attribute: id }),
+  selectable: route('api.selectable_attributes'),
+  attributeValues: (attribute_id) =>
+    route('api.selectable_attribute_values', { attribute_id: attribute_id }),
+};
+
+/*
+|--------------------------------------------------------------------------
+| Product
+|--------------------------------------------------------------------------
+*/
+export const PRODUCT_ENDPOINTS = {
+  index: route('api.product.index'),
+  store: route('api.product.store'),
+  show: (id) => route('api.product.show', { product: id }),
+  update: (id) => route('api.product.update', { product: id }),
+  destroy: (id) => route('api.product.destroy', { product: id }),
 };

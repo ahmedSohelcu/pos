@@ -4,60 +4,78 @@
 -->
 
 <script setup>
-    import { ref, watch } from 'vue'
-    import { QuillEditor } from '@vueup/vue-quill';
-    import '@vueup/vue-quill/dist/vue-quill.snow.css';
+import { ref, watch } from 'vue';
+import { QuillEditor } from '@vueup/vue-quill';
+import '@vueup/vue-quill/dist/vue-quill.snow.css';
 
-    const props = defineProps({
-        modelValue: {
-            type: String,
-            default: '' 
-        },    
-        contentType: { //must needed
-            type: String,
-            default: 'html' //Type: "delta" | "html" | "text" default html is import for textarea
-        },
-        placeholder: {
-            type: String,
-            default: 'Write something here...' 
-        },    
-        readOnly: {
-            type: Boolean,
-            default: false
-        },
-        theme: {
-            type: String,
-            default: 'snow' //Type: "snow" | "bubble" | ""
-        },
-        toolbar: {
-            type: Array,
-            default: 'full' //Type: 1. ['bold', 'italic', 'underline'] 2 minimal 3 full 4 ''                        
-        },
-    })
+const props = defineProps({
+  modelValue: {
+    type: String,
+    default: '',
+  },
+  label: {
+    type: String,
+    default: '',
+  },
+  labelClass: {
+    type: String,
+    default: '',
+  },
+  contentType: {
+    //must needed
+    type: String,
+    default: 'html', //Type: "delta" | "html" | "text" default html is import for textarea
+  },
+  placeholder: {
+    type: String,
+    default: 'Write something here...',
+  },
+  readOnly: {
+    type: Boolean,
+    default: false,
+  },
+  theme: {
+    type: String,
+    default: 'snow', //Type: "snow" | "bubble" | ""
+  },
+  toolbar: {
+    type: Array,
+    default: 'full', //Type: 1. ['bold', 'italic', 'underline'] 2 minimal 3 full 4 ''
+  },
+});
 
-    const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue']);
 
-    const content = ref(props.modelValue)
+const content = ref(props.modelValue);
 
-    // Sync parent → child
-    watch(() => props.modelValue, val => {
-        content.value = val
-    })
+// Sync parent → child
+watch(
+  () => props.modelValue,
+  (val) => {
+    content.value = val;
+  }
+);
 
-    // Sync child → parent
-    watch(content, val => {
-        emit('update:modelValue', val)
-    })
+// Sync child → parent
+watch(content, (val) => {
+  emit('update:modelValue', val);
+});
 </script>
 
 <template>
+  <div v-if="label">
+    <label :class="labelClass ?? 'form-label font-weight-bold'">
+      {{ label }}
+    </label>
+  </div>
+
   <QuillEditor
-    :content="modelValue" 
+    :content="modelValue"
     :content-type="contentType"
     @update:content="$emit('update:modelValue', $event)"
     :readOnly="readOnly"
     :theme="theme"
-    :toolbar="toolbar ? toolbar : ''" 
+    :toolbar="toolbar ? toolbar : ''"
     :placeholder="placeholder"
   />
 </template>
@@ -119,6 +137,3 @@
                     Plugin for quill-emoji
                     ***https://vueup.github.io/vue-quill/guide/modules.html
                 -->
-
-
-        

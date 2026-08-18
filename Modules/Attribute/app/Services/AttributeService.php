@@ -12,7 +12,21 @@ class AttributeService extends BaseService
     public function __construct(Attribute $attribute)
     {
         $this->model = $attribute;
-    } 
+    }
+    
+    public function getSelectableAttributes(){
+        return $this->model::select('id', 'name', 'slug')
+            ->where('is_active', true)
+            ->with('values:id,attribute_id,tenant_id,slug,value')
+            ->get();
+    }
+
+    public function getAttributeValuesByAttributeId($attribute_id = null){
+        if ($attribute_id) {
+            return $this->model->find($attribute_id)->values()->get();
+        }        
+        return [];
+    }
 
     public function getAll(
         bool $isPaginated = true,

@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-column gap-1">
+  <div class="mb-2 d-flex flex-column gap-1">
     <div class="d-flex align-items-center justify-content-between gap-3">
       <!-- Label Section -->
       <div v-if="label">

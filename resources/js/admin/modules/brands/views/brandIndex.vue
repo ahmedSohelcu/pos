@@ -46,6 +46,7 @@ import { BRAND_ENDPOINTS } from '@/data/endpoint';
 
 const brandStore = useBrandStore();
 
+
 const closeModal = () => {
   brandStore.loading = false;
 };

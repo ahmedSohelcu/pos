@@ -18,6 +18,17 @@
       content="bootstrap 5, bootstrap, bootstrap 5 admin dashboard, bootstrap 5 dashboard, bootstrap 5 charts, bootstrap 5 calendar, bootstrap 5 datepicker, bootstrap 5 tables, bootstrap 5 datatable, vanilla js datatable, colorlibhq, colorlibhq dashboard, colorlibhq admin dashboard"
     />
     <!--end::Primary Meta Tags-->
+    <script>
+      (function () {
+        var t = localStorage.getItem('app-theme');
+
+        if (t !== 'light' && t !== 'dark') {
+          t = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+
+        document.documentElement.setAttribute('data-bs-theme', t);
+      })();
+    </script>
     <!--begin::Fonts-->
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -95,28 +106,7 @@
       ></script>
       <!--end::Required Plugin(Bootstrap 5)--><!--begin::Required Plugin(AdminLTE)-->
       <script src="../../dist/js/adminlte.js"></script>
-      <!--end::Required Plugin(AdminLTE)--><!--begin::OverlayScrollbars Configure-->
-      <script>
-        const SELECTOR_SIDEBAR_WRAPPER = '.sidebar-wrapper';
-        const Default = {
-          scrollbarTheme: 'os-theme-light',
-          scrollbarAutoHide: 'leave',
-          scrollbarClickScroll: true,
-        };
-        document.addEventListener('DOMContentLoaded', function () {
-          const sidebarWrapper = document.querySelector(SELECTOR_SIDEBAR_WRAPPER);
-          if (sidebarWrapper && typeof OverlayScrollbarsGlobal?.OverlayScrollbars !== 'undefined') {
-            OverlayScrollbarsGlobal.OverlayScrollbars(sidebarWrapper, {
-              scrollbars: {
-                theme: Default.scrollbarTheme,
-                autoHide: Default.scrollbarAutoHide,
-                clickScroll: Default.scrollbarClickScroll,
-              },
-            });
-          }
-        });
-      </script>
-      <!--end::OverlayScrollbars Configure-->
+      <!--end::Required Plugin(AdminLTE)-->
       <!-- OPTIONAL SCRIPTS -->
       <!-- sortablejs -->
       <script
