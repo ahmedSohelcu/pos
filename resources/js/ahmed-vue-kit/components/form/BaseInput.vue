@@ -56,6 +56,8 @@ const props = defineProps({
  */
 const emit = defineEmits(['update:modelValue']);
 
+defineOptions({ inheritAttrs: false });
+
 const sizeClass = computed(() => {
   return props.size === 'md' ? '' : `form-control-${props.size}`;
 });
@@ -71,6 +73,7 @@ const sizeClass = computed(() => {
       :value="modelValue"
       :class="['form-control', sizeClass, { 'is-invalid': error }, customClass]"
       :disabled="disabled"
+      v-bind="$attrs"
       @input="emit('update:modelValue', $event.target.value)"
     />
     <!-- first error -->

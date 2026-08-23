@@ -27,6 +27,11 @@ class ProductVariant extends BaseModel
         'status_id',
     ];
 
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
+
     public function attributeValues()
     {
         return $this->hasMany(VariantAttributeValue::class);

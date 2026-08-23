@@ -4,6 +4,7 @@ namespace Modules\Product\App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Services\Core\FileService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Modules\Product\app\Models\Product;
 use Modules\Product\app\Services\ProductService;
@@ -24,7 +25,7 @@ class ProductController extends Controller
     }
     public function index()
     {
-        $products = $this->service->getAll(true, true, ['status', 'tenant'], 10);
+        $products = $this->service->getAll();
         return success_response('Product List', $products);
     }
 
@@ -77,10 +78,34 @@ class ProductController extends Controller
 
     /**
      * Remove the specified resource from storage.
-    */   
-    public function destroy(Product $product) 
+     */
+    public function destroy(Product $product)
     {
         $product->delete();
         return deleted_responses('Product', $product);
+    }
+
+    /**
+     * Remove the product thumbnail.
+     */
+    public function destroyThumbnail(Product $product)
+    {
+        $this->service
+            ->setModel($product)
+            ->deleteThumbnail();
+
+        return deleted_responses('Product thumbnail', $product->fresh());
+    }
+
+    /**
+     * Remove a gallery image.
+     */
+    public function destroyGallery(Request $request, Product $product)
+    {
+        $this->service
+            ->setModel($product)
+            ->deleteGallery($request->input('id'));
+
+        return deleted_responses('Gallery image', $product->fresh(['media']));
     }
 }

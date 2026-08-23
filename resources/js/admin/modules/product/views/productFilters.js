@@ -1,15 +1,12 @@
-import { STATUS_ENDPOINTS } from "../../../../data/endpoint";
-
 export const productFilters = [
   {
-    name: "status_id",
+    name: "is_active",
     label: "Status",
     type: "select",
-    select2: true, // 🔥 enable select2
-    multiple: false, // single select
-    getApiRoute: STATUS_ENDPOINTS.selectable("common"),
-    optionKeyName: "name",
-    // optionValueName: 'label'
+    options: [
+      { name: "Active", value: true },
+      { name: "Inactive", value: false },
+    ],
   },
   {
     name: "created_at",

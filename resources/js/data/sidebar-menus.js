@@ -2,13 +2,33 @@
 
 import { CustomerMenus } from '../admin/modules/customers/sidebar';
 import { ExpensesMenus } from '../admin/modules/expenses/sidebar';
+import { InventoryMenus } from '../admin/modules/inventory/sidebar';
+import { PosMenus } from '../admin/modules/pos/sidebar';
 import { ProductMenus } from '../admin/modules/product/sidebar';
+import { RegisterMenus } from '../admin/modules/register/sidebar';
+import { ReportsMenus } from '../admin/modules/reports/sidebar';
+import { SalesMenus } from '../admin/modules/sales/sidebar';
 import { SubscriptionMenus } from '../admin/modules/subscriptions/sidebar';
 import { SupplierMenus } from '../admin/modules/suppliers/sidebar';
 import { TenantMenus } from '../admin/modules/tenants/sidebar';
 import { UsersMenus } from '../admin/modules/users/sidebar';
 
 export const AdminMenus = [
+  //------------------------------------------------
+  // POS Module (standalone terminal)
+  //------------------------------------------------
+  ...PosMenus,
+
+  //------------------------------------------------
+  // Sales Module (history, refunds, reports)
+  //------------------------------------------------
+  ...SalesMenus,
+
+  //------------------------------------------------
+  // Reports Module (analytics & performance)
+  //------------------------------------------------
+  ...ReportsMenus,
+
   // Tenants module
   ...TenantMenus,
 
@@ -16,6 +36,16 @@ export const AdminMenus = [
   // Product Module (product, brand, unit, category)
   //------------------------------------------------
   ...ProductMenus,
+
+  //------------------------------------------------
+  // Inventory Module (stock ledger & adjustments)
+  //------------------------------------------------
+  ...InventoryMenus,
+
+  //------------------------------------------------
+  // Register Module (cash drawer & shifts)
+  //------------------------------------------------
+  ...RegisterMenus,
 
   // {
   //   key: 'inventory',

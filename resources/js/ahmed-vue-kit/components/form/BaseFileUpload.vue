@@ -1,6 +1,7 @@
 <script setup>
 import { ref, watch } from 'vue';
-import axios from 'axios';
+import api from '../../api/api';
+import { useDeleteConfirm } from '../../composables/useDeleteConfirm';
 
 const props = defineProps({
   modelValue: [Array, Object, null],
@@ -21,7 +22,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(['update:modelValue', 'changed']);
+const emit = defineEmits(['update:modelValue', 'changed', 'deleted']);
 
 const inputRef = ref(null);
 
@@ -110,22 +111,41 @@ const handleFileChange = (event) => {
 const removeNew = (index) => {
   newFiles.value.splice(index, 1);
   previews.value.splice(index, 1);
+
+  if (inputRef.value) {
+    inputRef.value.value = '';
+  }
 };
 
 /* =========================================
    REMOVE EXISTING FILE (SERVER)
 ========================================= */
+const removing = ref(false);
+
 const removeExisting = async (file, index) => {
-  if (!props.deleteUrl) return;
+  if (!props.deleteUrl || removing.value) return;
+
+  const confirmed = await useDeleteConfirm(
+    'Delete this image?',
+    'The image will be permanently removed.',
+    'Yes, delete it!'
+  );
+
+  if (!confirmed) return;
 
   try {
-    await axios.delete(props.deleteUrl, {
+    removing.value = true;
+
+    await api.delete(props.deleteUrl, {
       data: { id: file.id },
     });
 
     existing.value.splice(index, 1);
+    emit('deleted', file);
   } catch (error) {
     alert('Failed to delete file from server');
+  } finally {
+    removing.value = false;
   }
 };
 </script>
@@ -175,7 +195,10 @@ const removeExisting = async (file, index) => {
       >
         <img :src="file.url" />
         <div class="overlay">
-          <button @click="removeExisting(file, index)">Delete</button>
+          <button
+            v-if="deleteUrl"
+            @click="removeExisting(file, index)"
+          >Delete</button>
         </div>
       </div>
 

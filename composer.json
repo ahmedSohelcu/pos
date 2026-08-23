@@ -35,7 +35,10 @@
             "Database\\Seeders\\": "database/seeders/",
             "Modules\\": "Modules/"
         },
-        "files": [            
+        "classmap": [
+            "Modules"
+        ],
+        "files": [
             "app/Helpers/Core/Global/ResponseHelper.php"
         ]
     },

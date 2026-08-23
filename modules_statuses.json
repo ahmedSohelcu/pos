@@ -11,5 +11,10 @@
     "Unit": true,
     "Expense": true,
     "Attribute": true,
-    "Product": true
+    "Product": true,
+    "Pos": true,
+    "Sales": true,
+    "Inventory": true,
+    "Reports": true,
+    "Register": true
 }

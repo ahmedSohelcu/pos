@@ -17,9 +17,22 @@
       <nav>
         <ul class="sidebar-menu">
           <li v-for="menu in menus" :key="menu?.key" class="menu-item">
+            <!-- Standalone link (no submenu) -->
+            <router-link
+              v-if="!menu?.items?.length"
+              :to="{ name: menu.name }"
+              class="menu-link standalone"
+              active-class="active"
+            >
+              <div class="menu-left">
+                <i :class="menu.icon"></i>
+                <span>{{ menu.label }}</span>
+              </div>
+            </router-link>
+
             <!-- Parent Menu -->
+            <template v-else>
             <div
-              v-if="menu"
               class="menu-link"
               :class="{ active: isMenuActive(menu) }"
               @click="toggleSidebar(menu.key)"
@@ -56,6 +69,7 @@
                 </li>
               </ul>
             </transition>
+            </template>
           </li>
         </ul>
       </nav>
@@ -221,6 +235,7 @@ Menu
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
+  text-decoration: none;
 }
 
 .menu-link .menu-left {

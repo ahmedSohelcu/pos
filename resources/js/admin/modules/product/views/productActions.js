@@ -14,15 +14,15 @@ export const getProductActions = (productStore, router) => [
   {
     label: '<i class="fas fa-edit text-warning me-2"></i> Edit',
     handler: (row) => {
-      router.push({ name: 'product.edit', params: { id: row.id } });
+      router.push({ name: 'product.edit', params: { id: row.product_id } });
     },
   },
   {
     label: '<i class="fas fa-trash text-danger me-2"></i> Delete',
     handler: async (row) => {
       await confirmDelete({
-        apiUrl: PRODUCT_ENDPOINTS.destroy(row.id),
-        confirmTitle: `Delete ${row.name}?`,
+        apiUrl: PRODUCT_ENDPOINTS.destroy(row.product_id),
+        confirmTitle: `Delete ${row.product?.name ?? row.name}?`,
         onSuccess: () => {
           productStore.fetchData(); // 🔥 correct refresh
         },

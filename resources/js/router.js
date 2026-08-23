@@ -12,6 +12,11 @@ import PlanRoutes from './admin/modules/plans/router.js';
 import CustomerRoutes from './admin/modules/customers/router.js';
 import { ExpenseRoutes } from './admin/modules/expenses/router.js';
 import { AttributeRoutes } from './admin/modules/attributes/router.js';
+import PosRoutes from './admin/modules/pos/router.js';
+import SalesRoutes from './admin/modules/sales/router.js';
+import InventoryRoutes from './admin/modules/inventory/router.js';
+import ReportsRoutes from './admin/modules/reports/router.js';
+import RegisterRoutes from './admin/modules/register/router.js';
 
 import Login from './admin/pages/auth/Login.vue';
 import NotAllow from './admin/pages/NotAllow.vue';
@@ -165,6 +170,11 @@ const routes = [
   ...ExpenseCategoryRoutes,
   ...SupplierRoutes,
   ...AttributeRoutes,
+  ...PosRoutes,
+  ...SalesRoutes,
+  ...InventoryRoutes,
+  ...ReportsRoutes,
+  ...RegisterRoutes,
 ];
 
 const router = createRouter({

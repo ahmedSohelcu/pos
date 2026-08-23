@@ -47,31 +47,39 @@ const columns = [
   },
   {
     name: 'thumbnail',
-    label: 'Image',
+    label: 'Product Image',
     sortable: false,
     custom: (row) => {
-      if (!row.thumbnail) return `<span class="text-muted">-</span>`;
-      return `<img src="${row.thumbnail}" alt="thumb" class="rounded" style="width: 40px; height: 40px; object-fit: cover;" />`;
+      const src = row.thumbnail ?? row.product?.thumbnail;
+      if (!src) return `<span class="text-muted">-</span>`;
+      return `<img src="${src}" alt="thumb" class="rounded" style="width: 40px; height: 40px; object-fit: cover;" />`;
     },
   },
   {
     name: 'name',
     label: 'Product Name',
     sortable: true,
-    custom: (row) => `<span class="badge bg-success">${row.name}</span>`,
+    custom: (row) => {
+      const product = `<span class="badge bg-success">${row.product?.name ?? '-'}</span>`;
+      const variantName = row.name && row.name !== row.product?.name
+        ? ` <small class="text-muted">${row.name}</small>`
+        : '';
+      return product + variantName;
+    },
   },
   {
     name: 'product_type',
     label: 'Type',
     sortable: true,
     custom: (row) => {
+      const type = row.product?.product_type;
       const cls =
-        row.product_type === 'variant'
+        type === 'variant'
           ? 'info'
-          : row.product_type === 'service'
+          : type === 'service'
           ? 'warning'
           : 'primary';
-      return `<span class="badge bg-${cls}">${row.product_type}</span>`;
+      return `<span class="badge bg-${cls}">${type ?? '-'}</span>`;
     },
   },
   {
@@ -84,13 +92,13 @@ const columns = [
     name: 'category_id',
     label: 'Category',
     sortable: true,
-    custom: (row) => row.category?.name ?? '-',
+    custom: (row) => row.product?.category?.name ?? '-',
   },
   {
     name: 'brand_id',
     label: 'Brand',
     sortable: true,
-    custom: (row) => row.brand?.name ?? '-',
+    custom: (row) => row.product?.brand?.name ?? '-',
   },
   {
     name: 'purchase_price',
@@ -109,18 +117,18 @@ const columns = [
     label: 'Stock',
     sortable: true,
     custom: (row) => {
-      if (!row.track_stock) return '<span class="text-muted">N/A</span>';
+      if (!row.product?.track_stock) return '<span class="text-muted">N/A</span>';
       return row.stock ?? 0;
     },
   },
   {
-    name: 'status_id',
+    name: 'is_active',
     label: 'Status',
     sortable: true,
     custom: (row) => {
-      return `<span class="badge bg-${row.status?.class ?? 'secondary'}">${
-        row.status?.name ?? ''
-      }</span>`;
+      return row.product?.is_active
+        ? '<span class="badge bg-success">Active</span>'
+        : '<span class="badge bg-secondary">Inactive</span>';
     },
   },
   {

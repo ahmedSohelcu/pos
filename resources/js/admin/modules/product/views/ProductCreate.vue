@@ -199,6 +199,33 @@ function cancel() {
   window.history.back();
 }
 
+function onThumbnailDeleted() {
+  form.existingThumbnail = [];
+  form.product_thumbnail = null;
+}
+
+function onGalleryDeleted(file) {
+  form.existingGalleries = form.existingGalleries.filter(
+    (f) => f.id !== file.id
+  );
+}
+
+const intOnly = (val) => {
+  if (val === null || val === undefined || val === '') return '';
+
+  const n = Math.trunc(Number(val));
+  return Number.isNaN(n) ? '' : Math.max(0, n);
+};
+
+function normalizeIntegers() {
+  form.stock = intOnly(form.stock);
+  form.alert_quantity = intOnly(form.alert_quantity);
+
+  form.variants.forEach((v) => {
+    v.stock = intOnly(v.stock);
+  });
+}
+
 // reset attributes/variants when leaving variant type
 watch(
   () => form.product_type,
@@ -305,6 +332,8 @@ onMounted(() => {
 
 const createOrUpate = async () => {
   productStore.errors = {};
+
+  normalizeIntegers();
 
   let success;
 
@@ -428,7 +457,8 @@ const createOrUpate = async () => {
                   v-model="form.product_thumbnail"
                   :existingFiles="form.existingThumbnail"
                   :multiple="false"
-                  :deleteUrl="null"
+                  :deleteUrl="isEdit ? PRODUCT_ENDPOINTS.deleteThumbnail(form.id) : null"
+                  @deleted="onThumbnailDeleted"
                   :maxSize="1024"
                   class="border border-1 p-3 border-gray-300 rounded-2"
                 />
@@ -445,7 +475,8 @@ const createOrUpate = async () => {
                   v-model="form.product_galleries"
                   :existingFiles="form.existingGalleries"
                   :multiple="true"
-                  :deleteUrl="null"
+                  :deleteUrl="isEdit ? PRODUCT_ENDPOINTS.deleteGallery(form.id) : null"
+                  @deleted="onGalleryDeleted"
                   :maxSize="1024"
                   class="border border-1 p-3 border-gray-300 rounded-2"
                 />
@@ -500,9 +531,12 @@ const createOrUpate = async () => {
 
               <div class="col">
                 <BaseInput
-                  v-model="form.stock"
-                  label="Stock"
                   type="number"
+                  min="0"
+                  step="1"
+                  :model-value="form.stock"
+                  @update:modelValue="v => form.stock = intOnly(v)"
+                  label="Stock"
                   :error="errors.stock"
                   placeholder="Enter Stock"
                   icon="fa-store"
@@ -511,9 +545,12 @@ const createOrUpate = async () => {
 
               <div class="col">
                 <BaseInput
-                  v-model="form.alert_quantity"
-                  label="Stock Alert"
                   type="number"
+                  min="0"
+                  step="1"
+                  :model-value="form.alert_quantity"
+                  @update:modelValue="v => form.alert_quantity = intOnly(v)"
+                  label="Stock Alert"
                   :error="errors.alert_quantity"
                   placeholder="Enter stock alert"
                   icon="fa-store"
@@ -655,7 +692,10 @@ const createOrUpate = async () => {
                   <td>
                     <BaseInput
                       type="number"
-                      v-model="variant.stock"
+                      min="0"
+                      step="1"
+                      :model-value="variant.stock"
+                      @update:modelValue="v => variant.stock = intOnly(v)"
                       :error="variantError(i, 'stock')"
                     />
                   </td>

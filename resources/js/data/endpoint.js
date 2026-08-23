@@ -76,6 +76,7 @@ export const CUSTOMER_ENDPOINTS = {
   show: (id) => route('api.customer.show', { customer: id }),
   update: (id) => route('api.customer.update', { customer: id }),
   destroy: (id) => route('api.customer.destroy', { customer: id }),
+  selectable: route('api.selectable_customers'),
 };
 
 /*
@@ -231,4 +232,62 @@ export const PRODUCT_ENDPOINTS = {
   show: (id) => route('api.product.show', { product: id }),
   update: (id) => route('api.product.update', { product: id }),
   destroy: (id) => route('api.product.destroy', { product: id }),
+  deleteThumbnail: (id) => id ? route('api.product.thumbnail.destroy', { product: id }) : null,
+  deleteGallery: (id) => id ? route('api.product.gallery.destroy', { product: id }) : null,
+};
+
+/*
+|--------------------------------------------------------------------------
+| POS
+|--------------------------------------------------------------------------
+*/
+export const POS_ENDPOINTS = {
+  products: route('api.pos.products'),
+};
+
+/*
+|--------------------------------------------------------------------------
+| SALES
+|--------------------------------------------------------------------------
+*/
+export const SALES_ENDPOINTS = {
+  index: route('api.sales.index'),
+  store: route('api.sales.store'),
+  show: (id) => route('api.sales.show', { sale: id }),
+  refund: (id) => route('api.sales.refund', { sale: id }),
+  stats: route('api.sales.stats'),
+};
+
+/*
+|--------------------------------------------------------------------------
+| INVENTORY
+|--------------------------------------------------------------------------
+*/
+export const INVENTORY_ENDPOINTS = {
+  movements: route('api.inventory.movements'),
+  lowStock: route('api.inventory.low_stock'),
+  stats: route('api.inventory.stats'),
+  adjust: route('api.inventory.adjust'),
+};
+
+/*
+|--------------------------------------------------------------------------
+| REPORTS
+|--------------------------------------------------------------------------
+*/
+export const REPORTS_ENDPOINTS = {
+  overview: route('api.reports.overview'),
+};
+
+/*
+|--------------------------------------------------------------------------
+| REGISTER (CASH DRAWER)
+|--------------------------------------------------------------------------
+*/
+export const REGISTER_ENDPOINTS = {
+  current: route('api.register.current'),
+  open: route('api.register.open'),
+  close: route('api.register.close'),
+  movements: route('api.register.movements'),
+  history: route('api.register.history'),
 };
